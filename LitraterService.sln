@@ -7,11 +7,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2E4205E0-CD1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Litrater.Domain", "src\Litrater.Domain\Litrater.Domain.csproj", "{069E8985-9835-4192-AE99-816208BB84C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Litrater.Application", "src\Litrater.Application\Litrater.Application.csproj", "{18264D7C-014E-432B-B1C9-45CA952E0902}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Litrater.Application", "src\Litrater.Application\Litrater.Application.csproj", "{18264D7C-014E-432B-B1C9-45CA952E0902}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Litrater.Infrastructure", "src\Litrater.Infrastructure\Litrater.Infrastructure.csproj", "{8596236C-A2AD-43FE-A90D-A490D99226DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Litrater.Infrastructure", "src\Litrater.Infrastructure\Litrater.Infrastructure.csproj", "{8596236C-A2AD-43FE-A90D-A490D99226DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Litrater.Presentation", "src\Litrater.Presentation\Litrater.Presentation.csproj", "{498EEC77-445B-4717-9BD6-96D306A0A9EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Litrater.Presentation", "src\Litrater.Presentation\Litrater.Presentation.csproj", "{498EEC77-445B-4717-9BD6-96D306A0A9EC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{E097F5F1-7883-4120-8FA8-D67AF288A175}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Litrater.ArchitectureTests", "test\Litrater.ArchitectureTests\Litrater.ArchitectureTests.csproj", "{A7C9EE37-5098-48AB-9AAC-4128EFA47A33}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +39,10 @@ Global
 		{498EEC77-445B-4717-9BD6-96D306A0A9EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{498EEC77-445B-4717-9BD6-96D306A0A9EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{498EEC77-445B-4717-9BD6-96D306A0A9EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7C9EE37-5098-48AB-9AAC-4128EFA47A33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7C9EE37-5098-48AB-9AAC-4128EFA47A33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7C9EE37-5098-48AB-9AAC-4128EFA47A33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7C9EE37-5098-48AB-9AAC-4128EFA47A33}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,6 +52,7 @@ Global
 		{18264D7C-014E-432B-B1C9-45CA952E0902} = {2E4205E0-CD16-4693-9111-509E1A4DA232}
 		{8596236C-A2AD-43FE-A90D-A490D99226DE} = {2E4205E0-CD16-4693-9111-509E1A4DA232}
 		{498EEC77-445B-4717-9BD6-96D306A0A9EC} = {2E4205E0-CD16-4693-9111-509E1A4DA232}
+		{A7C9EE37-5098-48AB-9AAC-4128EFA47A33} = {E097F5F1-7883-4120-8FA8-D67AF288A175}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {702A3B81-06ED-4884-BC0C-16A31FB239EC}
