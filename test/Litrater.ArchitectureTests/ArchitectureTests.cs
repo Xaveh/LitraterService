@@ -1,4 +1,6 @@
 using FluentAssertions;
+using Litrater.Application;
+using Litrater.Domain.Models;
 using NetArchTest.Rules;
 
 namespace Litrater.ArchitectureTests;
@@ -14,7 +16,7 @@ public class ArchitectureTests
     public void Domain_ShouldNotHaveDependency_OnOtherProjects()
     {
         // Arrange
-        var domainAssembly = typeof(Domain.Class1).Assembly;
+        var domainAssembly = typeof(Book).Assembly;
 
         var otherProjects = new[]
         {
@@ -25,9 +27,9 @@ public class ArchitectureTests
 
         // Act
         var result = Types.InAssembly(domainAssembly)
-                          .ShouldNot()
-                          .HaveDependencyOnAny(otherProjects)
-                          .GetResult();
+            .ShouldNot()
+            .HaveDependencyOnAny(otherProjects)
+            .GetResult();
 
         // Assert
         result.IsSuccessful.Should().BeTrue();
@@ -37,7 +39,7 @@ public class ArchitectureTests
     public void Application_ShouldNotHaveDependency_OnOtherProjects()
     {
         // Arrange
-        var applicationAssembly = typeof(Application.Class1).Assembly;
+        var applicationAssembly = typeof(Class1).Assembly;
 
         var otherProjects = new[]
         {
@@ -47,9 +49,9 @@ public class ArchitectureTests
 
         // Act
         var result = Types.InAssembly(applicationAssembly)
-                          .ShouldNot()
-                          .HaveDependencyOnAny(otherProjects)
-                          .GetResult();
+            .ShouldNot()
+            .HaveDependencyOnAny(otherProjects)
+            .GetResult();
 
         // Assert
         result.IsSuccessful.Should().BeTrue();
@@ -68,9 +70,9 @@ public class ArchitectureTests
 
         // Act
         var result = Types.InAssembly(infrastructureAssembly)
-                          .ShouldNot()
-                          .HaveDependencyOnAny(otherProjects)
-                          .GetResult();
+            .ShouldNot()
+            .HaveDependencyOnAny(otherProjects)
+            .GetResult();
 
         // Assert
         result.IsSuccessful.Should().BeTrue();
@@ -89,9 +91,9 @@ public class ArchitectureTests
 
         // Act
         var result = Types.InAssembly(presentationAssembly)
-                          .ShouldNot()
-                          .HaveDependencyOnAny(otherProjects)
-                          .GetResult();
+            .ShouldNot()
+            .HaveDependencyOnAny(otherProjects)
+            .GetResult();
 
         // Assert
         result.IsSuccessful.Should().BeTrue();
@@ -101,15 +103,15 @@ public class ArchitectureTests
     public void Handlers_ShouldHaveDependency_OnDomain()
     {
         // Arrange
-        var applicationAssembly = typeof(Application.Class1).Assembly;
+        var applicationAssembly = typeof(Class1).Assembly;
 
         // Act
         var result = Types.InAssembly(applicationAssembly)
-                          .That()
-                          .HaveNameEndingWith("Handler")
-                          .Should()
-                          .HaveDependencyOn(DomainNamespace)
-                          .GetResult();
+            .That()
+            .HaveNameEndingWith("Handler")
+            .Should()
+            .HaveDependencyOn(DomainNamespace)
+            .GetResult();
 
         // Assert
         result.IsSuccessful.Should().BeTrue();
@@ -123,11 +125,11 @@ public class ArchitectureTests
 
         // Act
         var result = Types.InAssembly(presentationAssembly)
-                          .That()
-                          .HaveNameEndingWith("Controller")
-                          .Should()
-                          .HaveDependencyOn("MediatR")
-                          .GetResult();
+            .That()
+            .HaveNameEndingWith("Controller")
+            .Should()
+            .HaveDependencyOn("MediatR")
+            .GetResult();
 
         // Assert
         result.IsSuccessful.Should().BeTrue();
