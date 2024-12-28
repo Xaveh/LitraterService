@@ -7,8 +7,8 @@ public sealed class Book : Entity
 
     public Book(Guid id, string title, string isbn) : base(id)
     {
-        Title = title ?? throw new ArgumentNullException(nameof(title));
-        Isbn = isbn ?? throw new ArgumentNullException(nameof(isbn));
+        Title = title;
+        Isbn = isbn;
     }
 
     public string Title { get; private set; }

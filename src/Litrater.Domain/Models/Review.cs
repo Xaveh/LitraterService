@@ -4,7 +4,7 @@ public sealed class Review : Entity
 {
     public Review(Guid id, string content, int rating, Guid bookId) : base(id)
     {
-        Content = content ?? throw new ArgumentNullException(nameof(content));
+        Content = content;
         Rating = rating;
         BookId = bookId;
     }

@@ -6,7 +6,7 @@ public sealed class Author : Entity
 
     public Author(Guid id, string name) : base(id)
     {
-        Name = name ?? throw new ArgumentNullException(nameof(name));
+        Name = name;
     }
 
     public string Name { get; private set; }
