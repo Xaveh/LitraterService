@@ -1,16 +1,14 @@
 namespace Litrater.Domain.Models;
 
-public sealed class Author
+public sealed class Author : Entity
 {
     private readonly List<Book> _books = [];
 
-    public Author(Guid id, string name)
+    public Author(Guid id, string name) : base(id)
     {
-        Id = id;
         Name = name ?? throw new ArgumentNullException(nameof(name));
     }
 
-    public Guid Id { get; private set; }
     public string Name { get; private set; }
     public IReadOnlyCollection<Book> Books => _books.AsReadOnly();
 
