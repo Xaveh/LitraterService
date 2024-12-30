@@ -15,6 +15,8 @@ public sealed class Author : Entity
     public void AddBook(Book book)
     {
         if (!_books.Contains(book))
+        {
             _books.Add(book);
+        }
     }
 }

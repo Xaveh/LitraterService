@@ -19,12 +19,16 @@ public sealed class Book : Entity
     public void AddAuthor(Author author)
     {
         if (!_authors.Contains(author))
+        {
             _authors.Add(author);
+        }
     }
 
     public void AddReview(Review review)
     {
         if (!_reviews.Contains(review))
+        {
             _reviews.Add(review);
+        }
     }
 }
