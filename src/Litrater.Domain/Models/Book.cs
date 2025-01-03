@@ -1,9 +1,11 @@
+using Litrater.Domain.Shared;
+
 namespace Litrater.Domain.Models;
 
-public sealed class Book : Entity
+public sealed class Book : AggregateRoot
 {
     private readonly List<Author> _authors = [];
-    private readonly List<Review> _reviews = [];
+    private readonly List<BookReview> _reviews = [];
 
     public Book(Guid id, string title, string isbn) : base(id)
     {
@@ -14,7 +16,7 @@ public sealed class Book : Entity
     public string Title { get; private set; }
     public string Isbn { get; private set; }
     public IReadOnlyCollection<Author> Authors => _authors.AsReadOnly();
-    public IReadOnlyCollection<Review> Reviews => _reviews.AsReadOnly();
+    public IReadOnlyCollection<BookReview> Reviews => _reviews.AsReadOnly();
 
     public void AddAuthor(Author author)
     {
@@ -24,11 +26,11 @@ public sealed class Book : Entity
         }
     }
 
-    public void AddReview(Review review)
+    public void AddReview(BookReview bookReview)
     {
-        if (!_reviews.Contains(review))
+        if (!_reviews.Contains(bookReview))
         {
-            _reviews.Add(review);
+            _reviews.Add(bookReview);
         }
     }
 }

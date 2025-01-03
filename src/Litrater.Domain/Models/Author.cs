@@ -1,6 +1,8 @@
+using Litrater.Domain.Shared;
+
 namespace Litrater.Domain.Models;
 
-public sealed class Author : Entity
+public sealed class Author : AggregateRoot
 {
     private readonly List<Book> _books = [];
 

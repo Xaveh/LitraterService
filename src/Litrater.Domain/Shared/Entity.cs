@@ -1,4 +1,4 @@
-namespace Litrater.Domain.Models;
+namespace Litrater.Domain.Shared;
 
 public abstract class Entity : IEquatable<Entity>
 {

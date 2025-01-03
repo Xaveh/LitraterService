@@ -1,8 +1,10 @@
+using Litrater.Domain.Shared;
+
 namespace Litrater.Domain.Models;
 
-public sealed class Review : Entity
+public sealed class BookReview : Entity
 {
-    public Review(Guid id, string content, int rating, Guid bookId) : base(id)
+    public BookReview(Guid id, string content, int rating, Guid bookId) : base(id)
     {
         Content = content;
         Rating = rating;
