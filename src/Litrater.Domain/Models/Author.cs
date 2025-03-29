@@ -8,11 +8,11 @@ public sealed class Author : AggregateRoot
 
     public Author(Guid id, string firstName, string lastName) : base(id)
     {
-        FirstFirstName = firstName;
+        FirstName = firstName;
         LastName = lastName;
     }
 
-    public string FirstFirstName { get; private set; }
+    public string FirstName { get; private set; }
     public string LastName { get; private set; }
     public IReadOnlyCollection<Book> Books => _books.AsReadOnly();
 
