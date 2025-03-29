@@ -6,12 +6,14 @@ public sealed class Author : AggregateRoot
 {
     private readonly List<Book> _books = [];
 
-    public Author(Guid id, string name) : base(id)
+    public Author(Guid id, string firstName, string lastName) : base(id)
     {
-        Name = name;
+        FirstFirstName = firstName;
+        LastName = lastName;
     }
 
-    public string Name { get; private set; }
+    public string FirstFirstName { get; private set; }
+    public string LastName { get; private set; }
     public IReadOnlyCollection<Book> Books => _books.AsReadOnly();
 
     public void AddBook(Book book)
