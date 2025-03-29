@@ -7,4 +7,8 @@
         <WarningsAsErrors>nullable</WarningsAsErrors>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Litrater.Domain\Litrater.Domain.csproj" />
+    </ItemGroup>
+
 </Project>

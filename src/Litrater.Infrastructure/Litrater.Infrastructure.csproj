@@ -13,6 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Litrater.Application\Litrater.Application.csproj" />
       <ProjectReference Include="..\Litrater.Domain\Litrater.Domain.csproj" />
     </ItemGroup>
 
