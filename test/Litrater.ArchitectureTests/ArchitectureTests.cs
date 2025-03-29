@@ -2,6 +2,7 @@ using FluentAssertions;
 using Litrater.Application;
 using Litrater.Domain.Models;
 using NetArchTest.Rules;
+using System.Reflection;
 
 namespace Litrater.ArchitectureTests;
 
@@ -16,7 +17,7 @@ public class ArchitectureTests
     public void Domain_ShouldNotHaveDependency_OnOtherProjects()
     {
         // Arrange
-        var domainAssembly = typeof(Book).Assembly;
+        var domainAssembly = Assembly.Load(DomainNamespace);
 
         var otherProjects = new[]
         {
@@ -39,7 +40,7 @@ public class ArchitectureTests
     public void Application_ShouldNotHaveDependency_OnOtherProjects()
     {
         // Arrange
-        var applicationAssembly = typeof(Class1).Assembly;
+        var applicationAssembly = Assembly.Load(ApplicationNamespace);
 
         var otherProjects = new[]
         {
@@ -61,7 +62,7 @@ public class ArchitectureTests
     public void Infrastructure_ShouldNotHaveDependency_OnOtherProjects()
     {
         // Arrange
-        var infrastructureAssembly = typeof(Infrastructure.Class1).Assembly;
+        var infrastructureAssembly = Assembly.Load(InfrastructureNamespace);
 
         var otherProjects = new[]
         {
@@ -82,7 +83,7 @@ public class ArchitectureTests
     public void Presentation_ShouldNotHaveDependency_OnOtherProjects()
     {
         // Arrange
-        var presentationAssembly = typeof(Presentation.Class1).Assembly;
+        var presentationAssembly = Assembly.Load(PresentationNamespace);
 
         var otherProjects = new[]
         {
@@ -103,7 +104,7 @@ public class ArchitectureTests
     public void Handlers_ShouldHaveDependency_OnDomain()
     {
         // Arrange
-        var applicationAssembly = typeof(Class1).Assembly;
+        var applicationAssembly = Assembly.Load(ApplicationNamespace);
 
         // Act
         var result = Types.InAssembly(applicationAssembly)
@@ -121,7 +122,7 @@ public class ArchitectureTests
     public void Controllers_ShouldHaveDependency_OnMediatR()
     {
         // Arrange
-        var presentationAssembly = typeof(Presentation.Class1).Assembly;
+        var presentationAssembly = Assembly.Load(PresentationNamespace);
 
         // Act
         var result = Types.InAssembly(presentationAssembly)
