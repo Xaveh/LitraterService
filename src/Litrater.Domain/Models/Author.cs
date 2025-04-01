@@ -6,6 +6,9 @@ public sealed class Author : AggregateRoot
 {
     private readonly List<Book> _books = [];
 
+    #pragma warning disable CS8618 // Required by Entity Framework
+    private Author() {}
+
     public Author(Guid id, string firstName, string lastName) : base(id)
     {
         FirstName = firstName;

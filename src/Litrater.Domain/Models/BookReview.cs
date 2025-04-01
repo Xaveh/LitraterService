@@ -4,6 +4,9 @@ namespace Litrater.Domain.Models;
 
 public sealed class BookReview : Entity
 {
+    #pragma warning disable CS8618 // Required by Entity Framework
+    private BookReview() {}
+    
     public BookReview(Guid id, string content, int rating, Guid bookId) : base(id)
     {
         Content = content;

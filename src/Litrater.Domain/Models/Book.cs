@@ -6,7 +6,10 @@ public sealed class Book : AggregateRoot
 {
     private readonly List<Author> _authors;
     private readonly List<BookReview> _reviews = [];
-
+    
+    #pragma warning disable CS8618 // Required by Entity Framework
+    private Book() {}
+    
     public Book(Guid id, string title, string isbn, List<Author> authors) : base(id)
     {
         Title = title;
