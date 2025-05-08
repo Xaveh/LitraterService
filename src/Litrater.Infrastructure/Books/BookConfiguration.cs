@@ -1,8 +1,8 @@
-using Litrater.Domain.Models;
+using Litrater.Domain.Books;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Litrater.Infrastructure.Data.Config;
+namespace Litrater.Infrastructure.Books;
 
 public class BookConfiguration : IEntityTypeConfiguration<Book>
 {
@@ -23,4 +23,4 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
             .HasForeignKey(r => r.BookId)
             .OnDelete(DeleteBehavior.Cascade);
     }
-} 
+}

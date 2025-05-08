@@ -1,8 +1,8 @@
-using Litrater.Domain.Models;
+using Litrater.Domain.Books;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Litrater.Infrastructure.Data.Config;
+namespace Litrater.Infrastructure.Books;
 
 public class BookReviewConfiguration : IEntityTypeConfiguration<BookReview>
 {
@@ -20,4 +20,4 @@ public class BookReviewConfiguration : IEntityTypeConfiguration<BookReview>
         builder.Property(r => r.BookId)
             .IsRequired();
     }
-} 
+}

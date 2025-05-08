@@ -1,6 +1,7 @@
 using Litrater.Domain.Shared;
+using Litrater.Domain.Books;
 
-namespace Litrater.Domain.Models;
+namespace Litrater.Domain.Authors;
 
 public sealed class Author : AggregateRoot
 {

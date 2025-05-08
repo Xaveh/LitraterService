@@ -1,6 +1,4 @@
 using FluentAssertions;
-using Litrater.Application;
-using Litrater.Domain.Models;
 using NetArchTest.Rules;
 using System.Reflection;
 

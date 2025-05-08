@@ -37,7 +37,7 @@ namespace Litrater.Infrastructure.Data.Migrations
                     b.ToTable("AuthorBooks", (string)null);
                 });
 
-            modelBuilder.Entity("Litrater.Domain.Models.Author", b =>
+            modelBuilder.Entity("Litrater.Domain.Authors.Author", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -64,7 +64,7 @@ namespace Litrater.Infrastructure.Data.Migrations
                     b.ToTable("Authors");
                 });
 
-            modelBuilder.Entity("Litrater.Domain.Models.Book", b =>
+            modelBuilder.Entity("Litrater.Domain.Books.Book", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -91,7 +91,7 @@ namespace Litrater.Infrastructure.Data.Migrations
                     b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("Litrater.Domain.Models.BookReview", b =>
+            modelBuilder.Entity("Litrater.Domain.Books.BookReview", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -123,29 +123,29 @@ namespace Litrater.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("AuthorBook", b =>
                 {
-                    b.HasOne("Litrater.Domain.Models.Author", null)
+                    b.HasOne("Litrater.Domain.Authors.Author", null)
                         .WithMany()
                         .HasForeignKey("AuthorsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Litrater.Domain.Models.Book", null)
+                    b.HasOne("Litrater.Domain.Books.Book", null)
                         .WithMany()
                         .HasForeignKey("BooksId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Litrater.Domain.Models.BookReview", b =>
+            modelBuilder.Entity("Litrater.Domain.Books.BookReview", b =>
                 {
-                    b.HasOne("Litrater.Domain.Models.Book", null)
+                    b.HasOne("Litrater.Domain.Books.Book", null)
                         .WithMany("Reviews")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Litrater.Domain.Models.Book", b =>
+            modelBuilder.Entity("Litrater.Domain.Books.Book", b =>
                 {
                     b.Navigation("Reviews");
                 });

@@ -1,6 +1,6 @@
 using Litrater.Domain.Shared;
 
-namespace Litrater.Domain.Models;
+namespace Litrater.Domain.Books;
 
 public sealed class BookReview : Entity
 {

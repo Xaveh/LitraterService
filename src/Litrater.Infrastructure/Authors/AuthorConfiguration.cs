@@ -1,8 +1,8 @@
-using Litrater.Domain.Models;
+using Litrater.Domain.Authors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Litrater.Infrastructure.Data.Config;
+namespace Litrater.Infrastructure.Authors;
 
 public class AuthorConfiguration : IEntityTypeConfiguration<Author>
 {
@@ -22,4 +22,4 @@ public class AuthorConfiguration : IEntityTypeConfiguration<Author>
             .WithMany(b => b.Authors)
             .UsingEntity(j => j.ToTable("AuthorBooks"));
     }
-} 
+}

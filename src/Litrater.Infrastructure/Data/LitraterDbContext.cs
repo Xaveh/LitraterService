@@ -1,5 +1,7 @@
-using Litrater.Domain.Models;
-using Litrater.Infrastructure.Data.Config;
+using Litrater.Domain.Authors;
+using Litrater.Domain.Books;
+using Litrater.Infrastructure.Authors;
+using Litrater.Infrastructure.Books;
 using Microsoft.EntityFrameworkCore;
 
 namespace Litrater.Infrastructure.Data;
