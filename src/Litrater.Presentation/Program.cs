@@ -1,4 +1,6 @@
+using Litrater.Application.Books.Queries.GetBookById;
 using Litrater.Infrastructure;
+using Litrater.Presentation.Books.GetBookById;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,9 @@ builder.Services.AddSwaggerGen();
 
 // Add Infrastructure services
 builder.Services.AddInfrastructure(builder.Configuration);
+
+// Register application services
+builder.Services.AddScoped<GetBookByIdQueryHandler>();
 
 var app = builder.Build();
 
@@ -22,4 +27,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-app.Run(); 
+
+// Register minimal API endpoints
+GetBookByIdEndpoint.MapGetBookByIdEndpoint(app);
+
+app.Run();
