@@ -1,4 +1,6 @@
+using Litrater.Application.Books.Interfaces;
 using Litrater.Application.Common.Interfaces;
+using Litrater.Infrastructure.Books;
 using Litrater.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -15,7 +17,8 @@ public static class DependencyInjection
         
         services.AddDbContext<LitraterDbContext>(options =>
             options.UseNpgsql(databaseSettings.GetConnectionString()));
-            
+
+        services.AddScoped<IBookRepository, BookRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         
         return services;
