@@ -11,4 +11,8 @@
       <ProjectReference Include="..\Litrater.Domain\Litrater.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Ardalis.Result" Version="10.1.0" />
+    </ItemGroup>
+
 </Project>
