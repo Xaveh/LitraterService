@@ -11,7 +11,7 @@ internal sealed class GetBookByIdQueryHandler(IBookRepository bookRepository) : 
     {
         var book = await bookRepository.GetByIdAsync(query.Id, cancellationToken);
 
-        if (book == null)
+        if (book is null)
         {
             return Result<BookDto>.NotFound();
         }
