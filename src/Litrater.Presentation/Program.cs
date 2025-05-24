@@ -1,7 +1,6 @@
 using Litrater.Application;
-using Litrater.Application.Books.Queries.GetBookById;
 using Litrater.Infrastructure;
-using Litrater.Presentation.Books.GetBookById;
+using Litrater.Presentation.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +26,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 // Register minimal API endpoints
-GetBookByIdEndpoint.MapGetBookByIdEndpoint(app);
+app.MapAllEndpoints();
 
 app.Run();
