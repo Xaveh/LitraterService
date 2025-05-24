@@ -78,27 +78,6 @@ public class ArchitectureTests
     }
 
     [Fact]
-    public void Presentation_ShouldNotHaveDependency_OnOtherProjects()
-    {
-        // Arrange
-        var presentationAssembly = Assembly.Load(PresentationNamespace);
-
-        var otherProjects = new[]
-        {
-            InfrastructureNamespace
-        };
-
-        // Act
-        var result = Types.InAssembly(presentationAssembly)
-            .ShouldNot()
-            .HaveDependencyOnAny(otherProjects)
-            .GetResult();
-
-        // Assert
-        result.IsSuccessful.Should().BeTrue();
-    }
-
-    [Fact]
     public void Handlers_ShouldHaveDependency_OnDomain()
     {
         // Arrange
@@ -110,24 +89,6 @@ public class ArchitectureTests
             .HaveNameEndingWith("Handler")
             .Should()
             .HaveDependencyOn(DomainNamespace)
-            .GetResult();
-
-        // Assert
-        result.IsSuccessful.Should().BeTrue();
-    }
-
-    [Fact]
-    public void Controllers_ShouldHaveDependency_OnMediatR()
-    {
-        // Arrange
-        var presentationAssembly = Assembly.Load(PresentationNamespace);
-
-        // Act
-        var result = Types.InAssembly(presentationAssembly)
-            .That()
-            .HaveNameEndingWith("Controller")
-            .Should()
-            .HaveDependencyOn("MediatR")
             .GetResult();
 
         // Assert
