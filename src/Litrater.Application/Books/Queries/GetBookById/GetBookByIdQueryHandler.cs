@@ -5,19 +5,11 @@ using Litrater.Application.Common.Interfaces;
 
 namespace Litrater.Application.Books.Queries.GetBookById;
 
-public sealed class GetBookByIdQueryHandler : IQueryHandler<GetBookByIdQuery, BookDto>
+internal sealed class GetBookByIdQueryHandler(IBookRepository bookRepository) : IQueryHandler<GetBookByIdQuery, BookDto>
 {
-    private readonly IBookRepository _bookRepository;
-
-    public GetBookByIdQueryHandler(IBookRepository bookRepository)
-    {
-        _bookRepository = bookRepository;
-    }
-
     public async Task<Result<BookDto>> Handle(GetBookByIdQuery query, CancellationToken cancellationToken) 
-   
     {
-        var book = await _bookRepository.GetByIdAsync(query.Id, cancellationToken);
+        var book = await bookRepository.GetByIdAsync(query.Id, cancellationToken);
 
         if (book == null)
         {

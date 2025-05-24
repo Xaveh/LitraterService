@@ -1,3 +1,4 @@
+using Litrater.Application;
 using Litrater.Application.Books.Queries.GetBookById;
 using Litrater.Infrastructure;
 using Litrater.Presentation.Books.GetBookById;
@@ -9,11 +10,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Add Infrastructure services
 builder.Services.AddInfrastructure(builder.Configuration);
-
-// Register application services
-builder.Services.AddScoped<GetBookByIdQueryHandler>();
+builder.Services.AddApplication();
 
 var app = builder.Build();
 
