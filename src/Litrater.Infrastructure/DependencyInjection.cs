@@ -16,7 +16,7 @@ public static class DependencyInjection
             ?? throw new InvalidOperationException($"Database configuration section '{DatabaseSettings.SectionName}' is missing.");
         
         services.AddDbContext<LitraterDbContext>(options =>
-            options.UseNpgsql(databaseSettings.GetConnectionString()));
+            options.UseNpgsql(databaseSettings.ConnectionString));
 
         services.AddScoped<IBookRepository, BookRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();

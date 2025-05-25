@@ -3,7 +3,11 @@
     <PropertyGroup>
         <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     </PropertyGroup>
-
+    <!-- Static code analysis -->
+    <ItemGroup>
+        <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.10.0.116381" />
+    </ItemGroup>
+    
     <!-- Microsoft Packages -->
     <ItemGroup>
         <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="9.0.5" />

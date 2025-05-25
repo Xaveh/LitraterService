@@ -1,3 +1,3 @@
 namespace Litrater.Application.Common.Interfaces;
 
-public interface IQuery<TResponse>;
+public interface IQuery;

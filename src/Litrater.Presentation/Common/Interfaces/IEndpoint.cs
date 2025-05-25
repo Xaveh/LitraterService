@@ -1,6 +1,6 @@
 namespace Litrater.Presentation.Common.Interfaces;
 
-public interface IEndpoint
+internal interface IEndpoint
 {
     void MapEndpoint(IEndpointRouteBuilder app);
 }

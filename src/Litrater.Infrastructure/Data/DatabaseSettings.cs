@@ -10,8 +10,5 @@ public class DatabaseSettings
     public required string Username { get; set; }
     public required string Password { get; set; }
 
-    public string GetConnectionString()
-    {
-        return $"Host={Host};Port={Port};Database={Database};Username={Username};Password={Password}";
-    }
+    public string ConnectionString => $"Host={Host};Port={Port};Database={Database};Username={Username};Password={Password}";
 } 

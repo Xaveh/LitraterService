@@ -7,7 +7,7 @@ using Litrater.Presentation.Common.Interfaces;
 
 namespace Litrater.Presentation.Endpoints.Books;
 
-public sealed class GetBookByIdEndpoint : IEndpoint
+internal sealed class GetBookByIdEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {

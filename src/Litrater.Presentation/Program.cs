@@ -28,4 +28,4 @@ app.MapControllers();
 // Register minimal API endpoints
 app.MapAllEndpoints();
 
-app.Run();
+await app.RunAsync();

@@ -7,7 +7,7 @@ namespace Litrater.Application.Common;
 
 internal sealed class QueryHandlerValidationDecorator<TQuery, TResponse>(IQueryHandler<TQuery, TResponse> inner, IValidator<TQuery>? validator)
     : IQueryHandler<TQuery, TResponse>
-    where TQuery : IQuery<TResponse>
+    where TQuery : IQuery
 {
     public async Task<Result<TResponse>> Handle(TQuery query, CancellationToken cancellationToken)
     {

@@ -2,7 +2,7 @@ using Litrater.Presentation.Common.Interfaces;
 
 namespace Litrater.Presentation.Common;
 
-public static class EndpointExtensions
+internal static class EndpointExtensions
 {
     public static void MapAllEndpoints(this IEndpointRouteBuilder app)
     {
