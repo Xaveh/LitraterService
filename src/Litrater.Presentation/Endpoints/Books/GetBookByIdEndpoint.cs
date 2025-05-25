@@ -5,7 +5,7 @@ using Litrater.Application.Books.Queries.GetBookById;
 using Litrater.Application.Common.Interfaces;
 using Litrater.Presentation.Common.Interfaces;
 
-namespace Litrater.Presentation.Endpoints.Books.GetBookById;
+namespace Litrater.Presentation.Endpoints.Books;
 
 public sealed class GetBookByIdEndpoint : IEndpoint
 {

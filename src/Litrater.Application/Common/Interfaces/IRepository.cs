@@ -1,4 +1,4 @@
-using Litrater.Domain.Shared;
+using Litrater.Domain.Common;
 
 namespace Litrater.Application.Common.Interfaces;
 

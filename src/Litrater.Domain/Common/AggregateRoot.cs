@@ -1,4 +1,4 @@
-namespace Litrater.Domain.Shared;
+namespace Litrater.Domain.Common;
 
 public class AggregateRoot : Entity
 {

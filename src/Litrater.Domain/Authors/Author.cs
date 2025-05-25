@@ -1,5 +1,5 @@
-using Litrater.Domain.Shared;
 using Litrater.Domain.Books;
+using Litrater.Domain.Common;
 
 namespace Litrater.Domain.Authors;
 

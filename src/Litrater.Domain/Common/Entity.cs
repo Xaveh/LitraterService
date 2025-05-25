@@ -1,4 +1,4 @@
-namespace Litrater.Domain.Shared;
+namespace Litrater.Domain.Common;
 
 public abstract class Entity : IEquatable<Entity>
 {
@@ -59,7 +59,17 @@ public abstract class Entity : IEquatable<Entity>
 
     public static bool operator ==(Entity? left, Entity? right)
     {
-        return left is not null && right is not null && left.Equals(right);
+        if (left is null && right is null)
+        {
+            return true;
+        }
+
+        if (left is null || right is null)
+        {
+            return false;
+        }
+
+        return left.Equals(right);
     }
 
     public static bool operator !=(Entity? left, Entity? right)
