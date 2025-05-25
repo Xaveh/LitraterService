@@ -1,17 +1,16 @@
 using Litrater.Application;
 using Litrater.Infrastructure;
+using Litrater.Presentation;
 using Litrater.Presentation.Common;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddAuthorization();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services
+    .AddApplication()
+    .AddPresentation()
+    .AddInfrastructure(builder.Configuration);
 
-builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddApplication();
-
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
@@ -21,6 +20,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
+app.UseExceptionHandler();
 
 app.MapAllEndpoints();
 
