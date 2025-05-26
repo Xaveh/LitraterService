@@ -1,6 +1,6 @@
-using FluentAssertions;
-using NetArchTest.Rules;
 using System.Reflection;
+using NetArchTest.Rules;
+using Shouldly;
 
 namespace Litrater.ArchitectureTests;
 
@@ -17,12 +17,7 @@ public class ArchitectureTests
         // Arrange
         var domainAssembly = Assembly.Load(DomainNamespace);
 
-        var otherProjects = new[]
-        {
-            ApplicationNamespace,
-            InfrastructureNamespace,
-            PresentationNamespace
-        };
+        var otherProjects = new[] { ApplicationNamespace, InfrastructureNamespace, PresentationNamespace };
 
         // Act
         var result = Types.InAssembly(domainAssembly)
@@ -31,7 +26,7 @@ public class ArchitectureTests
             .GetResult();
 
         // Assert
-        result.IsSuccessful.Should().BeTrue();
+        result.IsSuccessful.ShouldBeTrue();
     }
 
     [Fact]
@@ -40,11 +35,7 @@ public class ArchitectureTests
         // Arrange
         var applicationAssembly = Assembly.Load(ApplicationNamespace);
 
-        var otherProjects = new[]
-        {
-            InfrastructureNamespace,
-            PresentationNamespace
-        };
+        var otherProjects = new[] { InfrastructureNamespace, PresentationNamespace };
 
         // Act
         var result = Types.InAssembly(applicationAssembly)
@@ -53,7 +44,7 @@ public class ArchitectureTests
             .GetResult();
 
         // Assert
-        result.IsSuccessful.Should().BeTrue();
+        result.IsSuccessful.ShouldBeTrue();
     }
 
     [Fact]
@@ -62,10 +53,7 @@ public class ArchitectureTests
         // Arrange
         var infrastructureAssembly = Assembly.Load(InfrastructureNamespace);
 
-        var otherProjects = new[]
-        {
-            PresentationNamespace
-        };
+        var otherProjects = new[] { PresentationNamespace };
 
         // Act
         var result = Types.InAssembly(infrastructureAssembly)
@@ -74,7 +62,7 @@ public class ArchitectureTests
             .GetResult();
 
         // Assert
-        result.IsSuccessful.Should().BeTrue();
+        result.IsSuccessful.ShouldBeTrue();
     }
 
     [Fact]
@@ -92,6 +80,6 @@ public class ArchitectureTests
             .GetResult();
 
         // Assert
-        result.IsSuccessful.Should().BeTrue();
+        result.IsSuccessful.ShouldBeTrue();
     }
 }
