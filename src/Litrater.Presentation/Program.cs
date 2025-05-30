@@ -2,8 +2,11 @@ using Litrater.Application;
 using Litrater.Infrastructure;
 using Litrater.Presentation;
 using Litrater.Presentation.Extensions;
+using Serilog;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 
 builder.Services
     .AddApplication()
@@ -11,6 +14,9 @@ builder.Services
     .AddInfrastructure(builder.Configuration);
 
 WebApplication app = builder.Build();
+
+app.UseRequestContextLogging();
+app.UseSerilogRequestLogging();
 
 if (app.Environment.IsDevelopment())
 {
