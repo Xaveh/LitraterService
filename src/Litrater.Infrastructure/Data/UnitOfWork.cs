@@ -1,4 +1,4 @@
-using Litrater.Application.Common.Interfaces;
+using Litrater.Application.Abstractions.Data;
 
 namespace Litrater.Infrastructure.Data;
 
@@ -8,4 +8,4 @@ public class UnitOfWork(LitraterDbContext context) : IUnitOfWork
     {
         return await context.SaveChangesAsync(cancellationToken);
     }
-} 
+}

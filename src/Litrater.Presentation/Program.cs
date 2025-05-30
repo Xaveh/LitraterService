@@ -1,7 +1,7 @@
 using Litrater.Application;
 using Litrater.Infrastructure;
 using Litrater.Presentation;
-using Litrater.Presentation.Common;
+using Litrater.Presentation.Extensions;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 

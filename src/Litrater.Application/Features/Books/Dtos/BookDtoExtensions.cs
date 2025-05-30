@@ -1,6 +1,6 @@
 using Litrater.Domain.Books;
 
-namespace Litrater.Application.Books.Dtos;
+namespace Litrater.Application.Features.Books.Dtos;
 
 public static class BookDtoExtensions
 {
@@ -14,4 +14,4 @@ public static class BookDtoExtensions
             ReviewIds: book.Reviews.Select(r => r.Id)
         );
     }
-} 
+}

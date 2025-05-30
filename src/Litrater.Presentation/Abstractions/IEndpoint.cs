@@ -1,4 +1,4 @@
-namespace Litrater.Presentation.Common.Interfaces;
+namespace Litrater.Presentation.Abstractions;
 
 internal interface IEndpoint
 {

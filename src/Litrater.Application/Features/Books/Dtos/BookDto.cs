@@ -1,4 +1,4 @@
-namespace Litrater.Application.Books.Dtos;
+namespace Litrater.Application.Features.Books.Dtos;
 
 public record BookDto(
     Guid Id,

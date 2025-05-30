@@ -2,7 +2,7 @@ using Ardalis.Result;
 using Microsoft.AspNetCore.Mvc;
 using IResult = Microsoft.AspNetCore.Http.IResult;
 
-namespace Litrater.Presentation.Common;
+namespace Litrater.Presentation.Extensions;
 
 internal static class ResultsExtensions
 {
@@ -12,7 +12,8 @@ internal static class ResultsExtensions
     public static IResult ToHttpResult(this Result result)
         => ToHttpResultCore(result.Status, result.Errors, result.ValidationErrors);
 
-    private static IResult ToHttpResultCore(ResultStatus status, IEnumerable<string>? errors, IEnumerable<ValidationError>? validationErrors, object? value = null)
+    private static IResult ToHttpResultCore(ResultStatus status, IEnumerable<string>? errors,
+        IEnumerable<ValidationError>? validationErrors, object? value = null)
     {
         return status switch
         {
@@ -29,10 +30,7 @@ internal static class ResultsExtensions
                 Status = StatusCodes.Status400BadRequest,
                 Title = "Validation Error",
                 Detail = "One or more validation errors occurred.",
-                Extensions =
-                {
-                    ["errors"] = validationErrors
-                }
+                Extensions = { ["errors"] = validationErrors }
             }),
             ResultStatus.Error => Results.Problem(new ProblemDetails
             {
@@ -40,10 +38,7 @@ internal static class ResultsExtensions
                 Status = StatusCodes.Status500InternalServerError,
                 Title = "An error occurred",
                 Detail = "An unexpected error occurred",
-                Extensions =
-                {
-                    ["errors"] = errors
-                }
+                Extensions = { ["errors"] = errors }
             }),
             ResultStatus.CriticalError => Results.Problem(new ProblemDetails
             {
@@ -51,10 +46,7 @@ internal static class ResultsExtensions
                 Status = StatusCodes.Status500InternalServerError,
                 Title = "A critical error occurred",
                 Detail = "A critical error occurred while processing your request",
-                Extensions =
-                {
-                    ["errors"] = errors
-                }
+                Extensions = { ["errors"] = errors }
             }),
             ResultStatus.Unavailable => Results.Problem(new ProblemDetails
             {
@@ -62,10 +54,7 @@ internal static class ResultsExtensions
                 Status = StatusCodes.Status503ServiceUnavailable,
                 Title = "Service Unavailable",
                 Detail = "The service is currently unavailable",
-                Extensions =
-                {
-                    ["errors"] = errors
-                }
+                Extensions = { ["errors"] = errors }
             }),
             _ => Results.Problem(new ProblemDetails
             {
@@ -73,10 +62,7 @@ internal static class ResultsExtensions
                 Status = StatusCodes.Status500InternalServerError,
                 Title = "An unexpected error occurred",
                 Detail = "An unexpected error occurred while processing your request",
-                Extensions =
-                {
-                    ["errors"] = errors
-                }
+                Extensions = { ["errors"] = errors }
             })
         };
     }

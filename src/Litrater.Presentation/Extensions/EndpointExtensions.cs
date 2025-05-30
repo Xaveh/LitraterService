@@ -1,6 +1,6 @@
-using Litrater.Presentation.Common.Interfaces;
+using Litrater.Presentation.Abstractions;
 
-namespace Litrater.Presentation.Common;
+namespace Litrater.Presentation.Extensions;
 
 internal static class EndpointExtensions
 {

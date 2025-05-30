@@ -1,7 +1,7 @@
 using Litrater.Domain.Authors;
 using Litrater.Domain.Books;
-using Litrater.Infrastructure.Authors;
-using Litrater.Infrastructure.Books;
+using Litrater.Infrastructure.Authors.Configurations;
+using Litrater.Infrastructure.Books.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Litrater.Infrastructure.Data;
@@ -22,4 +22,4 @@ public class LitraterDbContext : DbContext
         modelBuilder.ApplyConfiguration(new BookConfiguration());
         modelBuilder.ApplyConfiguration(new BookReviewConfiguration());
     }
-} 
+}

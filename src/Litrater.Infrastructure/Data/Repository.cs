@@ -1,6 +1,5 @@
-using Litrater.Application.Common.Interfaces;
+using Litrater.Application.Abstractions.Data;
 using Litrater.Domain.Common;
-
 using Microsoft.EntityFrameworkCore;
 
 namespace Litrater.Infrastructure.Data;

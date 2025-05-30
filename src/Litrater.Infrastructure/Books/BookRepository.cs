@@ -1,4 +1,4 @@
-using Litrater.Application.Books.Interfaces;
+using Litrater.Application.Abstractions.Data;
 using Litrater.Domain.Books;
 using Litrater.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;

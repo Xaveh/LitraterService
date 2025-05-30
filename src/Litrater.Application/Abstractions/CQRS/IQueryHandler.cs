@@ -1,6 +1,6 @@
 using Ardalis.Result;
 
-namespace Litrater.Application.Common.Interfaces;
+namespace Litrater.Application.Abstractions.CQRS;
 
 public interface IQueryHandler<in TQuery, TResponse>
     where TQuery : IQuery

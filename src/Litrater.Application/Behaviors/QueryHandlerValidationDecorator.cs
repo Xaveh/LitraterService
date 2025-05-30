@@ -1,11 +1,13 @@
 using Ardalis.Result;
 using Ardalis.Result.FluentValidation;
 using FluentValidation;
-using Litrater.Application.Common.Interfaces;
+using Litrater.Application.Abstractions.CQRS;
 
-namespace Litrater.Application.Common;
+namespace Litrater.Application.Behaviors;
 
-internal sealed class QueryHandlerValidationDecorator<TQuery, TResponse>(IQueryHandler<TQuery, TResponse> inner, IValidator<TQuery>? validator)
+internal sealed class QueryHandlerValidationDecorator<TQuery, TResponse>(
+    IQueryHandler<TQuery, TResponse> inner,
+    IValidator<TQuery>? validator)
     : IQueryHandler<TQuery, TResponse>
     where TQuery : IQuery
 {
