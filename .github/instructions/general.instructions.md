@@ -14,3 +14,5 @@ applyTo: "**"
 - Respect the existing code style.
 - Consider and respect the rules in .editorconfig.
 - Use appsettings.Development.json for local development settings, even if it’s ignored by git. Do not store secrets or production settings here.
+- Use the Directory.Build.props file to define common properties for the solution.
+- Use the Directoy.Packages.props file to define common package versions for the solution.
