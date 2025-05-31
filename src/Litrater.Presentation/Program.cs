@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using HealthChecks.UI.Client;
 using Litrater.Application;
 using Litrater.Infrastructure;
@@ -30,11 +31,17 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.UseExceptionHandler();
 
-app.MapHealthChecks("health", new HealthCheckOptions
-{
-    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-});
+app.MapHealthChecks("health", new HealthCheckOptions { ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse });
 
-app.MapAllEndpoints();
+var apiVersionSet = app.NewApiVersionSet()
+    .HasApiVersion(new ApiVersion(1))
+    .ReportApiVersions()
+    .Build();
+
+var versionedGroup = app.MapGroup("api/v{apiVersion:apiVersion}")
+    .WithApiVersionSet(apiVersionSet)
+    .WithOpenApi();
+
+versionedGroup.MapAllEndpoints();
 
 await app.RunAsync();

@@ -11,7 +11,7 @@ internal sealed class GetBookByIdEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/api/books/{id:guid}",
+        app.MapGet("books/{id:guid}",
                 async (Guid id, IQueryHandler<GetBookByIdQuery, BookDto> handler,
                     CancellationToken cancellationToken) =>
                 {
