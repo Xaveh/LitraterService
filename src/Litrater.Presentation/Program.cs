@@ -1,7 +1,9 @@
+using HealthChecks.UI.Client;
 using Litrater.Application;
 using Litrater.Infrastructure;
 using Litrater.Presentation;
 using Litrater.Presentation.Extensions;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Serilog;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -27,6 +29,11 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.UseExceptionHandler();
+
+app.MapHealthChecks("health", new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 app.MapAllEndpoints();
 

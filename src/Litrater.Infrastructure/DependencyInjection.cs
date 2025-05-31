@@ -21,6 +21,9 @@ public static class DependencyInjection
         services.AddScoped<IBookRepository, BookRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+        services.AddHealthChecks()
+            .AddNpgSql(databaseSettings.ConnectionString);
+
         return services;
     }
 }
