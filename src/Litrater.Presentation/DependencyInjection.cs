@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using Litrater.Presentation.Configurations;
 using Litrater.Presentation.Extensions;
 using Litrater.Presentation.Middlewares;
 
@@ -29,6 +30,7 @@ internal static class DependencyInjection
             });
 
         services.AddEndpoints(typeof(DependencyInjection).Assembly);
+        services.ConfigureOptions<ConfigureSwaggerOptions>();
 
         return services;
     }
