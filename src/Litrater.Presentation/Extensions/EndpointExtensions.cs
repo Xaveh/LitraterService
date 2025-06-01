@@ -1,19 +1,37 @@
+using System.Reflection;
 using Litrater.Presentation.Abstractions;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Litrater.Presentation.Extensions;
 
 internal static class EndpointExtensions
 {
-    public static void MapAllEndpoints(this IEndpointRouteBuilder app)
+    internal static IServiceCollection AddEndpoints(this IServiceCollection services, Assembly assembly)
     {
-        var endpointTypes = typeof(EndpointExtensions).Assembly
-            .GetTypes()
-            .Where(t => typeof(IEndpoint).IsAssignableFrom(t) && t is { IsInterface: false, IsAbstract: false });
+        var serviceDescriptors = assembly
+            .DefinedTypes
+            .Where(type => type is { IsAbstract: false, IsInterface: false } &&
+                           type.IsAssignableTo(typeof(IEndpoint)))
+            .Select(type => ServiceDescriptor.Transient(typeof(IEndpoint), type))
+            .ToArray();
 
-        foreach (var type in endpointTypes)
+        services.TryAddEnumerable(serviceDescriptors);
+
+        return services;
+    }
+
+    internal static IApplicationBuilder MapEndpoints(this WebApplication app,
+        RouteGroupBuilder? routeGroupBuilder = null)
+    {
+        var endpoints = app.Services.GetRequiredService<IEnumerable<IEndpoint>>();
+
+        IEndpointRouteBuilder builder = routeGroupBuilder is null ? app : routeGroupBuilder;
+
+        foreach (var endpoint in endpoints)
         {
-            var endpoint = (IEndpoint)Activator.CreateInstance(type)!;
-            endpoint.MapEndpoint(app);
+            endpoint.MapEndpoint(builder);
         }
+
+        return app;
     }
 }

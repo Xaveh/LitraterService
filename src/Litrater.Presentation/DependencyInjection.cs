@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using Litrater.Presentation.Extensions;
 using Litrater.Presentation.Middlewares;
 
 namespace Litrater.Presentation;
@@ -26,6 +27,8 @@ internal static class DependencyInjection
                 options.GroupNameFormat = "'v'V";
                 options.SubstituteApiVersionInUrl = true;
             });
+
+        services.AddEndpoints(typeof(DependencyInjection).Assembly);
 
         return services;
     }

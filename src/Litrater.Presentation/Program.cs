@@ -18,8 +18,17 @@ builder.Services
 
 WebApplication app = builder.Build();
 
-app.UseRequestContextLogging();
-app.UseSerilogRequestLogging();
+var apiVersionSet = app.NewApiVersionSet()
+    .HasApiVersion(new ApiVersion(1))
+    .HasApiVersion(new ApiVersion(2))
+    .ReportApiVersions()
+    .Build();
+
+var versionedGroup = app.MapGroup("api/v{apiVersion:apiVersion}")
+    .WithApiVersionSet(apiVersionSet)
+    .WithOpenApi();
+
+app.MapEndpoints(versionedGroup);
 
 if (app.Environment.IsDevelopment())
 {
@@ -29,19 +38,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
+app.UseRequestContextLogging();
+app.UseSerilogRequestLogging();
 app.UseExceptionHandler();
 
 app.MapHealthChecks("health", new HealthCheckOptions { ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse });
-
-var apiVersionSet = app.NewApiVersionSet()
-    .HasApiVersion(new ApiVersion(1))
-    .ReportApiVersions()
-    .Build();
-
-var versionedGroup = app.MapGroup("api/v{apiVersion:apiVersion}")
-    .WithApiVersionSet(apiVersionSet)
-    .WithOpenApi();
-
-versionedGroup.MapAllEndpoints();
 
 await app.RunAsync();
