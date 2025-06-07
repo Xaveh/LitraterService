@@ -14,7 +14,7 @@ Accept: application/json
 GET https://localhost:7001/api/v1/books/00000000-0000-0000-0000-000000000000
 Accept: application/json
 
-### Get Book By ID -  Non-existent Book (should return 200 OK)
+### Get Book By ID -  Non-existent Book (should return 404 Not Found)
 GET https://localhost:7001/api/v1/books/99999999-9999-9999-9999-999999999999
 Accept: application/json
 
@@ -23,4 +23,4 @@ POST https://localhost:7001/api/v1/books/550e8400-e29b-41d4-a716-446655440000
 Accept: application/json
 
 ### Get Book By ID - Missing Accept Header (should still work)
-GET https://localhost:7001/api/v1/books/550e8400-e29b-41d4-a716-446655440000
+GET https://localhost:7001/api/v1/books/717fcdf1-98cb-4883-98ea-20432a109fe1
