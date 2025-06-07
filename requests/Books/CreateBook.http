@@ -1,0 +1,89 @@
+### Create Book - Valid Request
+POST https://localhost:7001/api/v1/books
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "The Great Gatsby",
+  "isbn": "9780743273565",
+  "authorIds": [
+    "550e8400-e29b-41d4-a716-446655440001"
+  ]
+}
+
+### Create Book - Multiple Authors
+POST https://localhost:7001/api/v1/books
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "Good Omens",
+  "isbn": "9780060853983",
+  "authorIds": [
+    "550e8400-e29b-41d4-a716-446655440002",
+    "550e8400-e29b-41d4-a716-446655440003"
+  ]
+}
+
+### Create Book - Missing Required Fields (should return 400 Bad Request)
+POST https://localhost:7001/api/v1/books
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "",
+  "isbn": "",
+  "authorIds": []
+}
+
+### Create Book - Invalid ISBN Format (should return 400 Bad Request)
+POST https://localhost:7001/api/v1/books
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "Test Book",
+  "isbn": "invalid-isbn",
+  "authorIds": [
+    "550e8400-e29b-41d4-a716-446655440001"
+  ]
+}
+
+### Create Book - Invalid Author ID Format (should return 400 Bad Request)
+POST https://localhost:7001/api/v1/books
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "Test Book",
+  "isbn": "9780743273565",
+  "authorIds": [
+    "invalid-guid"
+  ]
+}
+
+### Create Book - Long Title (should return 400 Bad Request - exceeds 200 chars)
+POST https://localhost:7001/api/v1/books
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "This is a very long title that exceeds the maximum allowed length of 200 characters for a book title in the database schema and should trigger a validation error when attempting to create a new book record",
+  "isbn": "9780743273565",
+  "authorIds": [
+    "550e8400-e29b-41d4-a716-446655440001"
+  ]
+}
+
+### Create Book - Invalid Content-Type (should return 415 Unsupported Media Type)
+POST https://localhost:7001/api/v1/books
+Accept: application/json
+Content-Type: text/plain
+
+{
+  "title": "Test Book",
+  "isbn": "9780743273565",
+  "authorIds": [
+    "550e8400-e29b-41d4-a716-446655440001"
+  ]
+}

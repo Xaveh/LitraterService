@@ -15,6 +15,7 @@ public class BookRepository : Repository<Book>, IBookRepository
     {
         return await DbSet
             .Include(b => b.Reviews)
+            .Include(b => b.Authors)
             .FirstOrDefaultAsync(b => b.Id == id, cancellationToken);
     }
 

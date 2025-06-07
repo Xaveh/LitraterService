@@ -12,7 +12,8 @@ internal sealed class CreateBookCommandValidator : AbstractValidator<CreateBookC
 
         RuleFor(x => x.Isbn)
             .NotEmpty()
-            .MaximumLength(13);
+            .Matches(@"^\d{13}$")
+            .WithMessage("ISBN must be exactly 13 digits.");
 
         RuleFor(x => x.AuthorIds)
             .NotEmpty()
