@@ -9,10 +9,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Litrater.Infrastructure.Data.Migrations
+namespace Litrater.Infrastructure.Migrations
 {
     [DbContext(typeof(LitraterDbContext))]
-    [Migration("20250401183825_InitialCreate")]
+    [Migration("20250607144607_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace Litrater.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.3")
+                .HasAnnotation("ProductVersion", "9.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -43,7 +43,6 @@ namespace Litrater.Infrastructure.Data.Migrations
             modelBuilder.Entity("Litrater.Domain.Authors.Author", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedDate")
@@ -70,7 +69,6 @@ namespace Litrater.Infrastructure.Data.Migrations
             modelBuilder.Entity("Litrater.Domain.Books.Book", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedDate")
@@ -97,7 +95,6 @@ namespace Litrater.Infrastructure.Data.Migrations
             modelBuilder.Entity("Litrater.Domain.Books.BookReview", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("BookId")

@@ -1,14 +1,14 @@
 using Litrater.Domain.Books;
-using Microsoft.EntityFrameworkCore;
+using Litrater.Infrastructure.Common.Configurations;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Litrater.Infrastructure.Books.Configurations;
 
-public class BookReviewConfiguration : IEntityTypeConfiguration<BookReview>
+public class BookReviewConfiguration : EntityConfiguration<BookReview>
 {
-    public void Configure(EntityTypeBuilder<BookReview> builder)
+    public override void Configure(EntityTypeBuilder<BookReview> builder)
     {
-        builder.HasKey(r => r.Id);
+        base.Configure(builder);
 
         builder.Property(r => r.Content)
             .IsRequired()

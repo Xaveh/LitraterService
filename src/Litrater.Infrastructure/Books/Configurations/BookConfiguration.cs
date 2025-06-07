@@ -1,14 +1,15 @@
 using Litrater.Domain.Books;
+using Litrater.Infrastructure.Common.Configurations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Litrater.Infrastructure.Books.Configurations;
 
-public class BookConfiguration : IEntityTypeConfiguration<Book>
+public class BookConfiguration : EntityConfiguration<Book>
 {
-    public void Configure(EntityTypeBuilder<Book> builder)
+    public override void Configure(EntityTypeBuilder<Book> builder)
     {
-        builder.HasKey(b => b.Id);
+        base.Configure(builder);
 
         builder.Property(b => b.Title)
             .IsRequired()

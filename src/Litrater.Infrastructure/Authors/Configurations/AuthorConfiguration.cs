@@ -1,14 +1,15 @@
 using Litrater.Domain.Authors;
+using Litrater.Infrastructure.Common.Configurations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Litrater.Infrastructure.Authors.Configurations;
 
-public class AuthorConfiguration : IEntityTypeConfiguration<Author>
+public class AuthorConfiguration : EntityConfiguration<Author>
 {
-    public void Configure(EntityTypeBuilder<Author> builder)
+    public override void Configure(EntityTypeBuilder<Author> builder)
     {
-        builder.HasKey(a => a.Id);
+        base.Configure(builder);
 
         builder.Property(a => a.FirstName)
             .IsRequired()

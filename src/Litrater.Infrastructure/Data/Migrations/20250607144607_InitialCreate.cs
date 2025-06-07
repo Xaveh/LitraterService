@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Litrater.Infrastructure.Data.Migrations
+namespace Litrater.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
