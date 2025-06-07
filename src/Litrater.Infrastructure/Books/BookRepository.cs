@@ -17,4 +17,9 @@ public class BookRepository : Repository<Book>, IBookRepository
             .Include(b => b.Reviews)
             .FirstOrDefaultAsync(b => b.Id == id, cancellationToken);
     }
+
+    public async Task AddAsync(Book book, CancellationToken cancellationToken = default)
+    {
+        await DbSet.AddAsync(book, cancellationToken);
+    }
 }

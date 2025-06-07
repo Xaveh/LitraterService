@@ -12,8 +12,7 @@ internal sealed class GetBookByIdEndpoint : IEndpoint
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
         app.MapGet("books/{id:guid}",
-                async (Guid id, IQueryHandler<GetBookByIdQuery, BookDto> handler,
-                    CancellationToken cancellationToken) =>
+                async (Guid id, IQueryHandler<GetBookByIdQuery, BookDto> handler, CancellationToken cancellationToken) =>
                 {
                     var query = new GetBookByIdQuery(id);
                     var result = await handler.Handle(query, cancellationToken);

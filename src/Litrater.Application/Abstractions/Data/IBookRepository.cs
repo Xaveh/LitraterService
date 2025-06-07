@@ -5,4 +5,5 @@ namespace Litrater.Application.Abstractions.Data;
 public interface IBookRepository : IRepository
 {
     Task<Book?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task AddAsync(Book book, CancellationToken cancellationToken = default);
 }
