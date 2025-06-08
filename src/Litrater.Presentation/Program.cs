@@ -13,7 +13,7 @@ builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Confi
 
 builder.Services
     .AddApplication()
-    .AddPresentation()
+    .AddPresentation(builder.Configuration)
     .AddInfrastructure(builder.Configuration);
 
 WebApplication app = builder.Build();
@@ -46,6 +46,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseRequestContextLogging();
 app.UseSerilogRequestLogging();
