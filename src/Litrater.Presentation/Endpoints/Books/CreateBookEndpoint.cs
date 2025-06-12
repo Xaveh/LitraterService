@@ -1,9 +1,10 @@
-using Ardalis.Result;
 using Litrater.Application.Abstractions.CQRS;
 using Litrater.Application.Features.Books.Commands.CreateBook;
 using Litrater.Application.Features.Books.Dtos;
 using Litrater.Presentation.Abstractions;
+using Litrater.Presentation.Authorization;
 using Litrater.Presentation.Extensions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Litrater.Presentation.Endpoints.Books;
 
@@ -28,7 +29,10 @@ internal sealed class CreateBookEndpoint : IEndpoint
             .MapToApiVersion(1)
             .WithOpenApi()
             .Produces<BookDto>(StatusCodes.Status200OK)
-            .Produces<ValidationError[]>(StatusCodes.Status400BadRequest);
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden)
+            .RequireAuthorization(AuthorizationPolicies.AdminOnly);
     }
 }
 

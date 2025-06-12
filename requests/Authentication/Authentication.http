@@ -1,0 +1,71 @@
+### Variables
+@baseUrl = https://localhost:7001
+@contentType = application/json
+
+### Register a new user
+POST {{baseUrl}}/api/v1/auth/register
+Content-Type: {{contentType}}
+
+{
+  "email": "test@example.com",
+  "password": "TestPassword123!",
+  "firstName": "John",
+  "lastName": "Doe"
+}
+
+### Response should contain JWT token
+### Save the token for subsequent requests
+
+### Login with existing user
+POST {{baseUrl}}/api/v1/auth/login
+Content-Type: {{contentType}}
+
+{
+  "email": "test@example.com",
+  "password": "TestPassword123!"
+}
+
+### Login with admin user (seeded automatically)
+POST {{baseUrl}}/api/v1/auth/login
+Content-Type: {{contentType}}
+
+{
+  "email": "admin@litrater.com",
+  "password": "Admin123!"
+}
+
+### Response should contain JWT token
+### Copy the token from the response
+
+### Test protected endpoint (Books) - Replace YOUR_JWT_TOKEN with actual token
+GET {{baseUrl}}/api/v1/books/717fcdf1-98cb-4883-98ea-20432a109fe1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiNDg3MTljZS00NDZlLTQ1NTAtYTM1Zi0zYmY2YjRmZmE1MmUiLCJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJnaXZlbl9uYW1lIjoiSm9obiIsImZhbWlseV9uYW1lIjoiRG9lIiwianRpIjoiYWNmYmJmODAtY2VlMi00MTFjLTk2NDktYTQ5NmVlODYwZGJiIiwiaWF0IjoxNzQ5NDEwNjc5LCJleHAiOjE3NDk0MTQyNzksImlzcyI6IkxpdHJhdGVyU2VydmljZSIsImF1ZCI6IkxpdHJhdGVyQ2xpZW50In0.7Hu2g-TQKXAZGRXpwjVy1QzvYSQJxu-4ReY59cV0h-c
+
+### Test another protected endpoint (Create Book) - ADMIN ONLY - Replace ADMIN_JWT_TOKEN with actual admin token
+POST {{baseUrl}}/api/v1/books
+Content-Type: {{contentType}}
+Authorization: Bearer ADMIN_JWT_TOKEN
+
+{
+  "title": "Test Book",
+  "isbn": "9780123456789",
+  "authorIds": ["717fcdf1-98cb-4883-98ea-20432a109fe1"]
+}
+
+### Test Create Book with regular user token (should return 403 Forbidden)
+POST {{baseUrl}}/api/v1/books
+Content-Type: {{contentType}}
+Authorization: Bearer USER_JWT_TOKEN
+
+{
+  "title": "Test Book",
+  "isbn": "9780123456789",
+  "authorIds": ["717fcdf1-98cb-4883-98ea-20432a109fe1"]
+}
+
+### Test with invalid token
+GET {{baseUrl}}/api/v1/books/717fcdf1-98cb-4883-98ea-20432a109fe1
+Authorization: Bearer invalid_token_here
+
+### Test without authorization header
+GET {{baseUrl}}/api/v1/books/717fcdf1-98cb-4883-98ea-20432a109fe1

@@ -9,10 +9,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Litrater.Infrastructure.Migrations
+namespace Litrater.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(LitraterDbContext))]
-    [Migration("20250608152942_CreateUsersTable")]
+    [Migration("20250612185718_CreateUsersTable")]
     partial class CreateUsersTable
     {
         /// <inheritdoc />
@@ -156,6 +156,11 @@ namespace Litrater.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
+
+                    b.Property<int>("UserRole")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
 
                     b.HasKey("Id");
 

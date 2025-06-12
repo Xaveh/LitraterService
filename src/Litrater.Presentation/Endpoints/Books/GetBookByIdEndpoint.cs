@@ -1,9 +1,10 @@
-using Ardalis.Result;
 using Litrater.Application.Abstractions.CQRS;
 using Litrater.Application.Features.Books.Dtos;
 using Litrater.Application.Features.Books.Queries.GetBookById;
 using Litrater.Presentation.Abstractions;
+using Litrater.Presentation.Authorization;
 using Litrater.Presentation.Extensions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Litrater.Presentation.Endpoints.Books;
 
@@ -23,7 +24,10 @@ internal sealed class GetBookByIdEndpoint : IEndpoint
             .MapToApiVersion(1)
             .WithOpenApi()
             .Produces<BookDto>(StatusCodes.Status200OK)
-            .Produces<ValidationError[]>(StatusCodes.Status400BadRequest)
-            .Produces(StatusCodes.Status404NotFound);
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status404NotFound)
+            .RequireAuthorization(AuthorizationPolicies.UserOrAdmin);
     }
 }

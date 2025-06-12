@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Litrater.Infrastructure.Migrations
+namespace Litrater.Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
     public partial class CreateUsersTable : Migration
@@ -21,6 +21,7 @@ namespace Litrater.Infrastructure.Migrations
                     FirstName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     LastName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
+                    UserRole = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },

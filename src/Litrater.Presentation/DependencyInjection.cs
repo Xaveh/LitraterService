@@ -1,6 +1,8 @@
 using System.Text;
 using Asp.Versioning;
+using Litrater.Domain.Users;
 using Litrater.Infrastructure.Authentication;
+using Litrater.Presentation.Authorization;
 using Litrater.Presentation.Configurations;
 using Litrater.Presentation.Extensions;
 using Litrater.Presentation.Middlewares;
@@ -32,7 +34,10 @@ internal static class DependencyInjection
                 };
             });
 
-        services.AddAuthorization();
+        services.AddAuthorizationBuilder()
+            .AddPolicy(AuthorizationPolicies.AdminOnly, policy => policy.RequireRole(nameof(UserRole.Admin)))
+            .AddPolicy(AuthorizationPolicies.UserOrAdmin, policy => policy.RequireRole(nameof(UserRole.User), nameof(UserRole.Admin)));
+
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
         services.AddExceptionHandler<GlobalExceptionHandler>();
