@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Litrater.Infrastructure.Books;
 
-public class BookRepository : Repository<Book>, IBookRepository
+internal sealed class BookRepository : Repository<Book>, IBookRepository
 {
     public BookRepository(LitraterDbContext context) : base(context)
     {
