@@ -1,8 +1,8 @@
-using Ardalis.Result;
 using Litrater.Application.Abstractions.CQRS;
 using Litrater.Application.Features.Authentication.Commands.Register;
 using Litrater.Presentation.Abstractions;
 using Litrater.Presentation.Extensions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Litrater.Presentation.Endpoints.Authentication;
 
@@ -28,7 +28,7 @@ internal sealed class RegisterEndpoint : IEndpoint
             .MapToApiVersion(1)
             .WithOpenApi()
             .Produces(StatusCodes.Status200OK)
-            .Produces<ValidationError[]>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status409Conflict)
             .AllowAnonymous();
     }
