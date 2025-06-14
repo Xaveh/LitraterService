@@ -1,6 +1,7 @@
 using Litrater.Application.Abstractions.Authentication;
 using Litrater.Application.Abstractions.Data;
 using Litrater.Infrastructure.Authentication;
+using Litrater.Infrastructure.Authors;
 using Litrater.Infrastructure.Books;
 using Litrater.Infrastructure.Data;
 using Litrater.Infrastructure.Users;
@@ -22,6 +23,7 @@ public static class DependencyInjection
             options.UseNpgsql(databaseSettings.ConnectionString));
 
         services.AddScoped<IBookRepository, BookRepository>();
+        services.AddScoped<IAuthorRepository, AuthorRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 

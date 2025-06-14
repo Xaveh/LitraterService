@@ -1,26 +1,31 @@
-### Get Book By ID - Valid Request (example book ID)
-GET https://localhost:7001/api/v1/books/717fcdf1-98cb-4883-98ea-20432a109fe1
+### Login as regular user to get token
+POST https://localhost:7001/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "user@litrater.com",
+  "password": "user123"
+}
+
+> {%
+    client.global.set("userToken", response.body);
+%}
+
+### Get Book - Happy Path (Harry Potter)
+GET https://localhost:7001/api/v1/books/41111111-1111-1111-1111-111111111111
+Accept: application/json
+Authorization: Bearer {{userToken}}
+
+### Get Book - 404 Not Found (not a GUID)
+GET https://localhost:7001/api/v1/books/not-a-guid
+Accept: application/json
+Authorization: Bearer {{userToken}}
+
+### Get Book - 401 Unauthorized (no token)
+GET https://localhost:7001/api/v1/books/41111111-1111-1111-1111-111111111111
 Accept: application/json
 
-### Get Book By ID - Invalid GUID Format (should return 404 Not Found)
-GET https://localhost:7001/api/v1/books/invalid-guid
-Accept: application/json
-
-### Get Book By ID - Malformed GUID (should return 404 Not Found)
-GET https://localhost:7001/api/v1/books/550e8400-e29b-41d4-a716
-Accept: application/json
-
-### Get Book By ID - Empty GUID (should return 400 Bad Request)
-GET https://localhost:7001/api/v1/books/00000000-0000-0000-0000-000000000000
-Accept: application/json
-
-### Get Book By ID -  Non-existent Book (should return 404 Not Found)
+### Get Book - 404 Not Found (non-existent book)
 GET https://localhost:7001/api/v1/books/99999999-9999-9999-9999-999999999999
 Accept: application/json
-
-### Get Book By ID - Wrong HTTP Method (should return 405 Method Not Allowed)
-POST https://localhost:7001/api/v1/books/550e8400-e29b-41d4-a716-446655440000
-Accept: application/json
-
-### Get Book By ID - Missing Accept Header (should still work)
-GET https://localhost:7001/api/v1/books/717fcdf1-98cb-4883-98ea-20432a109fe1
+Authorization: Bearer {{userToken}}

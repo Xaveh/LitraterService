@@ -1,34 +1,35 @@
-### Create Book - Valid Request
-POST https://localhost:7001/api/v1/books
-Accept: application/json
+### Login as admin to get token
+POST https://localhost:7001/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "title": "The Great Gatsby",
-  "isbn": "9780743273565",
-  "authorIds": [
-    "550e8400-e29b-41d4-a716-446655440001"
-  ]
+  "email": "admin@litrater.com",
+  "password": "admin123"
 }
 
-### Create Book - Multiple Authors
+> {%
+    client.global.set("adminToken", response.body);
+%}
+
+### Create Book - Happy Path
 POST https://localhost:7001/api/v1/books
 Accept: application/json
 Content-Type: application/json
+Authorization: Bearer {{adminToken}}
 
 {
-  "title": "Good Omens",
-  "isbn": "9780060853983",
+  "title": "The Chronicles of Narnia",
+  "isbn": "9780066238500",
   "authorIds": [
-    "550e8400-e29b-41d4-a716-446655440002",
-    "550e8400-e29b-41d4-a716-446655440003"
+    "31111111-1111-1111-1111-111111111111"
   ]
 }
 
-### Create Book - Missing Required Fields (should return 400 Bad Request)
+### Create Book - 400 Bad Request (missing fields)
 POST https://localhost:7001/api/v1/books
 Accept: application/json
 Content-Type: application/json
+Authorization: Bearer {{adminToken}}
 
 {
   "title": "",
@@ -36,54 +37,70 @@ Content-Type: application/json
   "authorIds": []
 }
 
-### Create Book - Invalid ISBN Format (should return 400 Bad Request)
+### Create Book - 401 Unauthorized (no token)
 POST https://localhost:7001/api/v1/books
 Accept: application/json
 Content-Type: application/json
 
 {
-  "title": "Test Book",
-  "isbn": "invalid-isbn",
+  "title": "Unauthorized Book",
+  "isbn": "9780987654321",
   "authorIds": [
-    "550e8400-e29b-41d4-a716-446655440001"
+    "31111111-1111-1111-1111-111111111111"
   ]
 }
 
-### Create Book - Invalid Author ID Format (should return 400 Bad Request)
-POST https://localhost:7001/api/v1/books
-Accept: application/json
+### Login as regular user
+POST https://localhost:7001/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "title": "Test Book",
-  "isbn": "9780743273565",
-  "authorIds": [
-    "invalid-guid"
-  ]
+  "email": "user@litrater.com",
+  "password": "user123"
 }
 
-### Create Book - Long Title (should return 400 Bad Request - exceeds 200 chars)
+> {%
+    client.global.set("userToken", response.body);
+%}
+
+### Create Book - 403 Forbidden (regular user trying to create)
 POST https://localhost:7001/api/v1/books
 Accept: application/json
 Content-Type: application/json
+Authorization: Bearer {{userToken}}
 
 {
-  "title": "This is a very long title that exceeds the maximum allowed length of 200 characters for a book title in the database schema and should trigger a validation error when attempting to create a new book record",
-  "isbn": "9780743273565",
+  "title": "Forbidden Book",
+  "isbn": "9780555555555",
   "authorIds": [
-    "550e8400-e29b-41d4-a716-446655440001"
+    "31111111-1111-1111-1111-111111111111"
   ]
 }
 
-### Create Book - Invalid Content-Type (should return 415 Unsupported Media Type)
+### Create Book - 409 Conflict (duplicate ISBN from seeded data)
+POST https://localhost:7001/api/v1/books
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "title": "Duplicate ISBN Book",
+  "isbn": "9780747532699",
+  "authorIds": [
+    "32222222-2222-2222-2222-222222222222"
+  ]
+}
+
+### Create Book - 415 Unsupported Media Type
 POST https://localhost:7001/api/v1/books
 Accept: application/json
 Content-Type: text/plain
+Authorization: Bearer {{adminToken}}
 
 {
-  "title": "Test Book",
-  "isbn": "9780743273565",
+  "title": "Wrong Content Type",
+  "isbn": "9780111111111",
   "authorIds": [
-    "550e8400-e29b-41d4-a716-446655440001"
+    "31111111-1111-1111-1111-111111111111"
   ]
 }
