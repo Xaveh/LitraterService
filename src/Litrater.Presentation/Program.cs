@@ -43,6 +43,8 @@ if (app.Environment.IsDevelopment())
                 $"Litrater API {description.GroupName.ToUpperInvariant()}");
         }
     });
+
+    await app.Services.EnsureDatabaseSeededAsync();
 }
 
 app.UseHttpsRedirection();
