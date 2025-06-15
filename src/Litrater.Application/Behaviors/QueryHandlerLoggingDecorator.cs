@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Litrater.Application.Behaviors;
 
-internal sealed class QueryHandlerLoggingDecorator<TQuery, TResponse>(
+public sealed class QueryHandlerLoggingDecorator<TQuery, TResponse>(
     IQueryHandler<TQuery, TResponse> innerHandler,
     ILogger<QueryHandlerLoggingDecorator<TQuery, TResponse>> logger)
     : IQueryHandler<TQuery, TResponse>

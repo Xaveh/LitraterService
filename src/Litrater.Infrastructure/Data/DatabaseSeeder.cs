@@ -31,7 +31,7 @@ public static class DatabaseSeeder
                 passwordHasher.Hash("admin123"),
                 "Admin",
                 "User",
-                UserRole.Admin
+                userRole: UserRole.Admin
             ),
             new User(
                 new Guid("22222222-2222-2222-2222-222222222222"),
@@ -39,7 +39,7 @@ public static class DatabaseSeeder
                 passwordHasher.Hash("user123"),
                 "Regular",
                 "User",
-                UserRole.User
+                userRole: UserRole.User
             )
         };
 

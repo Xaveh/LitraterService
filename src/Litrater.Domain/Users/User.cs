@@ -14,13 +14,19 @@ public sealed class User : AggregateRoot
 #pragma warning disable CS8618 // Required by Entity Framework
     private User() { }
 
-    public User(Guid id, string email, string passwordHash, string firstName, string lastName, UserRole userRole = UserRole.User) : base(id)
+    public User(Guid id,
+        string email,
+        string passwordHash,
+        string firstName,
+        string lastName,
+        bool isActive = true,
+        UserRole userRole = UserRole.User) : base(id)
     {
         Email = email;
         PasswordHash = passwordHash;
         FirstName = firstName;
         LastName = lastName;
-        IsActive = true;
+        IsActive = isActive;
         UserRole = userRole;
     }
 }

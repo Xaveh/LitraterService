@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Litrater.Application.Behaviors;
 
-internal sealed class CommandHandlerLoggingDecorator<TCommand>(
+public sealed class CommandHandlerLoggingDecorator<TCommand>(
     ICommandHandler<TCommand> innerHandler,
     ILogger<CommandHandlerLoggingDecorator<TCommand>> logger)
     : ICommandHandler<TCommand>
@@ -33,7 +33,7 @@ internal sealed class CommandHandlerLoggingDecorator<TCommand>(
     }
 }
 
-internal sealed class CommandHandlerLoggingDecorator<TCommand, TResponse>(
+public sealed class CommandHandlerLoggingDecorator<TCommand, TResponse>(
     ICommandHandler<TCommand, TResponse> innerHandler,
     ILogger<CommandHandlerLoggingDecorator<TCommand, TResponse>> logger)
     : ICommandHandler<TCommand, TResponse>
