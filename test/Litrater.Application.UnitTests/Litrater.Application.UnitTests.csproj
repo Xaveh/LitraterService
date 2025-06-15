@@ -22,8 +22,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\src\Litrater.Application\Litrater.Application.csproj" />
-        <ProjectReference Include="..\src\Litrater.Domain\Litrater.Domain.csproj" />
+        <ProjectReference Include="..\..\src\Litrater.Application\Litrater.Application.csproj" />
+        <ProjectReference Include="..\..\src\Litrater.Domain\Litrater.Domain.csproj" />
     </ItemGroup>
 
 </Project>

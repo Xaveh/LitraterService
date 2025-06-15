@@ -23,7 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Litrater.Application.UnitTests", "Litrater.Application.UnitTests\Litrater.Application.UnitTests.csproj", "{9A338FBC-3AFD-4143-9CF5-2C6EB1CED40C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Litrater.Application.UnitTests", "test\Litrater.Application.UnitTests\Litrater.Application.UnitTests.csproj", "{9A338FBC-3AFD-4143-9CF5-2C6EB1CED40C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
