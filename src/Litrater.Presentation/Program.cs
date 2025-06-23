@@ -57,3 +57,8 @@ app.UseExceptionHandler();
 app.MapHealthChecks("health", new HealthCheckOptions { ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse });
 
 await app.RunAsync();
+
+// Make the Program class available for testing
+public partial class Program
+{
+}

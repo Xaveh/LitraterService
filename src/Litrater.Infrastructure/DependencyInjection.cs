@@ -15,12 +15,10 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        var databaseSettings = configuration.GetSection(DatabaseSettings.SectionName).Get<DatabaseSettings>()
-                               ?? throw new InvalidOperationException(
-                                   $"Database configuration section '{DatabaseSettings.SectionName}' is missing.");
+        string connectionString = configuration.GetConnectionString("Database")
+                                  ?? throw new InvalidOperationException($"Database connection string is missing.");
 
-        services.AddDbContext<LitraterDbContext>(options =>
-            options.UseNpgsql(databaseSettings.ConnectionString));
+        services.AddDbContext<LitraterDbContext>(options => options.UseNpgsql(connectionString));
 
         services.AddScoped<IBookRepository, BookRepository>();
         services.AddScoped<IAuthorRepository, AuthorRepository>();
@@ -33,7 +31,7 @@ public static class DependencyInjection
         services.AddScoped<IPasswordHasher, PasswordHasher>();
 
         services.AddHealthChecks()
-            .AddNpgSql(databaseSettings.ConnectionString);
+            .AddNpgSql(connectionString);
 
         return services;
     }
