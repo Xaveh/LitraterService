@@ -13,10 +13,10 @@ public class GetBookByIdEndpointTests(DatabaseFixture fixture) : BaseIntegration
     public async Task GetBookById_WithExistingBook_ShouldReturnBookData()
     {
         // Arrange
-        var hobbitBook = await DbContext.Books.FirstAsync(b => b.Title == "The Hobbit");
+        var hobbitBook = await WebApplication.DbContext.Books.FirstAsync(b => b.Title == "The Hobbit");
 
         // Act
-        var response = await HttpClient.GetAsync($"api/v1/books/{hobbitBook.Id}");
+        var response = await WebApplication.HttpClient.GetAsync($"api/v1/books/{hobbitBook.Id}");
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -39,7 +39,7 @@ public class GetBookByIdEndpointTests(DatabaseFixture fixture) : BaseIntegration
         var nonExistentId = Guid.NewGuid();
 
         // Act
-        var response = await HttpClient.GetAsync($"api/v1/books/{nonExistentId}");
+        var response = await WebApplication.HttpClient.GetAsync($"api/v1/books/{nonExistentId}");
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
@@ -49,10 +49,10 @@ public class GetBookByIdEndpointTests(DatabaseFixture fixture) : BaseIntegration
     public async Task GetBookById_ShouldBeAccessibleWithoutAuthentication()
     {
         // Arrange
-        var book = await DbContext.Books.FirstAsync();
+        var book = await WebApplication.DbContext.Books.FirstAsync();
 
         // Act - No authentication header set
-        var response = await HttpClient.GetAsync($"api/v1/books/{book.Id}");
+        var response = await WebApplication.HttpClient.GetAsync($"api/v1/books/{book.Id}");
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -66,12 +66,12 @@ public class GetBookByIdEndpointTests(DatabaseFixture fixture) : BaseIntegration
     public async Task GetBookById_ShouldReturnExactDataFromDatabase()
     {
         // Arrange
-        var databaseBook = await DbContext.Books
+        var databaseBook = await WebApplication.DbContext.Books
             .Include(b => b.Authors)
             .FirstAsync(b => b.Title == "The Hobbit");
 
         // Act
-        var response = await HttpClient.GetAsync($"api/v1/books/{databaseBook.Id}");
+        var response = await WebApplication.HttpClient.GetAsync($"api/v1/books/{databaseBook.Id}");
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);

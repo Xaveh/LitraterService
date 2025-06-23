@@ -21,7 +21,7 @@ public class RegisterEndpointTests(DatabaseFixture fixture) : BaseIntegrationTes
         };
 
         // Act
-        var response = await HttpClient.PostAsJsonAsync("api/v1/auth/register", registerRequest);
+        var response = await WebApplication.HttpClient.PostAsJsonAsync("api/v1/auth/register", registerRequest);
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -44,7 +44,7 @@ public class RegisterEndpointTests(DatabaseFixture fixture) : BaseIntegrationTes
         };
 
         // Act
-        var response = await HttpClient.PostAsJsonAsync("api/v1/auth/register", registerRequest);
+        var response = await WebApplication.HttpClient.PostAsJsonAsync("api/v1/auth/register", registerRequest);
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.Conflict);
@@ -63,13 +63,13 @@ public class RegisterEndpointTests(DatabaseFixture fixture) : BaseIntegrationTes
         };
 
         // Act
-        var response = await HttpClient.PostAsJsonAsync("api/v1/auth/register", registerRequest);
+        var response = await WebApplication.HttpClient.PostAsJsonAsync("api/v1/auth/register", registerRequest);
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         // Verify user is persisted in database
-        var persistedUser = await DbContext.Users
+        var persistedUser = await WebApplication.DbContext.Users
             .FirstOrDefaultAsync(u => u.Email == registerRequest.Email);
 
         persistedUser.ShouldNotBeNull();

@@ -18,7 +18,7 @@ public class LoginEndpointTests(DatabaseFixture fixture) : BaseIntegrationTest(f
         };
 
         // Act
-        var response = await HttpClient.PostAsJsonAsync("api/v1/auth/login", loginRequest);
+        var response = await WebApplication.HttpClient.PostAsJsonAsync("api/v1/auth/login", loginRequest);
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -40,7 +40,7 @@ public class LoginEndpointTests(DatabaseFixture fixture) : BaseIntegrationTest(f
         };
 
         // Act
-        var response = await HttpClient.PostAsJsonAsync("api/v1/auth/login", loginRequest);
+        var response = await WebApplication.HttpClient.PostAsJsonAsync("api/v1/auth/login", loginRequest);
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
@@ -57,7 +57,7 @@ public class LoginEndpointTests(DatabaseFixture fixture) : BaseIntegrationTest(f
         };
 
         // Act
-        var response = await HttpClient.PostAsJsonAsync("api/v1/auth/login", loginRequest);
+        var response = await WebApplication.HttpClient.PostAsJsonAsync("api/v1/auth/login", loginRequest);
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -68,7 +68,7 @@ public class LoginEndpointTests(DatabaseFixture fixture) : BaseIntegrationTest(f
 
         // Verify token can be used for authenticated requests
         SetAuthorizationHeader(token.Trim('"'));
-        var protectedResponse = await HttpClient.PostAsJsonAsync("api/v1/books", new { Title = "Test", Isbn = "123", AuthorIds = new[] { Guid.NewGuid() } });
+        var protectedResponse = await WebApplication.HttpClient.PostAsJsonAsync("api/v1/books", new { Title = "Test", Isbn = "123", AuthorIds = new[] { Guid.NewGuid() } });
         protectedResponse.StatusCode.ShouldNotBe(HttpStatusCode.Unauthorized);
     }
 }

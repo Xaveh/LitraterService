@@ -10,7 +10,7 @@ public class HealthCheckEndpointTests(DatabaseFixture fixture) : BaseIntegration
     public async Task HealthCheck_ShouldReturnHealthyStatus()
     {
         // Act
-        var response = await HttpClient.GetAsync("health");
+        var response = await WebApplication.HttpClient.GetAsync("health");
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -24,7 +24,7 @@ public class HealthCheckEndpointTests(DatabaseFixture fixture) : BaseIntegration
     public async Task HealthCheck_ShouldBeAccessibleWithoutAuthentication()
     {
         // Act - No authentication header set
-        var response = await HttpClient.GetAsync("health");
+        var response = await WebApplication.HttpClient.GetAsync("health");
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);

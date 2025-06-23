@@ -26,7 +26,7 @@ public class CreateBookEndpointTests(DatabaseFixture fixture) : BaseIntegrationT
         };
 
         // Act
-        var response = await HttpClient.PostAsJsonAsync("api/v1/books", createBookRequest);
+        var response = await WebApplication.HttpClient.PostAsJsonAsync("api/v1/books", createBookRequest);
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -54,7 +54,7 @@ public class CreateBookEndpointTests(DatabaseFixture fixture) : BaseIntegrationT
         };
 
         // Act
-        var response = await HttpClient.PostAsJsonAsync("api/v1/books", createBookRequest);
+        var response = await WebApplication.HttpClient.PostAsJsonAsync("api/v1/books", createBookRequest);
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
@@ -75,7 +75,7 @@ public class CreateBookEndpointTests(DatabaseFixture fixture) : BaseIntegrationT
         };
 
         // Act
-        var response = await HttpClient.PostAsJsonAsync("api/v1/books", createBookRequest);
+        var response = await WebApplication.HttpClient.PostAsJsonAsync("api/v1/books", createBookRequest);
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
@@ -97,7 +97,7 @@ public class CreateBookEndpointTests(DatabaseFixture fixture) : BaseIntegrationT
         };
 
         // Act
-        var response = await HttpClient.PostAsJsonAsync("api/v1/books", createBookRequest);
+        var response = await WebApplication.HttpClient.PostAsJsonAsync("api/v1/books", createBookRequest);
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -107,7 +107,7 @@ public class CreateBookEndpointTests(DatabaseFixture fixture) : BaseIntegrationT
         bookDto.ShouldNotBeNull();
 
         // Verify book is persisted in database
-        var persistedBook = await DbContext.Books
+        var persistedBook = await WebApplication.DbContext.Books
             .Include(b => b.Authors)
             .FirstOrDefaultAsync(b => b.Id == bookDto.Id);
 
@@ -125,7 +125,7 @@ public class CreateBookEndpointTests(DatabaseFixture fixture) : BaseIntegrationT
             Email = "user@litrater.com",
             Password = "user123"
         };
-        var response = await HttpClient.PostAsJsonAsync("api/v1/auth/login", loginRequest);
+        var response = await WebApplication.HttpClient.PostAsJsonAsync("api/v1/auth/login", loginRequest);
         response.EnsureSuccessStatusCode();
 
         var token = await response.Content.ReadAsStringAsync();
