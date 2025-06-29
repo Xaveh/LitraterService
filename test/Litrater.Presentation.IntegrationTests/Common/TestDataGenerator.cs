@@ -1,102 +1,63 @@
 using Litrater.Domain.Authors;
 using Litrater.Domain.Books;
 using Litrater.Domain.Users;
+using Litrater.Infrastructure.Authentication;
 
 namespace Litrater.Presentation.IntegrationTests.Common;
 
 public static class TestDataGenerator
 {
-    public static Author CreateAuthor(string? firstName = null, string? lastName = null)
-    {
-        return new Author(
-            id: Guid.NewGuid(),
-            firstName: firstName ?? "Test",
-            lastName: lastName ?? "Author"
-        );
-    }
+    private static readonly PasswordHasher PasswordHasher = new();
 
-    public static User CreateUser(
-        string? email = null,
-        string? passwordHash = null,
-        string? firstName = null,
-        string? lastName = null,
-        UserRole userRole = UserRole.User,
-        bool isActive = true)
+    public static class Users
     {
-        return new User(
-            id: Guid.NewGuid(),
-            email: email ?? "test@example.com",
-            passwordHash: passwordHash ?? "hashedpassword",
-            firstName: firstName ?? "Test",
-            lastName: lastName ?? "User",
-            isActive: isActive,
-            userRole: userRole
-        );
-    }
+        public static User Admin => new(Guid.NewGuid(),
+            "admin@litrater.com",
+            PasswordHasher.Hash("admin123"),
+            "Admin",
+            "User",
+            true,
+            UserRole.Admin);
 
-    public static User CreateAdminUser(
-        string? email = null,
-        string? passwordHash = null,
-        string? firstName = null,
-        string? lastName = null)
-    {
-        return CreateUser(
-            email: email ?? "admin@litrater.com",
-            passwordHash: passwordHash,
-            firstName: firstName ?? "Admin",
-            lastName: lastName ?? "User",
-            userRole: UserRole.Admin
-        );
+        public static User Regular => new(Guid.NewGuid(),
+            "user@litrater.com",
+            PasswordHasher.Hash("user123"),
+            "Regular",
+            "User");
     }
-
 
     public static class Books
     {
-        public static Book TheHobbit => CreateBook(
-            title: "The Hobbit",
-            isbn: "9780547928227",
-            authors: [CreateAuthor("J.R.R.", "Tolkien")]
-        );
+        public static Book TheHobbit =>
+            new(new Guid("b4027480-3875-4cfe-8f72-298e31228aed"),
+                "The Hobbit",
+                "9780547928227",
+                [
+                    Authors.Tolkien
+                ]);
 
-        public static Book HarryPotter => CreateBook(
-            title: "Harry Potter and the Philosopher's Stone",
-            isbn: "9780747532699",
-            authors: [CreateAuthor("J.K.", "Rowling")]
-        );
+        public static Book HarryPotter =>
+            new(new Guid("17536d6c-e82c-4514-b99e-3a825a58b1b1"),
+                "Harry Potter and the Philosopher's Stone",
+                "9780747532699",
+                [
+                    Authors.Rowling
+                ]);
 
-        public static Book Dune => CreateBook(
-            title: "Dune",
-            isbn: "9780441172719",
-            authors: [CreateAuthor("Frank", "Herbert")]
-        );
-
-        private static Book CreateBook(
-            string? title = null,
-            string? isbn = null,
-            List<Author>? authors = null)
-        {
-            authors ??= [CreateAuthor()];
-
-            return new Book(
-                id: Guid.NewGuid(),
-                title: title ?? "Test Book",
-                isbn: isbn ?? GenerateIsbn(),
-                authors: authors
-            );
-        }
-
-        private static string GenerateIsbn()
-        {
-            var random = new Random();
-            return $"978{random.Next(1000000000):D10}";
-        }
+        public static Book Dune =>
+            new(new Guid("8a043fa2-7573-4d4d-bc7a-7fd85a16cbd5"),
+                "Dune",
+                "9780441172719",
+                [
+                    Authors.Herbert
+                ]);
     }
 
     public static class Authors
     {
-        public static Author Tolkien => CreateAuthor("J.R.R.", "Tolkien");
-        public static Author Rowling => CreateAuthor("J.K.", "Rowling");
-        public static Author Herbert => CreateAuthor("Frank", "Herbert");
-        public static Author Asimov => CreateAuthor("Isaac", "Asimov");
+        public static Author Tolkien => new(new Guid("16cf3c8d-fa5b-418a-ac3f-2ab55ebcb8b9"), "J.R.R.", "Tolkien");
+        public static Author Rowling => new(new Guid("1d36391f-5d03-4a1d-8c07-0ff35f421bdb"), "J.K.", "Rowling");
+        public static Author Herbert => new(new Guid("24610d22-961d-4a06-b2c3-40aaf247f3c8"), "Frank", "Herbert");
+        public static Author Asimov => new(new Guid("41120f1c-c0e6-41ff-8bb5-9f5c5ec85a88"), "Isaac", "Asimov");
     }
 }

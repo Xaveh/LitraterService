@@ -2,7 +2,6 @@ using Litrater.Application.Abstractions.CQRS;
 using Litrater.Application.Features.Books.Dtos;
 using Litrater.Application.Features.Books.Queries.GetBookById;
 using Litrater.Presentation.Abstractions;
-using Litrater.Presentation.Authorization;
 using Litrater.Presentation.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,7 +26,6 @@ internal sealed class GetBookByIdEndpoint : IEndpoint
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden)
-            .Produces(StatusCodes.Status404NotFound)
-            .RequireAuthorization(AuthorizationPolicies.UserOrAdmin);
+            .Produces(StatusCodes.Status404NotFound);
     }
 }

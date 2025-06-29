@@ -1,5 +1,4 @@
 using System.Net;
-using System.Text.Json;
 using Litrater.Application.Features.Books.Dtos;
 using Litrater.Presentation.IntegrationTests.Common;
 using Microsoft.EntityFrameworkCore;
@@ -22,14 +21,14 @@ public class GetBookByIdEndpointTests(DatabaseFixture fixture) : BaseIntegration
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
         response.Content.Headers.ContentType?.MediaType.ShouldBe("application/json");
 
-        var content = await response.Content.ReadAsStringAsync();
-        var bookDto = JsonSerializer.Deserialize<BookDto>(content);
+        var bookDto = await DeserializeResponse<BookDto>(response);
 
         bookDto.ShouldNotBeNull();
         bookDto.Id.ShouldBe(hobbitBook.Id);
-        bookDto.Title.ShouldBe("The Hobbit");
-        bookDto.Isbn.ShouldBe("9780547928227");
-        bookDto.AuthorIds.ShouldHaveSingleItem();
+        bookDto.Title.ShouldBe(hobbitBook.Title);
+        bookDto.Isbn.ShouldBe(hobbitBook.Isbn);
+        bookDto.AuthorIds.Count().ShouldBe(hobbitBook.Authors.Count);
+        bookDto.AuthorIds.ShouldContain(hobbitBook.Authors.First().Id);
     }
 
     [Fact]
@@ -57,33 +56,8 @@ public class GetBookByIdEndpointTests(DatabaseFixture fixture) : BaseIntegration
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var content = await response.Content.ReadAsStringAsync();
-        var bookDto = JsonSerializer.Deserialize<BookDto>(content);
+        var bookDto = await DeserializeResponse<BookDto>(response);
+
         bookDto.ShouldNotBeNull();
-    }
-
-    [Fact]
-    public async Task GetBookById_ShouldReturnExactDataFromDatabase()
-    {
-        // Arrange
-        var databaseBook = await WebApplication.DbContext.Books
-            .Include(b => b.Authors)
-            .FirstAsync(b => b.Title == "The Hobbit");
-
-        // Act
-        var response = await WebApplication.HttpClient.GetAsync($"api/v1/books/{databaseBook.Id}");
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.OK);
-
-        var content = await response.Content.ReadAsStringAsync();
-        var returnedBookDto = JsonSerializer.Deserialize<BookDto>(content);
-
-        returnedBookDto.ShouldNotBeNull();
-        returnedBookDto.Id.ShouldBe(databaseBook.Id);
-        returnedBookDto.Title.ShouldBe(databaseBook.Title);
-        returnedBookDto.Isbn.ShouldBe(databaseBook.Isbn);
-        returnedBookDto.AuthorIds.Count().ShouldBe(databaseBook.Authors.Count);
-        returnedBookDto.AuthorIds.ShouldContain(databaseBook.Authors.First().Id);
     }
 }

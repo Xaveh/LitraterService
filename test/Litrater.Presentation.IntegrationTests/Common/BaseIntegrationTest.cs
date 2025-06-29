@@ -1,41 +1,54 @@
 using System.Net.Http.Json;
+using System.Text.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Litrater.Presentation.IntegrationTests.Common;
 
 public abstract class BaseIntegrationTest(DatabaseFixture databaseFixture) : IClassFixture<DatabaseFixture>, IAsyncLifetime
 {
     protected readonly LitraterWebApplication WebApplication = new(databaseFixture.DbContainer.GetConnectionString());
+    private static readonly JsonSerializerOptions JsonOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 
-    protected async Task LoginAsAdminAsync()
+    public Task InitializeAsync()
+    {
+        return DatabaseSeeder.SeedTestDataAsync(WebApplication.DbContext);
+    }
+
+    public Task DisposeAsync()
+    {
+        WebApplication.Dispose();
+        return databaseFixture.ResetDatabaseAsync();
+    }
+
+    protected static async Task<T> DeserializeResponse<T>(HttpResponseMessage response)
+    {
+        var content = await response.Content.ReadAsStreamAsync();
+        return await JsonSerializer.DeserializeAsync<T>(content, JsonOptions) ?? throw new InvalidOperationException("Deserialization failed.");
+    }
+
+    protected Task LoginAsAdminAsync()
+    {
+        return LoginAsync("admin@litrater.com", "admin123");
+    }
+
+    protected Task LoginAsRegularUserAsync()
+    {
+        return LoginAsync("user@litrater.com", "user123");
+    }
+
+    private async Task LoginAsync(string email, string password)
     {
         var loginRequest = new
         {
-            Email = "admin@litrater.com",
-            Password = "admin123"
+            Email = email,
+            Password = password
         };
 
         var response = await WebApplication.HttpClient.PostAsJsonAsync("api/v1/auth/login", loginRequest);
         response.EnsureSuccessStatusCode();
 
         var token = await response.Content.ReadAsStringAsync();
-
-        SetAuthorizationHeader(token.Trim('"'));
-    }
-
-    protected void SetAuthorizationHeader(string token)
-    {
         WebApplication.HttpClient.DefaultRequestHeaders.Authorization =
-            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-    }
-
-    public async Task InitializeAsync()
-    {
-        await WebApplication.InitializeAsync();
-    }
-
-    public Task DisposeAsync()
-    {
-        WebApplication.Dispose();
-        return Task.CompletedTask;
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token.Trim('"'));
     }
 }

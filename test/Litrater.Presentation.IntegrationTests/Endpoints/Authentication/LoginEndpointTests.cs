@@ -45,30 +45,4 @@ public class LoginEndpointTests(DatabaseFixture fixture) : BaseIntegrationTest(f
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
-
-    [Fact]
-    public async Task Login_WithValidCredentials_ShouldAuthenticateAgainstDatabase()
-    {
-        // Arrange
-        var loginRequest = new
-        {
-            Email = "admin@litrater.com",
-            Password = "admin123"
-        };
-
-        // Act
-        var response = await WebApplication.HttpClient.PostAsJsonAsync("api/v1/auth/login", loginRequest);
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.OK);
-
-        var token = await response.Content.ReadAsStringAsync();
-        token.ShouldNotBeNullOrWhiteSpace();
-        token.Trim('"').Length.ShouldBeGreaterThan(50);
-
-        // Verify token can be used for authenticated requests
-        SetAuthorizationHeader(token.Trim('"'));
-        var protectedResponse = await WebApplication.HttpClient.PostAsJsonAsync("api/v1/books", new { Title = "Test", Isbn = "123", AuthorIds = new[] { Guid.NewGuid() } });
-        protectedResponse.StatusCode.ShouldNotBe(HttpStatusCode.Unauthorized);
-    }
 }

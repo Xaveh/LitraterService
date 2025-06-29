@@ -7,26 +7,16 @@ namespace Litrater.Presentation.IntegrationTests.Endpoints.HealthCheck;
 public class HealthCheckEndpointTests(DatabaseFixture fixture) : BaseIntegrationTest(fixture)
 {
     [Fact]
-    public async Task HealthCheck_ShouldReturnHealthyStatus()
+    public async Task HealthCheck_WithoutAuthentication_ShouldReturnHealthyStatus()
     {
         // Act
         var response = await WebApplication.HttpClient.GetAsync("health");
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
-        response.Content.Headers.ContentType?.MediaType.ShouldBe("text/plain");
+        response.Content.Headers.ContentType?.MediaType.ShouldBe("application/json");
 
         var content = await response.Content.ReadAsStringAsync();
         content.ShouldContain("Healthy");
-    }
-
-    [Fact]
-    public async Task HealthCheck_ShouldBeAccessibleWithoutAuthentication()
-    {
-        // Act - No authentication header set
-        var response = await WebApplication.HttpClient.GetAsync("health");
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
 }

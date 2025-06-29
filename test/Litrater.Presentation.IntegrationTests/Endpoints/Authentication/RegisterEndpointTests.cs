@@ -29,10 +29,20 @@ public class RegisterEndpointTests(DatabaseFixture fixture) : BaseIntegrationTes
 
         var content = await response.Content.ReadAsStringAsync();
         content.ShouldBeEmpty();
+
+        var persistedUser = await WebApplication.DbContext.Users
+            .FirstOrDefaultAsync(u => u.Email == registerRequest.Email);
+
+        persistedUser.ShouldNotBeNull();
+        persistedUser.Email.ShouldBe(registerRequest.Email);
+        persistedUser.FirstName.ShouldBe(registerRequest.FirstName);
+        persistedUser.LastName.ShouldBe(registerRequest.LastName);
+        persistedUser.PasswordHash.ShouldNotBeNullOrWhiteSpace();
+        persistedUser.PasswordHash.ShouldNotBe(registerRequest.Password); // Should be hashed
     }
 
     [Fact]
-    public async Task Register_WithExistingEmail_ShouldReturnBadRequest()
+    public async Task Register_WithExistingEmail_ShouldReturnConflict()
     {
         // Arrange
         var registerRequest = new
@@ -48,35 +58,5 @@ public class RegisterEndpointTests(DatabaseFixture fixture) : BaseIntegrationTes
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.Conflict);
-    }
-
-    [Fact]
-    public async Task Register_WithValidData_ShouldPersistUserInDatabase()
-    {
-        // Arrange
-        var registerRequest = new
-        {
-            Email = "persistence@example.com",
-            Password = "Password123!",
-            FirstName = "John",
-            LastName = "Doe"
-        };
-
-        // Act
-        var response = await WebApplication.HttpClient.PostAsJsonAsync("api/v1/auth/register", registerRequest);
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.OK);
-
-        // Verify user is persisted in database
-        var persistedUser = await WebApplication.DbContext.Users
-            .FirstOrDefaultAsync(u => u.Email == registerRequest.Email);
-
-        persistedUser.ShouldNotBeNull();
-        persistedUser.Email.ShouldBe(registerRequest.Email);
-        persistedUser.FirstName.ShouldBe(registerRequest.FirstName);
-        persistedUser.LastName.ShouldBe(registerRequest.LastName);
-        persistedUser.PasswordHash.ShouldNotBeNullOrWhiteSpace();
-        persistedUser.PasswordHash.ShouldNotBe(registerRequest.Password); // Should be hashed
     }
 }

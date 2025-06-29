@@ -1,7 +1,6 @@
 using Litrater.Infrastructure.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Litrater.Presentation.IntegrationTests.Common;
@@ -29,12 +28,6 @@ public class LitraterWebApplication : IDisposable
         HttpClient = _factory.CreateClient();
         _scope = _factory.Services.CreateScope();
         DbContext = _scope.ServiceProvider.GetRequiredService<LitraterDbContext>();
-    }
-
-    public async Task InitializeAsync()
-    {
-        await DbContext.Database.MigrateAsync();
-        await DatabaseSeeder.SeedTestDataAsync(_scope);
     }
 
     public void Dispose()
