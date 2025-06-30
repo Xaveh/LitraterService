@@ -82,9 +82,9 @@ dotnet_remove_unnecessary_suppression_exclusions = none
 [*.cs]
 
 # var preferences
-csharp_style_var_elsewhere = false:suggestion
-csharp_style_var_for_built_in_types = false:suggestion
-csharp_style_var_when_type_is_apparent = false:silent
+csharp_style_var_elsewhere = false:silent
+csharp_style_var_for_built_in_types = false:silent
+csharp_style_var_when_type_is_apparent = true:silent
 
 # Expression-bodied members
 csharp_style_expression_bodied_accessors = true:silent
@@ -187,6 +187,7 @@ csharp_space_between_square_brackets = false
 csharp_preserve_single_line_blocks = true
 csharp_preserve_single_line_statements = true
 csharp_prefer_system_threading_lock = true:suggestion
+resharper_csharp_wrap_lines = false
 
 #### Naming styles ####
 [*.{cs,vb}]
@@ -383,62 +384,53 @@ dotnet_naming_style.s_camelcase.capitalization = camel_case
 
 # .NET Code Analyzers rules
 
-# CA1001: Types that own disposable fields should be disposable
-dotnet_diagnostic.CA1001.severity = none
-
 # CA1002: Do not expose generic lists
 dotnet_diagnostic.CA1002.severity = suggestion
 
-# CA1034: Nested types should not be visible
-dotnet_diagnostic.CA1034.severity = suggestion
-
 # CA1040: Avoid empty interfaces
-dotnet_diagnostic.CA1040.severity = suggestion
-
-# CA1051: Do not declare visible instance fields
-dotnet_diagnostic.CA1051.severity = suggestion
-
-# CA1054: URI parameters should not be strings
-dotnet_diagnostic.CA1054.severity = suggestion
+dotnet_diagnostic.CA1040.severity = none
 
 # CA1062: Validate arguments of public methods
 dotnet_diagnostic.CA1062.severity = none
 
-# CA1307: Specify StringComparison for clarity
-dotnet_diagnostic.CA1307.severity = none
-
 # CA1515: Consider making public types internal
-dotnet_diagnostic.CA1515.severity = suggestion
-
-# CA1707: Identifiers should not contain underscores
-dotnet_diagnostic.CA1707.severity = suggestion
+dotnet_diagnostic.CA1515.severity = none
 
 # CA1724: Type names should not match namespaces
 dotnet_diagnostic.CA1724.severity = none
 
-# CA1812: Avoid uninstantiated internal classes
-dotnet_diagnostic.CA1812.severity = none
-
 # CA1848: Use the LoggerMessage delegates
 dotnet_diagnostic.CA1848.severity = none
-
-# CA2000: Dispose objects before losing scope
-dotnet_diagnostic.CA2000.severity = none
 
 # CA2007: Consider calling ConfigureAwait on the awaited task
 dotnet_diagnostic.CA2007.severity = none
 
-# CA2234: Pass System.Uri objects instead of strings
-dotnet_diagnostic.CA2234.severity = none
-
-# CA5394: Do not use insecure randomness
-dotnet_diagnostic.CA5394.severity = suggestion
-
-# S1118: Utility classes should not have public constructors
-dotnet_diagnostic.S1118.severity = suggestion
-
 # S3267: Loops should be simplified with "LINQ" expressions
 dotnet_diagnostic.S3267.severity = none
 
-# ReSharper properties
-resharper_csharp_wrap_lines = false
+
+# Custom Rules for Test projects
+[test/**.cs]
+
+# .NET Code Analyzers rules
+
+# CA1001: Types that own disposable fields should be disposable
+dotnet_diagnostic.CA1001.severity = none
+
+# CA1034: Nested types should not be visible
+dotnet_diagnostic.CA1034.severity = none
+
+# CA1051: Do not declare visible instance fields
+dotnet_diagnostic.CA1051.severity = none
+
+# CA1307: Specify StringComparison for clarity
+dotnet_diagnostic.CA1307.severity = none
+
+# CA1707: Identifiers should not contain underscores
+dotnet_diagnostic.CA1707.severity = none
+
+# CA2000: Dispose objects before losing scope
+dotnet_diagnostic.CA2000.severity = none
+
+# CA2234: Pass System.Uri objects instead of strings
+dotnet_diagnostic.CA2234.severity = none

@@ -59,6 +59,6 @@ app.MapHealthChecks("health", new HealthCheckOptions { ResponseWriter = UIRespon
 await app.RunAsync();
 
 // Make the Program class available for testing
-public partial class Program
+public abstract partial class Program
 {
 }
