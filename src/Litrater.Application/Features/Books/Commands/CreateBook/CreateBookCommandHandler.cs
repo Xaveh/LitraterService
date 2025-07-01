@@ -21,6 +21,12 @@ internal sealed class CreateBookCommandHandler(
 
         var authors = await authorRepository.GetAuthorsByIdsAsync(command.AuthorIds, cancellationToken);
 
+        if (authors.Count != command.AuthorIds.Count())
+        {
+            return Result<BookDto>.Invalid(new ValidationError(nameof(command.AuthorIds),
+                $"Some author IDs are invalid or missing. Requested: {command.AuthorIds.Count()}, Found: {authors.Count}"));
+        }
+
         var book = new Book(
             id: Guid.NewGuid(),
             title: command.Title,

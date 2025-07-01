@@ -85,4 +85,30 @@ public sealed class CreateBookCommandHandlerTests
         _bookRepositoryMock.Verify(x => x.AddAsync(It.IsAny<Book>(), It.IsAny<CancellationToken>()), Times.Never);
         _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
+
+    [Fact]
+    public async Task Handle_WhenSomeAuthorIdsAreInvalid_ShouldReturnInvalidResult()
+    {
+        // Arrange
+        var authorIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() };
+        var command = new CreateBookCommand("Test Book", "1234567890123", authorIds);
+        var authors = new List<Author> { new(authorIds[0], "John", "Doe") }; // Only one author found
+
+        _bookRepositoryMock
+            .Setup(x => x.ExistsByIsbnAsync(command.Isbn, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(false);
+
+        _authorRepositoryMock
+            .Setup(x => x.GetAuthorsByIdsAsync(command.AuthorIds, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(authors);
+
+        // Act
+        var result = await _handler.Handle(command, CancellationToken.None);
+
+        // Assert
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ValidationErrors.ShouldContain(e => e.Identifier == nameof(command.AuthorIds));
+        _bookRepositoryMock.Verify(x => x.AddAsync(It.IsAny<Book>(), It.IsAny<CancellationToken>()), Times.Never);
+        _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+    }
 }
