@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using Litrater.Presentation.IntegrationTests.Common;
 using Microsoft.EntityFrameworkCore;
 using Shouldly;
+using Litrater.Application.Features.Authentication.Dtos;
 
 namespace Litrater.Presentation.IntegrationTests.Endpoints.Authentication;
 
@@ -27,8 +28,11 @@ public class RegisterEndpointTests(DatabaseFixture fixture) : BaseIntegrationTes
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
         response.Content.Headers.ContentType?.MediaType.ShouldBe("application/json");
 
-        var content = await response.Content.ReadAsStringAsync();
-        content.ShouldBeEmpty();
+        var userDto = await response.Content.ReadFromJsonAsync<UserDto>();
+        userDto.ShouldNotBeNull();
+        userDto.Email.ShouldBe(registerRequest.Email);
+        userDto.FirstName.ShouldBe(registerRequest.FirstName);
+        userDto.LastName.ShouldBe(registerRequest.LastName);
 
         var persistedUser = await WebApplication.DbContext.Users
             .FirstOrDefaultAsync(u => u.Email == registerRequest.Email);

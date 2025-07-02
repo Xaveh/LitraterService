@@ -5,6 +5,7 @@ using Litrater.Application.Features.Authentication.Commands.Register;
 using Litrater.Domain.Users;
 using Moq;
 using Shouldly;
+using Litrater.Application.Features.Authentication.Dtos;
 
 namespace Litrater.Application.UnitTests.Features.Authentication;
 
@@ -44,6 +45,10 @@ public sealed class RegisterCommandHandlerTests
 
         // Assert
         result.IsSuccess.ShouldBeTrue();
+        result.Value.ShouldNotBeNull();
+        result.Value.Email.ShouldBe(command.Email);
+        result.Value.FirstName.ShouldBe(command.FirstName);
+        result.Value.LastName.ShouldBe(command.LastName);
 
         _userRepositoryMock.Verify(x => x.AddAsync(
             It.Is<User>(u =>
