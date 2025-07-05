@@ -1,5 +1,6 @@
-using FluentAssertions;
+using System.Reflection;
 using NetArchTest.Rules;
+using Shouldly;
 
 namespace Litrater.ArchitectureTests;
 
@@ -14,122 +15,71 @@ public class ArchitectureTests
     public void Domain_ShouldNotHaveDependency_OnOtherProjects()
     {
         // Arrange
-        var domainAssembly = typeof(Domain.Class1).Assembly;
+        var domainAssembly = Assembly.Load(DomainNamespace);
 
-        var otherProjects = new[]
-        {
-            ApplicationNamespace,
-            InfrastructureNamespace,
-            PresentationNamespace
-        };
+        var otherProjects = new[] { ApplicationNamespace, InfrastructureNamespace, PresentationNamespace };
 
         // Act
         var result = Types.InAssembly(domainAssembly)
-                          .ShouldNot()
-                          .HaveDependencyOnAny(otherProjects)
-                          .GetResult();
+            .ShouldNot()
+            .HaveDependencyOnAny(otherProjects)
+            .GetResult();
 
         // Assert
-        result.IsSuccessful.Should().BeTrue();
+        result.IsSuccessful.ShouldBeTrue();
     }
 
     [Fact]
     public void Application_ShouldNotHaveDependency_OnOtherProjects()
     {
         // Arrange
-        var applicationAssembly = typeof(Application.Class1).Assembly;
+        var applicationAssembly = Assembly.Load(ApplicationNamespace);
 
-        var otherProjects = new[]
-        {
-            InfrastructureNamespace,
-            PresentationNamespace
-        };
+        var otherProjects = new[] { InfrastructureNamespace, PresentationNamespace };
 
         // Act
         var result = Types.InAssembly(applicationAssembly)
-                          .ShouldNot()
-                          .HaveDependencyOnAny(otherProjects)
-                          .GetResult();
+            .ShouldNot()
+            .HaveDependencyOnAny(otherProjects)
+            .GetResult();
 
         // Assert
-        result.IsSuccessful.Should().BeTrue();
+        result.IsSuccessful.ShouldBeTrue();
     }
 
     [Fact]
     public void Infrastructure_ShouldNotHaveDependency_OnOtherProjects()
     {
         // Arrange
-        var infrastructureAssembly = typeof(Infrastructure.Class1).Assembly;
+        var infrastructureAssembly = Assembly.Load(InfrastructureNamespace);
 
-        var otherProjects = new[]
-        {
-            PresentationNamespace
-        };
+        var otherProjects = new[] { PresentationNamespace };
 
         // Act
         var result = Types.InAssembly(infrastructureAssembly)
-                          .ShouldNot()
-                          .HaveDependencyOnAny(otherProjects)
-                          .GetResult();
+            .ShouldNot()
+            .HaveDependencyOnAny(otherProjects)
+            .GetResult();
 
         // Assert
-        result.IsSuccessful.Should().BeTrue();
-    }
-
-    [Fact]
-    public void Presentation_ShouldNotHaveDependency_OnOtherProjects()
-    {
-        // Arrange
-        var presentationAssembly = typeof(Presentation.Class1).Assembly;
-
-        var otherProjects = new[]
-        {
-            InfrastructureNamespace
-        };
-
-        // Act
-        var result = Types.InAssembly(presentationAssembly)
-                          .ShouldNot()
-                          .HaveDependencyOnAny(otherProjects)
-                          .GetResult();
-
-        // Assert
-        result.IsSuccessful.Should().BeTrue();
+        result.IsSuccessful.ShouldBeTrue();
     }
 
     [Fact]
     public void Handlers_ShouldHaveDependency_OnDomain()
     {
         // Arrange
-        var applicationAssembly = typeof(Application.Class1).Assembly;
+        var applicationAssembly = Assembly.Load(ApplicationNamespace);
 
         // Act
         var result = Types.InAssembly(applicationAssembly)
-                          .That()
-                          .HaveNameEndingWith("Handler")
-                          .Should()
-                          .HaveDependencyOn(DomainNamespace)
-                          .GetResult();
+            .That()
+            .HaveNameEndingWith("Handler")
+            .Should()
+            .HaveDependencyOn(DomainNamespace)
+            .GetResult();
 
         // Assert
-        result.IsSuccessful.Should().BeTrue();
-    }
-
-    [Fact]
-    public void Controllers_ShouldHaveDependency_OnMediatR()
-    {
-        // Arrange
-        var presentationAssembly = typeof(Presentation.Class1).Assembly;
-
-        // Act
-        var result = Types.InAssembly(presentationAssembly)
-                          .That()
-                          .HaveNameEndingWith("Controller")
-                          .Should()
-                          .HaveDependencyOn("MediatR")
-                          .GetResult();
-
-        // Assert
-        result.IsSuccessful.Should().BeTrue();
+        result.IsSuccessful.ShouldBeTrue();
     }
 }

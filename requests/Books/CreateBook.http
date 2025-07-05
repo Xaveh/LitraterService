@@ -1,0 +1,106 @@
+### Login as admin to get token
+POST https://localhost:7001/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@litrater.com",
+  "password": "admin123"
+}
+
+> {%
+    client.global.set("adminToken", response.body);
+%}
+
+### Create Book - Happy Path
+POST https://localhost:7001/api/v1/books
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "title": "The Chronicles of Narnia",
+  "isbn": "9780066238500",
+  "authorIds": [
+    "31111111-1111-1111-1111-111111111111"
+  ]
+}
+
+### Create Book - 400 Bad Request (missing fields)
+POST https://localhost:7001/api/v1/books
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "title": "",
+  "isbn": "",
+  "authorIds": []
+}
+
+### Create Book - 401 Unauthorized (no token)
+POST https://localhost:7001/api/v1/books
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "Unauthorized Book",
+  "isbn": "9780987654321",
+  "authorIds": [
+    "31111111-1111-1111-1111-111111111111"
+  ]
+}
+
+### Login as regular user
+POST https://localhost:7001/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "user@litrater.com",
+  "password": "user123"
+}
+
+> {%
+    client.global.set("userToken", response.body);
+%}
+
+### Create Book - 403 Forbidden (regular user trying to create)
+POST https://localhost:7001/api/v1/books
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "title": "Forbidden Book",
+  "isbn": "9780555555555",
+  "authorIds": [
+    "31111111-1111-1111-1111-111111111111"
+  ]
+}
+
+### Create Book - 409 Conflict (duplicate ISBN from seeded data)
+POST https://localhost:7001/api/v1/books
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "title": "Duplicate ISBN Book",
+  "isbn": "9780747532699",
+  "authorIds": [
+    "32222222-2222-2222-2222-222222222222"
+  ]
+}
+
+### Create Book - 415 Unsupported Media Type
+POST https://localhost:7001/api/v1/books
+Accept: application/json
+Content-Type: text/plain
+Authorization: Bearer {{adminToken}}
+
+{
+  "title": "Wrong Content Type",
+  "isbn": "9780111111111",
+  "authorIds": [
+    "31111111-1111-1111-1111-111111111111"
+  ]
+}
