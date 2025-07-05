@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:17-alpine
+    container_name: litrater-postgres-prod
+    environment:
+      POSTGRES_DB: litrater
+      POSTGRES_USER: ${POSTGRES_USER:-litrater_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-litrater_password}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - litrater-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-litrater_user} -d litrater"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  # Litrater Web Application
+  litrater-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: final
+    container_name: litrater-api-prod
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__Database=Host=postgres;Port=5432;Database=litrater;Username=${POSTGRES_USER:-litrater_user};Password=${POSTGRES_PASSWORD:-litrater_password}
+      - JwtSettings__SecretKey=${JWT_SECRET_KEY}
+      - JwtSettings__Issuer=${JWT_ISSUER:-LitraterAPI}
+      - JwtSettings__Audience=${JWT_AUDIENCE:-LitraterUsers}
+      - JwtSettings__ExpirationMinutes=${JWT_EXPIRATION_MINUTES:-60}
+    ports:
+      - "80:80"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - litrater-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  litrater-network:
+    driver: bridge 
