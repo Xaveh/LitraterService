@@ -44,7 +44,8 @@ if (app.Environment.IsDevelopment())
         }
     });
 
-    await app.Services.EnsureDatabaseSeededAsync();
+    await app.Services.MigrateDatabaseAsync();
+    await app.Services.SeedDatabaseAsync();
 }
 
 app.UseHttpsRedirection();
