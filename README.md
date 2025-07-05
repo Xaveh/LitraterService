@@ -1,0 +1,130 @@
+# Litrater Service
+
+A modern, well-architected .NET 9 Web API showcasing advanced software engineering practices and design patterns. This portfolio application demonstrates expertise in building scalable, maintainable, and testable enterprise-grade applications.
+
+## 🏗️ Architecture & Design Patterns
+
+- Domain-Driven Design (DDD)
+- Clean Architecture
+- CQRS (Command Query Responsibility Segregation)
+  - Due to recent license changes, decorator classes are used instead of MediatR
+
+## 🛠️ Technical Stack
+
+### Core Framework
+- **.NET 9**: Latest .NET version with cutting-edge features
+- **ASP.NET Core Minimal APIs**: Modern, lightweight API endpoints
+- **Entity Framework Core 9**: Latest ORM with PostgreSQL support
+
+### Database & Data Access
+- **PostgreSQL**: Robust, open-source relational database
+- **Entity Framework Core**: Code-first approach with migrations
+- **Repository Pattern**: Abstracted data access layer
+- **Unit of Work Pattern**: Transactional consistency across repositories
+
+### Authentication & Authorization
+- **JWT Bearer Authentication**: Stateless authentication mechanism
+- **Role-Based Authorization**: Flexible authorization policies
+- **Password Hashing**: Secure password storage with BCrypt
+- **Custom Token Generation**: JWT token creation and validation
+
+### Validation & Error Handling
+- **FluentValidation**: Comprehensive input validation
+- **Ardalis.Result**: Functional result pattern instead of exceptions
+- **Problem Details**: RFC 7807 compliant error responses
+- **Global Exception Handler**: Centralized error handling
+
+### Logging & Monitoring
+- **Serilog**: Structured logging with multiple sinks
+- **Request Logging**: Automatic HTTP request/response logging
+- **Health Checks**: Application and database health monitoring
+
+### API Design
+- **API Versioning**: Support for multiple API versions
+- **OpenAPI/Swagger**: Comprehensive API documentation
+- **Minimal APIs**: Modern, performant endpoint definitions
+- **Problem Details**: Standardized error responses
+
+## 🧪 Testing Strategy
+
+### Test Types
+- **Unit Tests**: Isolated testing of business logic
+- **Integration Tests**: End-to-end API testing
+- **Architecture Tests**: Dependency and design rule validation
+
+### Testing Tools
+- **xUnit**: Modern testing framework
+- **Moq**: Mocking framework for unit tests
+- **Shouldly**: Fluent assertion library (replacing FluentAssertions due to license changes)
+- **Testcontainers**: Isolated PostgreSQL containers for integration tests
+- **Respawn**: Database state reset between tests
+
+### Test Coverage
+- **Command/Query Handlers**: Full unit test coverage
+- **Validators**: Comprehensive validation testing
+- **Endpoints**: Integration tests for all API endpoints
+- **Architecture Rules**: Automated dependency validation
+
+## 🚀 Development Tools & Practices
+
+### Code Quality
+- **SonarAnalyzer**: Static code analysis and quality gates
+- **EditorConfig**: Consistent coding standards across editors
+- **Central Package Management**: Version control via `Directory.Packages.props`
+
+### Dependency Injection
+- **Scrutor**: Assembly scanning and decorator registration
+- **Service Lifetime Management**: Proper scoping of dependencies
+
+### Development Experience
+- **HTTP Files**: Manual testing with `.http` files
+- **Docker Compose**: Local development environment
+
+## 🚀 Getting Started
+
+### Prerequisites
+- .NET 9 SDK
+- Docker Desktop (for containerized development)
+- PostgreSQL (optional for local development)
+
+### Local Development
+
+#### Clone the repository
+   ```bash
+   git clone <repository-url>
+   cd LitraterService
+   ```
+
+#### Option 1: Run from IDE
+   
+   **Database Setup:**
+   - **Recommended**: Use PostgreSQL container
+     ```bash
+     docker run --name litrater-postgres -e POSTGRES_DB=litrater -e POSTGRES_USER=litrater_user -e POSTGRES_PASSWORD=litrater_password -p 5432:5432 -d postgres:17-alpine
+     ```
+   - **Alternative**: Install PostgreSQL locally and 
+   - Update the connection string in `appsettings.Development.json`
+   
+   **Run the Application:**
+   - Open the solution in your IDE (Visual Studio, Rider, VS Code)
+   - Set `Litrater.Presentation` as the startup project
+   - Press F5 or use the "Development" profile
+   
+   **Access the API:**
+   - **API**: https://localhost:7001 (HTTPS) or http://localhost:5001 (HTTP)
+   - **Swagger UI**: https://localhost:7001/swagger
+   - **Health Check**: https://localhost:7001/health
+
+#### Option 2: Run with Docker Compose
+   ```bash
+   docker-compose up -d
+   ```
+   This will start:
+   - PostgreSQL database
+   - Litrater API service
+   - Automatic database migrations and seeding
+   
+   **Access the API:**
+   - **API**: http://localhost:8080
+   - **Swagger UI**: http://localhost:8080/swagger
+   - **Health Check**: http://localhost:8080/health
