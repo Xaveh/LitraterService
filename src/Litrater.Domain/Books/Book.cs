@@ -30,4 +30,12 @@ public sealed class Book : AggregateRoot
             _reviews.Add(bookReview);
         }
     }
+
+    public void Update(string title, string isbn, List<Author> authors)
+    {
+        Title = title;
+        Isbn = isbn;
+        _authors.Clear();
+        _authors.AddRange(authors);
+    }
 }

@@ -2,21 +2,21 @@ using Ardalis.Result;
 using Litrater.Application.Abstractions.CQRS;
 using Litrater.Application.Abstractions.Data;
 using Litrater.Application.Features.Books.Dtos;
-using Litrater.Domain.Authors;
-using Litrater.Domain.Books;
 
-namespace Litrater.Application.Features.Books.Commands.CreateBook;
+namespace Litrater.Application.Features.Books.Commands.UpdateBook;
 
-internal sealed class CreateBookCommandHandler(
+public sealed class UpdateBookCommandHandler(
     IBookRepository bookRepository,
     IAuthorRepository authorRepository,
-    IUnitOfWork unitOfWork) : ICommandHandler<CreateBookCommand, BookDto>
+    IUnitOfWork unitOfWork)
+    : ICommandHandler<UpdateBookCommand, BookDto>
 {
-    public async Task<Result<BookDto>> Handle(CreateBookCommand command, CancellationToken cancellationToken)
+    public async Task<Result<BookDto>> Handle(UpdateBookCommand command, CancellationToken cancellationToken)
     {
-        if (await bookRepository.ExistsByIsbnAsync(command.Isbn, cancellationToken))
+        var book = await bookRepository.GetByIdAsync(command.Id, cancellationToken);
+        if (book is null)
         {
-            return Result<BookDto>.Conflict();
+            return Result.NotFound();
         }
 
         var authors = await authorRepository.GetAuthorsByIdsAsync(command.AuthorIds, cancellationToken);
@@ -26,13 +26,7 @@ internal sealed class CreateBookCommandHandler(
                 $"Some author IDs are invalid or missing. Requested: {command.AuthorIds.Count()}, Found: {authors.Count}"));
         }
 
-        var book = new Book(
-            id: Guid.NewGuid(),
-            title: command.Title,
-            isbn: command.Isbn,
-            authors: authors);
-
-        await bookRepository.AddAsync(book, cancellationToken);
+        book.Update(command.Title, command.Isbn, authors);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return book.ToDto();

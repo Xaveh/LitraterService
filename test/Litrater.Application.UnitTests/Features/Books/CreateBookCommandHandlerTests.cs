@@ -20,8 +20,7 @@ public sealed class CreateBookCommandHandlerTests
         _bookRepositoryMock = new Mock<IBookRepository>();
         _authorRepositoryMock = new Mock<IAuthorRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
-        _handler = new CreateBookCommandHandler(_bookRepositoryMock.Object, _authorRepositoryMock.Object,
-            _unitOfWorkMock.Object);
+        _handler = new CreateBookCommandHandler(_bookRepositoryMock.Object, _authorRepositoryMock.Object, _unitOfWorkMock.Object);
     }
 
     [Fact]

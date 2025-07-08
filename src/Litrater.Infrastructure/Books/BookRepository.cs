@@ -24,4 +24,9 @@ internal sealed class BookRepository(LitraterDbContext context) : Repository<Boo
     {
         return DbSet.AnyAsync(b => b.Isbn == isbn, cancellationToken);
     }
+
+    public void Delete(Book book)
+    {
+        DbSet.Remove(book);
+    }
 }
