@@ -19,4 +19,12 @@ public sealed class Author : AggregateRoot
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
     public IReadOnlyCollection<Book> Books => _books.AsReadOnly();
+    
+    public void Update(string firstName, string lastName, List<Book> books)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+        _books.Clear();
+        _books.AddRange(books);
+    }
 }

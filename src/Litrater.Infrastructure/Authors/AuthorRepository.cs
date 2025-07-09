@@ -7,6 +7,13 @@ namespace Litrater.Infrastructure.Authors;
 
 internal sealed class AuthorRepository(LitraterDbContext context) : Repository<Author>(context), IAuthorRepository
 {
+    public async Task<Author?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return await DbSet
+            .Include(a => a.Books)
+            .FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
+    }
+
     public Task<List<Author>> GetAuthorsByIdsAsync(
         IEnumerable<Guid> authorIds,
         CancellationToken cancellationToken = default)
