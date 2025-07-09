@@ -1,17 +1,17 @@
 using FluentValidation.TestHelper;
-using Litrater.Application.Features.Books.Queries.GetBookReviews;
+using Litrater.Application.Features.Books.Queries.GetBookReviewsByBookId;
 
 namespace Litrater.Application.UnitTests.Features.Books;
 
-public class GetBookReviewsQueryValidatorTests
+public class GetBookReviewsByBookIdQueryValidatorTests
 {
-    private readonly GetBookReviewsQueryValidator _validator = new();
+    private readonly GetBookReviewsByBookIdQueryValidator _validator = new();
 
     [Fact]
     public void Validate_WithValidQuery_ShouldNotHaveValidationErrors()
     {
         // Arrange
-        var query = new GetBookReviewsQuery(Guid.NewGuid(), 1, 10);
+        var query = new GetBookReviewsByBookIdQuery(Guid.NewGuid(), 1, 10);
 
         // Act
         var result = _validator.TestValidate(query);
@@ -24,7 +24,7 @@ public class GetBookReviewsQueryValidatorTests
     public void Validate_WithEmptyBookId_ShouldHaveValidationError()
     {
         // Arrange
-        var query = new GetBookReviewsQuery(Guid.Empty, 1, 10);
+        var query = new GetBookReviewsByBookIdQuery(Guid.Empty, 1, 10);
 
         // Act
         var result = _validator.TestValidate(query);
@@ -41,7 +41,7 @@ public class GetBookReviewsQueryValidatorTests
     public void Validate_WithInvalidPage_ShouldHaveValidationError(int page)
     {
         // Arrange
-        var query = new GetBookReviewsQuery(Guid.NewGuid(), page, 10);
+        var query = new GetBookReviewsByBookIdQuery(Guid.NewGuid(), page, 10);
 
         // Act
         var result = _validator.TestValidate(query);
@@ -58,7 +58,7 @@ public class GetBookReviewsQueryValidatorTests
     public void Validate_WithInvalidPageSize_ShouldHaveValidationError(int pageSize)
     {
         // Arrange
-        var query = new GetBookReviewsQuery(Guid.NewGuid(), 1, pageSize);
+        var query = new GetBookReviewsByBookIdQuery(Guid.NewGuid(), 1, pageSize);
 
         // Act
         var result = _validator.TestValidate(query);
@@ -75,7 +75,7 @@ public class GetBookReviewsQueryValidatorTests
     public void Validate_WithPageSizeExceedingLimit_ShouldHaveValidationError(int pageSize)
     {
         // Arrange
-        var query = new GetBookReviewsQuery(Guid.NewGuid(), 1, pageSize);
+        var query = new GetBookReviewsByBookIdQuery(Guid.NewGuid(), 1, pageSize);
 
         // Act
         var result = _validator.TestValidate(query);
@@ -93,7 +93,7 @@ public class GetBookReviewsQueryValidatorTests
     public void Validate_WithValidPageSize_ShouldNotHaveValidationErrors(int pageSize)
     {
         // Arrange
-        var query = new GetBookReviewsQuery(Guid.NewGuid(), 1, pageSize);
+        var query = new GetBookReviewsByBookIdQuery(Guid.NewGuid(), 1, pageSize);
 
         // Act
         var result = _validator.TestValidate(query);

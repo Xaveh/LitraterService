@@ -7,10 +7,10 @@ using Shouldly;
 
 namespace Litrater.Presentation.IntegrationTests.Endpoints.BookReviews;
 
-public class GetBookReviewsEndpointTests(DatabaseFixture databaseFixture) : BaseIntegrationTest(databaseFixture)
+public class GetBookReviewsByBookIdEndpointTests(DatabaseFixture databaseFixture) : BaseIntegrationTest(databaseFixture)
 {
     [Fact]
-    public async Task GetBookReviews_WithDefaultPagination_ShouldReturnPagedResult()
+    public async Task GetBookReviewsByBookId_WithDefaultPagination_ShouldReturnPagedResult()
     {
         // Arrange
         var bookId = TestDataGenerator.Books.TheHobbit.Id;
@@ -32,7 +32,7 @@ public class GetBookReviewsEndpointTests(DatabaseFixture databaseFixture) : Base
     }
 
     [Fact]
-    public async Task GetBookReviews_WithCustomPageSize_ShouldReturnCorrectPageSize()
+    public async Task GetBookReviewsByBookId_WithCustomPageSize_ShouldReturnCorrectPageSize()
     {
         // Arrange
         var bookId = TestDataGenerator.Books.Dune.Id; // Dune has 2 reviews
@@ -54,7 +54,7 @@ public class GetBookReviewsEndpointTests(DatabaseFixture databaseFixture) : Base
     }
 
     [Fact]
-    public async Task GetBookReviews_WithSecondPage_ShouldReturnCorrectPaginationInfo()
+    public async Task GetBookReviewsByBookId_WithSecondPage_ShouldReturnCorrectPaginationInfo()
     {
         // Arrange
         var bookId = TestDataGenerator.Books.Dune.Id; // Dune has 2 reviews
@@ -76,7 +76,7 @@ public class GetBookReviewsEndpointTests(DatabaseFixture databaseFixture) : Base
     }
 
     [Fact]
-    public async Task GetBookReviews_WithInvalidPage_ShouldReturnBadRequest()
+    public async Task GetBookReviewsByBookId_WithInvalidPage_ShouldReturnBadRequest()
     {
         // Arrange
         var bookId = TestDataGenerator.Books.TheHobbit.Id;
@@ -89,7 +89,7 @@ public class GetBookReviewsEndpointTests(DatabaseFixture databaseFixture) : Base
     }
 
     [Fact]
-    public async Task GetBookReviews_WithInvalidPageSize_ShouldReturnBadRequest()
+    public async Task GetBookReviewsByBookId_WithInvalidPageSize_ShouldReturnBadRequest()
     {
         // Arrange
         var bookId = TestDataGenerator.Books.TheHobbit.Id;
@@ -102,7 +102,7 @@ public class GetBookReviewsEndpointTests(DatabaseFixture databaseFixture) : Base
     }
 
     [Fact]
-    public async Task GetBookReviews_WithNonExistentBook_ShouldReturnEmptyResult()
+    public async Task GetBookReviewsByBookId_WithNonExistentBook_ShouldReturnEmptyResult()
     {
         // Arrange
         var nonExistentBookId = Guid.NewGuid();
@@ -122,7 +122,7 @@ public class GetBookReviewsEndpointTests(DatabaseFixture databaseFixture) : Base
     }
 
     [Fact]
-    public async Task GetBookReviews_ShouldIncludeReviewDetails()
+    public async Task GetBookReviewsByBookId_ShouldIncludeReviewDetails()
     {
         // Arrange
         var bookId = TestDataGenerator.Books.TheHobbit.Id;
@@ -146,7 +146,7 @@ public class GetBookReviewsEndpointTests(DatabaseFixture databaseFixture) : Base
     }
 
     [Fact]
-    public async Task GetBookReviews_ShouldReturnReviewsOrderedByCreatedDateDescending()
+    public async Task GetBookReviewsByBookId_ShouldReturnReviewsOrderedByCreatedDateDescending()
     {
         // Arrange
         var bookId = TestDataGenerator.Books.TheHobbit.Id;
@@ -174,7 +174,7 @@ public class GetBookReviewsEndpointTests(DatabaseFixture databaseFixture) : Base
     }
 
     [Fact]
-    public async Task GetBookReviews_WithBookHavingNoReviews_ShouldReturnEmptyResult()
+    public async Task GetBookReviewsByBookId_WithBookHavingNoReviews_ShouldReturnEmptyResult()
     {
         // Arrange - HarryPotter has only 1 review, let's use a book with no reviews
         var bookId = TestDataGenerator.Books.HarryPotter.Id;

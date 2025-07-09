@@ -1,20 +1,20 @@
 using Litrater.Application.Abstractions.Data;
-using Litrater.Application.Features.Books.Queries.GetBookReviews;
+using Litrater.Application.Features.Books.Queries.GetBookReviewsByBookId;
 using Litrater.Domain.Books;
 using Moq;
 using Shouldly;
 
 namespace Litrater.Application.UnitTests.Features.Books;
 
-public class GetBookReviewsQueryHandlerTests
+public class GetBookReviewsByBookIdQueryHandlerTests
 {
     private readonly Mock<IBookReviewRepository> _mockBookReviewRepository;
-    private readonly GetBookReviewsQueryHandler _handler;
+    private readonly GetBookReviewsByBookIdQueryHandler _handler;
 
-    public GetBookReviewsQueryHandlerTests()
+    public GetBookReviewsByBookIdQueryHandlerTests()
     {
         _mockBookReviewRepository = new Mock<IBookReviewRepository>();
-        _handler = new GetBookReviewsQueryHandler(_mockBookReviewRepository.Object);
+        _handler = new GetBookReviewsByBookIdQueryHandler(_mockBookReviewRepository.Object);
     }
 
     [Fact]
@@ -23,7 +23,7 @@ public class GetBookReviewsQueryHandlerTests
         // Arrange
         var bookId = Guid.NewGuid();
         var userId = Guid.NewGuid();
-        var query = new GetBookReviewsQuery(bookId, 1, 10);
+        var query = new GetBookReviewsByBookIdQuery(bookId, 1, 10);
         var reviews = new List<BookReview>
         {
             new(Guid.NewGuid(), "Great book!", 5, bookId, userId),
@@ -52,7 +52,7 @@ public class GetBookReviewsQueryHandlerTests
     {
         // Arrange
         var bookId = Guid.NewGuid();
-        var query = new GetBookReviewsQuery(bookId, 1, 10);
+        var query = new GetBookReviewsByBookIdQuery(bookId, 1, 10);
         var reviews = new List<BookReview>();
 
         _mockBookReviewRepository
@@ -78,7 +78,7 @@ public class GetBookReviewsQueryHandlerTests
         // Arrange
         var bookId = Guid.NewGuid();
         var userId = Guid.NewGuid();
-        var query = new GetBookReviewsQuery(bookId, 2, 5);
+        var query = new GetBookReviewsByBookIdQuery(bookId, 2, 5);
         var reviews = new List<BookReview>
         {
             new(Guid.NewGuid(), "Review 1", 5, bookId, userId),
@@ -107,7 +107,7 @@ public class GetBookReviewsQueryHandlerTests
     {
         // Arrange
         var bookId = Guid.NewGuid();
-        var query = new GetBookReviewsQuery(bookId, 2, 15);
+        var query = new GetBookReviewsByBookIdQuery(bookId, 2, 15);
         var reviews = new List<BookReview>();
 
         _mockBookReviewRepository

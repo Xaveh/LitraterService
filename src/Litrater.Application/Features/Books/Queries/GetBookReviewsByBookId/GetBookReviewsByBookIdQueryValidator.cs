@@ -1,10 +1,10 @@
 using FluentValidation;
 
-namespace Litrater.Application.Features.Books.Queries.GetBookReviews;
+namespace Litrater.Application.Features.Books.Queries.GetBookReviewsByBookId;
 
-internal sealed class GetBookReviewsQueryValidator : AbstractValidator<GetBookReviewsQuery>
+internal sealed class GetBookReviewsByBookIdQueryValidator : AbstractValidator<GetBookReviewsByBookIdQuery>
 {
-    public GetBookReviewsQueryValidator()
+    public GetBookReviewsByBookIdQueryValidator()
     {
         RuleFor(x => x.BookId)
             .NotEmpty()
