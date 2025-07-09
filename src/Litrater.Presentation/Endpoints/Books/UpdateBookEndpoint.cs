@@ -1,5 +1,6 @@
 using Litrater.Application.Abstractions.CQRS;
-using Litrater.Application.Features.Books.Commands.CreateBook;
+using Litrater.Application.Features.Books.Commands;
+using Litrater.Application.Features.Books.Commands.UpdateBook;
 using Litrater.Application.Features.Books.Dtos;
 using Litrater.Presentation.Abstractions;
 using Litrater.Presentation.Authorization;
@@ -8,14 +9,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Litrater.Presentation.Endpoints.Books;
 
-internal sealed class CreateBookEndpoint : IEndpoint
+internal sealed class UpdateBookEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("books",
-                async (CreateBookRequest request, ICommandHandler<CreateBookCommand, BookDto> handler, CancellationToken cancellationToken) =>
+        app.MapPut("books/{id:guid}",
+                async (Guid id, UpdateBookRequest request, ICommandHandler<UpdateBookCommand, BookDto> handler, CancellationToken cancellationToken) =>
                 {
-                    var command = new CreateBookCommand(
+                    var command = new UpdateBookCommand(
+                        Id: id,
                         Title: request.Title,
                         Isbn: request.Isbn,
                         AuthorIds: request.AuthorIds
@@ -25,7 +27,7 @@ internal sealed class CreateBookEndpoint : IEndpoint
 
                     return result.ToHttpResult();
                 })
-            .WithName("CreateBook")
+            .WithName("UpdateBook")
             .WithTags("Books")
             .MapToApiVersion(1)
             .WithOpenApi()
@@ -33,11 +35,12 @@ internal sealed class CreateBookEndpoint : IEndpoint
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status404NotFound)
             .RequireAuthorization(AuthorizationPolicies.AdminOnly);
     }
 }
 
-internal sealed record CreateBookRequest(
+internal sealed record UpdateBookRequest(
     string Title,
     string Isbn,
     IEnumerable<Guid> AuthorIds

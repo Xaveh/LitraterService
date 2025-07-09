@@ -1,6 +1,5 @@
 using Litrater.Application.Abstractions.CQRS;
-using Litrater.Application.Features.Books.Commands.CreateBook;
-using Litrater.Application.Features.Books.Dtos;
+using Litrater.Application.Features.Books.Commands.DeleteBook;
 using Litrater.Presentation.Abstractions;
 using Litrater.Presentation.Authorization;
 using Litrater.Presentation.Extensions;
@@ -8,37 +7,28 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Litrater.Presentation.Endpoints.Books;
 
-internal sealed class CreateBookEndpoint : IEndpoint
+internal sealed class DeleteBookEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("books",
-                async (CreateBookRequest request, ICommandHandler<CreateBookCommand, BookDto> handler, CancellationToken cancellationToken) =>
+        app.MapDelete("books/{id:guid}",
+                async (Guid id, ICommandHandler<DeleteBookCommand> handler, CancellationToken cancellationToken) =>
                 {
-                    var command = new CreateBookCommand(
-                        Title: request.Title,
-                        Isbn: request.Isbn,
-                        AuthorIds: request.AuthorIds
-                    );
+                    var command = new DeleteBookCommand(id);
 
                     var result = await handler.Handle(command, cancellationToken);
 
                     return result.ToHttpResult();
                 })
-            .WithName("CreateBook")
+            .WithName("DeleteBook")
             .WithTags("Books")
             .MapToApiVersion(1)
             .WithOpenApi()
-            .Produces<BookDto>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status204NoContent)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status404NotFound)
             .RequireAuthorization(AuthorizationPolicies.AdminOnly);
     }
 }
-
-internal sealed record CreateBookRequest(
-    string Title,
-    string Isbn,
-    IEnumerable<Guid> AuthorIds
-);

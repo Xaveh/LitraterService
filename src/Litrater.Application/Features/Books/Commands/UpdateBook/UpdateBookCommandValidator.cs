@@ -1,11 +1,14 @@
 using FluentValidation;
 
-namespace Litrater.Application.Features.Books.Commands.CreateBook;
+namespace Litrater.Application.Features.Books.Commands.UpdateBook;
 
-internal sealed class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
+public sealed class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
 {
-    public CreateBookCommandValidator()
+    public UpdateBookCommandValidator()
     {
+        RuleFor(x => x.Id)
+            .NotEmpty();
+
         RuleFor(x => x.Title)
             .NotEmpty()
             .MaximumLength(200);

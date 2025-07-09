@@ -11,7 +11,8 @@ public static class TestDataGenerator
 
     public static class Users
     {
-        public static User Admin => new(Guid.NewGuid(),
+        public static User Admin => new(
+            new Guid("a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
             "admin@litrater.com",
             PasswordHasher.Hash("admin123"),
             "Admin",
@@ -19,7 +20,8 @@ public static class TestDataGenerator
             true,
             UserRole.Admin);
 
-        public static User Regular => new(Guid.NewGuid(),
+        public static User Regular => new(
+            new Guid("b2c3d4e5-f617-4901-bcde-f23456789012"),
             "user@litrater.com",
             PasswordHasher.Hash("user123"),
             "Regular",

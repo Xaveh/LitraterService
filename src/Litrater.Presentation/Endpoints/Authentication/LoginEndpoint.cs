@@ -20,6 +20,7 @@ internal sealed class LoginEndpoint : IEndpoint
                     return result.ToHttpResult();
                 })
             .WithName("Login")
+            .WithTags("Authentication")
             .MapToApiVersion(1)
             .WithOpenApi()
             .Produces<string>(StatusCodes.Status200OK)
