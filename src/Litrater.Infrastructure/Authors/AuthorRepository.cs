@@ -31,4 +31,9 @@ internal sealed class AuthorRepository(LitraterDbContext context) : Repository<A
     {
         await DbSet.AddAsync(author, cancellationToken);
     }
+
+    public void Delete(Author author)
+    {
+        DbSet.Remove(author);
+    }
 }
