@@ -62,4 +62,42 @@ public static class TestDataGenerator
         public static Author Herbert => new(new Guid("24610d22-961d-4a06-b2c3-40aaf247f3c8"), "Frank", "Herbert");
         public static Author Asimov => new(new Guid("41120f1c-c0e6-41ff-8bb5-9f5c5ec85a88"), "Isaac", "Asimov");
     }
+
+    public static class BookReviews
+    {
+        public static BookReview HobbitReview1 => new(
+            new Guid("c1d2e3f4-5678-9012-3456-789012345678"),
+            "Amazing adventure story! Tolkien's world-building is incredible.",
+            5,
+            Books.TheHobbit.Id,
+            Users.Regular.Id);
+
+        public static BookReview HobbitReview2 => new(
+            new Guid("d2e3f4a5-6789-0123-4567-890123456789"),
+            "A classic fantasy tale that never gets old.",
+            4,
+            Books.TheHobbit.Id,
+            Users.Admin.Id);
+
+        public static BookReview HarryPotterReview1 => new(
+            new Guid("e3f4a5b6-7890-1234-5678-901234567890"),
+            "Magical story that captivated me from start to finish.",
+            5,
+            Books.HarryPotter.Id,
+            Users.Regular.Id);
+
+        public static BookReview DuneReview1 => new(
+            new Guid("f4a5b6c7-8901-2345-6789-012345678901"),
+            "Complex and thought-provoking science fiction masterpiece.",
+            4,
+            Books.Dune.Id,
+            Users.Admin.Id);
+
+        public static BookReview DuneReview2 => new(
+            new Guid("a5b6c7d8-9012-3456-7890-123456789012"),
+            "Dense but rewarding read. The world-building is phenomenal.",
+            5,
+            Books.Dune.Id,
+            Users.Regular.Id);
+    }
 }

@@ -13,6 +13,22 @@ internal sealed class BookReviewRepository(LitraterDbContext dbContext) : Reposi
             .FirstOrDefaultAsync(br => br.Id == id, cancellationToken);
     }
 
+    public async Task<(List<BookReview> Reviews, int TotalCount)> GetBookReviewsByBookIdAsync(Guid bookId, int page, int pageSize, CancellationToken cancellationToken = default)
+    {
+        var query = DbSet
+            .Where(br => br.BookId == bookId)
+            .OrderByDescending(br => br.CreatedDate);
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var reviews = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        return (reviews, totalCount);
+    }
+
     public async Task AddAsync(BookReview bookReview, CancellationToken cancellationToken = default)
     {
         await DbSet.AddAsync(bookReview, cancellationToken);
