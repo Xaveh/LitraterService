@@ -21,6 +21,7 @@ public static class DependencyInjection
         services.AddDbContext<LitraterDbContext>(options => options.UseNpgsql(connectionString));
 
         services.AddScoped<IBookRepository, BookRepository>();
+        services.AddScoped<IBookReviewRepository, BookReviewRepository>();
         services.AddScoped<IAuthorRepository, AuthorRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
