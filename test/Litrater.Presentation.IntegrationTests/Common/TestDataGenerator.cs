@@ -53,6 +53,14 @@ public static class TestDataGenerator
                 [
                     Authors.Herbert
                 ]);
+
+        public static Book Foundation =>
+            new(new Guid("9b1c2d3e-4f5a-6b7c-8d9e-0f1a2b3c4d5e"),
+                "Foundation",
+                "9780553293357",
+                [
+                    Authors.Asimov
+                ]);
     }
 
     public static class Authors

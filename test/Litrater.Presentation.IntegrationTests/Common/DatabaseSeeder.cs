@@ -30,7 +30,8 @@ internal static class DatabaseSeeder
         {
             TestDataGenerator.Books.TheHobbit,
             TestDataGenerator.Books.HarryPotter,
-            TestDataGenerator.Books.Dune
+            TestDataGenerator.Books.Dune,
+            TestDataGenerator.Books.Foundation
         };
 
         var authors = books.SelectMany(x => x.Authors).Distinct();

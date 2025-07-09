@@ -15,7 +15,7 @@ public class CreateBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
         // Arrange
         await LoginAsRegularUserAsync();
 
-        var bookId = TestDataGenerator.Books.TheHobbit.Id;
+        var bookId = TestDataGenerator.Books.Foundation.Id; // Regular user hasn't reviewed Foundation
 
         var createBookReviewRequest = new
         {
@@ -93,19 +93,8 @@ public class CreateBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
         // Arrange
         await LoginAsRegularUserAsync();
 
-        var bookId = TestDataGenerator.Books.TheHobbit.Id;
+        var bookId = TestDataGenerator.Books.TheHobbit.Id; // Regular user already has a review for TheHobbit
 
-        // Create first review
-        var firstReviewRequest = new
-        {
-            Content = "First review",
-            Rating = 4
-        };
-
-        var firstResponse = await WebApplication.HttpClient.PostAsJsonAsync($"api/v1/books/{bookId}/reviews", firstReviewRequest);
-        firstResponse.StatusCode.ShouldBe(HttpStatusCode.OK);
-
-        // Try to create second review for the same book
         var secondReviewRequest = new
         {
             Content = "Second review",
@@ -125,7 +114,7 @@ public class CreateBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
         // Arrange
         await LoginAsRegularUserAsync();
 
-        var bookId = TestDataGenerator.Books.TheHobbit.Id;
+        var bookId = TestDataGenerator.Books.Foundation.Id; // Regular user hasn't reviewed Foundation
 
         var createBookReviewRequest = new
         {
