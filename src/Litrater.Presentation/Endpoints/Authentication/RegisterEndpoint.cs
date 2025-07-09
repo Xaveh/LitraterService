@@ -26,6 +26,7 @@ internal sealed class RegisterEndpoint : IEndpoint
                     return result.ToHttpResult();
                 })
             .WithName("Register")
+            .WithTags("Authentication")
             .MapToApiVersion(1)
             .WithOpenApi()
             .Produces<UserDto>(StatusCodes.Status200OK)

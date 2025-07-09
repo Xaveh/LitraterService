@@ -20,6 +20,7 @@ internal sealed class GetBookByIdEndpoint : IEndpoint
                     return result.ToHttpResult();
                 })
             .WithName("GetBookById")
+            .WithTags("Books")
             .MapToApiVersion(1)
             .WithOpenApi()
             .Produces<BookDto>(StatusCodes.Status200OK)

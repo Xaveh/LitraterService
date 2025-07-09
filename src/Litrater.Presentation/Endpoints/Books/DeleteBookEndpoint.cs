@@ -21,6 +21,7 @@ internal sealed class DeleteBookEndpoint : IEndpoint
                     return result.ToHttpResult();
                 })
             .WithName("DeleteBook")
+            .WithTags("Books")
             .MapToApiVersion(1)
             .WithOpenApi()
             .Produces(StatusCodes.Status204NoContent)

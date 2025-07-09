@@ -26,6 +26,7 @@ internal sealed class CreateBookEndpoint : IEndpoint
                     return result.ToHttpResult();
                 })
             .WithName("CreateBook")
+            .WithTags("Books")
             .MapToApiVersion(1)
             .WithOpenApi()
             .Produces<BookDto>(StatusCodes.Status200OK)

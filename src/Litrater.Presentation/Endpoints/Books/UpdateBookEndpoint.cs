@@ -28,6 +28,7 @@ internal sealed class UpdateBookEndpoint : IEndpoint
                     return result.ToHttpResult();
                 })
             .WithName("UpdateBook")
+            .WithTags("Books")
             .MapToApiVersion(1)
             .WithOpenApi()
             .Produces<BookDto>(StatusCodes.Status200OK)
