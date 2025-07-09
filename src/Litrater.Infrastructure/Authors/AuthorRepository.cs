@@ -14,4 +14,14 @@ internal sealed class AuthorRepository(LitraterDbContext context) : Repository<A
         return DbSet.Where(author => authorIds.Contains(author.Id))
             .ToListAsync(cancellationToken);
     }
+
+    public Task<bool> ExistsByNameAsync(string firstName, string lastName, CancellationToken cancellationToken = default)
+    {
+        return DbSet.AnyAsync(author => author.FirstName == firstName && author.LastName == lastName, cancellationToken);
+    }
+
+    public async Task AddAsync(Author author, CancellationToken cancellationToken = default)
+    {
+        await DbSet.AddAsync(author, cancellationToken);
+    }
 }
