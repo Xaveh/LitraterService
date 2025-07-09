@@ -7,8 +7,8 @@ public sealed class Author : AggregateRoot
 {
     private readonly List<Book> _books = [];
 
-    #pragma warning disable CS8618 // Required by Entity Framework
-    private Author() {}
+#pragma warning disable CS8618 // Required by Entity Framework
+    private Author() { }
 
     public Author(Guid id, string firstName, string lastName) : base(id)
     {
@@ -19,12 +19,12 @@ public sealed class Author : AggregateRoot
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
     public IReadOnlyCollection<Book> Books => _books.AsReadOnly();
-
-    public void AddBook(Book book)
+    
+    public void Update(string firstName, string lastName, List<Book> books)
     {
-        if (!_books.Contains(book))
-        {
-            _books.Add(book);
-        }
+        FirstName = firstName;
+        LastName = lastName;
+        _books.Clear();
+        _books.AddRange(books);
     }
 }

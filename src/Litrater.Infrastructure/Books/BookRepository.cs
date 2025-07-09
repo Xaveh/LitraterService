@@ -32,6 +32,13 @@ internal sealed class BookRepository(LitraterDbContext context) : Repository<Boo
         return (books, totalCount);
     }
 
+    public Task<List<Book>> GetBooksByIdsAsync(IEnumerable<Guid> bookIds, CancellationToken cancellationToken = default)
+    {
+        return DbSet.Where(book => bookIds.Contains(book.Id))
+            .Include(b => b.Authors)
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task AddAsync(Book book, CancellationToken cancellationToken = default)
     {
         await DbSet.AddAsync(book, cancellationToken);
