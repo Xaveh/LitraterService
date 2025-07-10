@@ -10,8 +10,8 @@ namespace Litrater.Application.UnitTests.Features.Authors;
 public sealed class CreateAuthorCommandHandlerTests
 {
     private readonly Mock<IAuthorRepository> _authorRepositoryMock;
-    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
     private readonly CreateAuthorCommandHandler _handler;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
 
     public CreateAuthorCommandHandlerTests()
     {
@@ -69,4 +69,4 @@ public sealed class CreateAuthorCommandHandlerTests
         _authorRepositoryMock.Verify(x => x.AddAsync(It.IsAny<Author>(), It.IsAny<CancellationToken>()), Times.Never);
         _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
-} 
+}

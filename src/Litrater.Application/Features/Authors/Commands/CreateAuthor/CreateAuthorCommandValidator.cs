@@ -14,4 +14,4 @@ internal sealed class CreateAuthorCommandValidator : AbstractValidator<CreateAut
             .NotEmpty()
             .MaximumLength(100);
     }
-} 
+}

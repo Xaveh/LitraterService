@@ -9,4 +9,4 @@ public sealed class DeleteAuthorCommandValidator : AbstractValidator<DeleteAutho
         RuleFor(x => x.Id)
             .NotEmpty();
     }
-} 
+}

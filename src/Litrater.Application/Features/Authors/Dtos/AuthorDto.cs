@@ -5,4 +5,4 @@ public record AuthorDto(
     string FirstName,
     string LastName,
     IEnumerable<Guid> BookIds
-); 
+);

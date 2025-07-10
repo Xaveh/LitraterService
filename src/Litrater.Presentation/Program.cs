@@ -7,7 +7,7 @@ using Litrater.Presentation.Extensions;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Serilog;
 
-WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 
@@ -16,7 +16,7 @@ builder.Services
     .AddPresentation(builder.Configuration)
     .AddInfrastructure(builder.Configuration);
 
-WebApplication app = builder.Build();
+var app = builder.Build();
 
 var apiVersionSet = app.NewApiVersionSet()
     .HasApiVersion(new ApiVersion(1))

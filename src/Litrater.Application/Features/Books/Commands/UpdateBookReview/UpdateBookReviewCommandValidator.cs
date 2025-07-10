@@ -22,4 +22,4 @@ internal sealed class UpdateBookReviewCommandValidator : AbstractValidator<Updat
             .NotEmpty()
             .WithMessage("User ID must not be empty.");
     }
-} 
+}

@@ -10,9 +10,6 @@ public class LitraterWebApplication : IDisposable
     private readonly WebApplicationFactory<Program> _factory;
     private readonly IServiceScope _scope;
 
-    public HttpClient HttpClient { get; }
-    public LitraterDbContext DbContext { get; }
-
     public LitraterWebApplication(string connectionString)
     {
         _factory = new WebApplicationFactory<Program>()
@@ -29,6 +26,9 @@ public class LitraterWebApplication : IDisposable
         _scope = _factory.Services.CreateScope();
         DbContext = _scope.ServiceProvider.GetRequiredService<LitraterDbContext>();
     }
+
+    public HttpClient HttpClient { get; }
+    public LitraterDbContext DbContext { get; }
 
     public void Dispose()
     {

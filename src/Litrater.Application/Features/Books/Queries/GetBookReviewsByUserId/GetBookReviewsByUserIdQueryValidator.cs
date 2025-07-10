@@ -20,4 +20,4 @@ internal sealed class GetBookReviewsByUserIdQueryValidator : AbstractValidator<G
             .LessThanOrEqualTo(100)
             .WithMessage("PageSize must not exceed 100");
     }
-} 
+}

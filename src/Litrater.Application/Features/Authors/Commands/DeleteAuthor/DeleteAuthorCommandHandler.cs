@@ -19,4 +19,4 @@ public sealed class DeleteAuthorCommandHandler(IAuthorRepository authorRepositor
 
         return Result.Success();
     }
-} 
+}

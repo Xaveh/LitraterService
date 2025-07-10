@@ -29,4 +29,4 @@ internal sealed class GetAuthorByIdEndpoint : IEndpoint
             .Produces(StatusCodes.Status403Forbidden)
             .Produces(StatusCodes.Status404NotFound);
     }
-} 
+}

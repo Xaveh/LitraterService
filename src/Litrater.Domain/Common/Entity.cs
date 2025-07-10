@@ -1,6 +1,6 @@
 namespace Litrater.Domain.Common;
 
-public abstract class Entity 
+public abstract class Entity
 {
     protected Entity(Guid? id = null)
     {
@@ -10,5 +10,5 @@ public abstract class Entity
 
     public Guid Id { get; }
     public DateTime CreatedDate { get; }
-    public DateTime? ModifiedDate { get;  }
+    public DateTime? ModifiedDate { get; }
 }

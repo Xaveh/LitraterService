@@ -79,4 +79,4 @@ public sealed class CreateAuthorCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.LastName);
     }
-} 
+}

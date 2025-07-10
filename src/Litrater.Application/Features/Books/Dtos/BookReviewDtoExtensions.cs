@@ -14,4 +14,4 @@ public static class BookReviewDtoExtensions
             UserId: bookReview.UserId
         );
     }
-} 
+}

@@ -25,4 +25,4 @@ public sealed class UpdateAuthorCommandValidator : AbstractValidator<UpdateAutho
             .NotEmpty()
             .WithMessage("Book IDs must not be empty.");
     }
-} 
+}

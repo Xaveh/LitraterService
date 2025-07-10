@@ -9,10 +9,10 @@ namespace Litrater.Application.UnitTests.Features.Authentication;
 
 public sealed class LoginQueryHandlerTests
 {
-    private readonly Mock<IUserRepository> _userRepositoryMock;
+    private readonly LoginQueryHandler _handler;
     private readonly Mock<IPasswordHasher> _passwordHasherMock;
     private readonly Mock<ITokenProvider> _tokenProviderMock;
-    private readonly LoginQueryHandler _handler;
+    private readonly Mock<IUserRepository> _userRepositoryMock;
 
     public LoginQueryHandlerTests()
     {

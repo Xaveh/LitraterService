@@ -65,4 +65,4 @@ public class GetAuthorByIdEndpointTests(DatabaseFixture fixture) : BaseIntegrati
 
         authorDto.ShouldNotBeNull();
     }
-} 
+}

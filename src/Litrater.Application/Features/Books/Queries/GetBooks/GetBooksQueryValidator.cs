@@ -16,4 +16,4 @@ internal sealed class GetBooksQueryValidator : AbstractValidator<GetBooksQuery>
             .LessThanOrEqualTo(100)
             .WithMessage("PageSize must not exceed 100");
     }
-} 
+}

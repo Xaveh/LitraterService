@@ -16,7 +16,9 @@ internal static class DatabaseSeeder
     private static async Task SeedUsersAsync(LitraterDbContext dbContext)
     {
         if (await dbContext.Users.AnyAsync())
+        {
             return;
+        }
 
         dbContext.Users.AddRange(TestDataGenerator.Users.Admin, TestDataGenerator.Users.Regular);
     }
@@ -24,7 +26,9 @@ internal static class DatabaseSeeder
     private static async Task SeedBooksAndAuthorsAsync(LitraterDbContext dbContext)
     {
         if (await dbContext.Books.AnyAsync())
+        {
             return;
+        }
 
         var books = new[]
         {
@@ -43,7 +47,9 @@ internal static class DatabaseSeeder
     private static async Task SeedBookReviewsAsync(LitraterDbContext dbContext)
     {
         if (await dbContext.BookReviews.AnyAsync())
+        {
             return;
+        }
 
         var bookReviews = new[]
         {

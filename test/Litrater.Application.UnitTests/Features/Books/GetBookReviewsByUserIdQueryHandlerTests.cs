@@ -8,8 +8,8 @@ namespace Litrater.Application.UnitTests.Features.Books;
 
 public class GetBookReviewsByUserIdQueryHandlerTests
 {
-    private readonly Mock<IBookReviewRepository> _mockBookReviewRepository;
     private readonly GetBookReviewsByUserIdQueryHandler _handler;
+    private readonly Mock<IBookReviewRepository> _mockBookReviewRepository;
 
     public GetBookReviewsByUserIdQueryHandlerTests()
     {
@@ -23,7 +23,7 @@ public class GetBookReviewsByUserIdQueryHandlerTests
         // Arrange
         var userId = Guid.NewGuid();
         var bookId = Guid.NewGuid();
-        var query = new GetBookReviewsByUserIdQuery(userId, 1, 10);
+        var query = new GetBookReviewsByUserIdQuery(userId);
         var reviews = new List<BookReview>
         {
             new(Guid.NewGuid(), "Great book!", 5, bookId, userId),
@@ -52,7 +52,7 @@ public class GetBookReviewsByUserIdQueryHandlerTests
     {
         // Arrange
         var userId = Guid.NewGuid();
-        var query = new GetBookReviewsByUserIdQuery(userId, 1, 10);
+        var query = new GetBookReviewsByUserIdQuery(userId);
         var reviews = new List<BookReview>();
 
         _mockBookReviewRepository
@@ -129,7 +129,7 @@ public class GetBookReviewsByUserIdQueryHandlerTests
         var userId = Guid.NewGuid();
         var bookId = Guid.NewGuid();
         var reviewId = Guid.NewGuid();
-        var query = new GetBookReviewsByUserIdQuery(userId, 1, 10);
+        var query = new GetBookReviewsByUserIdQuery(userId);
         var reviews = new List<BookReview>
         {
             new(reviewId, "Excellent book!", 5, bookId, userId)
@@ -151,4 +151,4 @@ public class GetBookReviewsByUserIdQueryHandlerTests
         reviewDto.BookId.ShouldBe(bookId);
         reviewDto.UserId.ShouldBe(userId);
     }
-} 
+}

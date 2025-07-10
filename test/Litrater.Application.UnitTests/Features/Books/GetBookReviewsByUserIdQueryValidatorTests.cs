@@ -11,7 +11,7 @@ public class GetBookReviewsByUserIdQueryValidatorTests
     public void Validate_WithValidQuery_ShouldNotHaveValidationErrors()
     {
         // Arrange
-        var query = new GetBookReviewsByUserIdQuery(Guid.NewGuid(), 1, 10);
+        var query = new GetBookReviewsByUserIdQuery(Guid.NewGuid());
 
         // Act
         var result = _validator.TestValidate(query);
@@ -24,7 +24,7 @@ public class GetBookReviewsByUserIdQueryValidatorTests
     public void Validate_WithEmptyUserId_ShouldHaveValidationError()
     {
         // Arrange
-        var query = new GetBookReviewsByUserIdQuery(Guid.Empty, 1, 10);
+        var query = new GetBookReviewsByUserIdQuery(Guid.Empty);
 
         // Act
         var result = _validator.TestValidate(query);
@@ -41,7 +41,7 @@ public class GetBookReviewsByUserIdQueryValidatorTests
     public void Validate_WithInvalidPage_ShouldHaveValidationError(int page)
     {
         // Arrange
-        var query = new GetBookReviewsByUserIdQuery(Guid.NewGuid(), page, 10);
+        var query = new GetBookReviewsByUserIdQuery(Guid.NewGuid(), page);
 
         // Act
         var result = _validator.TestValidate(query);
@@ -111,4 +111,4 @@ public class GetBookReviewsByUserIdQueryValidatorTests
         // Assert
         result.ShouldNotHaveAnyValidationErrors();
     }
-} 
+}

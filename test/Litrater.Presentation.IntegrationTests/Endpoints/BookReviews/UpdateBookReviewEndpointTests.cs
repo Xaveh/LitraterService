@@ -39,7 +39,7 @@ public class UpdateBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
 
         // Clear the change tracker to ensure we get fresh data from the database
         WebApplication.DbContext.ChangeTracker.Clear();
-        
+
         var persistedBookReview = await WebApplication.DbContext.BookReviews
             .FirstOrDefaultAsync(br => br.Id == bookReviewId);
 
@@ -79,7 +79,7 @@ public class UpdateBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
 
         // Clear the change tracker to ensure we get fresh data from the database
         WebApplication.DbContext.ChangeTracker.Clear();
-        
+
         var persistedBookReview = await WebApplication.DbContext.BookReviews
             .FirstOrDefaultAsync(br => br.Id == bookReviewId);
 
@@ -235,4 +235,4 @@ public class UpdateBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
         bookReviewDto.Rating.ShouldBe(updateBookReviewRequest.Rating);
         bookReviewDto.UserId.ShouldBe(TestDataGenerator.Users.Admin.Id);
     }
-} 
+}

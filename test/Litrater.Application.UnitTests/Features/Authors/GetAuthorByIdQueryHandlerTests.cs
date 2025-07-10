@@ -2,7 +2,6 @@ using Ardalis.Result;
 using Litrater.Application.Abstractions.Data;
 using Litrater.Application.Features.Authors.Queries.GetAuthorById;
 using Litrater.Domain.Authors;
-using Litrater.Domain.Books;
 using Moq;
 using Shouldly;
 
@@ -60,4 +59,4 @@ public sealed class GetAuthorByIdQueryHandlerTests
         // Assert
         result.Status.ShouldBe(ResultStatus.NotFound);
     }
-} 
+}

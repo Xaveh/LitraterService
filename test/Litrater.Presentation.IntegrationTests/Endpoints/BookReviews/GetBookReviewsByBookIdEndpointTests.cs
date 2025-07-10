@@ -192,4 +192,4 @@ public class GetBookReviewsByBookIdEndpointTests(DatabaseFixture databaseFixture
         pagedResult.PagedInfo.PageNumber.ShouldBe(2);
         pagedResult.PagedInfo.TotalRecords.ShouldBe(1); // HarryPotter has 1 review
     }
-} 
+}

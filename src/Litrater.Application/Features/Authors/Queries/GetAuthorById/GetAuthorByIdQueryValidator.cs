@@ -8,4 +8,4 @@ internal sealed class GetAuthorByIdQueryValidator : AbstractValidator<GetAuthorB
     {
         RuleFor(x => x.Id).NotEmpty();
     }
-} 
+}

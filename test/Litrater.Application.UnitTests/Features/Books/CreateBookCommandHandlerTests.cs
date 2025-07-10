@@ -10,10 +10,10 @@ namespace Litrater.Application.UnitTests.Features.Books;
 
 public sealed class CreateBookCommandHandlerTests
 {
-    private readonly Mock<IBookRepository> _bookRepositoryMock;
     private readonly Mock<IAuthorRepository> _authorRepositoryMock;
-    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    private readonly Mock<IBookRepository> _bookRepositoryMock;
     private readonly CreateBookCommandHandler _handler;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
 
     public CreateBookCommandHandlerTests()
     {

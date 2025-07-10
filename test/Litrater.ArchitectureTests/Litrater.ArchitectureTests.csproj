@@ -21,10 +21,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\Litrater.Application\Litrater.Application.csproj"/>
-        <ProjectReference Include="..\..\src\Litrater.Domain\Litrater.Domain.csproj"/>
-        <ProjectReference Include="..\..\src\Litrater.Infrastructure\Litrater.Infrastructure.csproj"/>
-        <ProjectReference Include="..\..\src\Litrater.Presentation\Litrater.Presentation.csproj"/>
+        <ProjectReference Include="..\..\src\Litrater.Application\Litrater.Application.csproj" />
+        <ProjectReference Include="..\..\src\Litrater.Domain\Litrater.Domain.csproj" />
+        <ProjectReference Include="..\..\src\Litrater.Infrastructure\Litrater.Infrastructure.csproj" />
+        <ProjectReference Include="..\..\src\Litrater.Presentation\Litrater.Presentation.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -8,8 +8,8 @@ namespace Litrater.Application.UnitTests.Features.Books;
 
 public class GetBookReviewsByBookIdQueryHandlerTests
 {
-    private readonly Mock<IBookReviewRepository> _mockBookReviewRepository;
     private readonly GetBookReviewsByBookIdQueryHandler _handler;
+    private readonly Mock<IBookReviewRepository> _mockBookReviewRepository;
 
     public GetBookReviewsByBookIdQueryHandlerTests()
     {
@@ -23,7 +23,7 @@ public class GetBookReviewsByBookIdQueryHandlerTests
         // Arrange
         var bookId = Guid.NewGuid();
         var userId = Guid.NewGuid();
-        var query = new GetBookReviewsByBookIdQuery(bookId, 1, 10);
+        var query = new GetBookReviewsByBookIdQuery(bookId);
         var reviews = new List<BookReview>
         {
             new(Guid.NewGuid(), "Great book!", 5, bookId, userId),
@@ -52,7 +52,7 @@ public class GetBookReviewsByBookIdQueryHandlerTests
     {
         // Arrange
         var bookId = Guid.NewGuid();
-        var query = new GetBookReviewsByBookIdQuery(bookId, 1, 10);
+        var query = new GetBookReviewsByBookIdQuery(bookId);
         var reviews = new List<BookReview>();
 
         _mockBookReviewRepository

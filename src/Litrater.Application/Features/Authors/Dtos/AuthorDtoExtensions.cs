@@ -13,4 +13,4 @@ public static class AuthorDtoExtensions
             BookIds: author.Books.Select(b => b.Id)
         );
     }
-} 
+}

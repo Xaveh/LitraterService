@@ -11,9 +11,9 @@ namespace Litrater.Application.UnitTests.Behaviors;
 
 public sealed class QueryHandlerValidationDecoratorTests
 {
+    private readonly QueryHandlerValidationDecorator<TestQuery, string> _decorator;
     private readonly Mock<IQueryHandler<TestQuery, string>> _innerHandlerMock;
     private readonly Mock<IValidator<TestQuery>> _validatorMock;
-    private readonly QueryHandlerValidationDecorator<TestQuery, string> _decorator;
 
     public QueryHandlerValidationDecoratorTests()
     {

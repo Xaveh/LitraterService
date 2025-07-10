@@ -10,8 +10,8 @@ namespace Litrater.Application.UnitTests.Features.Books;
 public sealed class DeleteBookReviewCommandHandlerTests
 {
     private readonly Mock<IBookReviewRepository> _bookReviewRepositoryMock;
-    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
     private readonly DeleteBookReviewCommandHandler _handler;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
 
     public DeleteBookReviewCommandHandlerTests()
     {
@@ -27,7 +27,7 @@ public sealed class DeleteBookReviewCommandHandlerTests
         var bookReviewId = Guid.NewGuid();
         var userId = Guid.NewGuid();
         var bookId = Guid.NewGuid();
-        var command = new DeleteBookReviewCommand(bookReviewId, userId, false);
+        var command = new DeleteBookReviewCommand(bookReviewId, userId);
         var existingBookReview = new BookReview(bookReviewId, "Test content", 5, bookId, userId);
 
         _bookReviewRepositoryMock
@@ -77,7 +77,7 @@ public sealed class DeleteBookReviewCommandHandlerTests
         // Arrange
         var bookReviewId = Guid.NewGuid();
         var userId = Guid.NewGuid();
-        var command = new DeleteBookReviewCommand(bookReviewId, userId, false);
+        var command = new DeleteBookReviewCommand(bookReviewId, userId);
 
         _bookReviewRepositoryMock
             .Setup(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()))
@@ -102,7 +102,7 @@ public sealed class DeleteBookReviewCommandHandlerTests
         var originalUserId = Guid.NewGuid();
         var differentUserId = Guid.NewGuid();
         var bookId = Guid.NewGuid();
-        var command = new DeleteBookReviewCommand(bookReviewId, differentUserId, false);
+        var command = new DeleteBookReviewCommand(bookReviewId, differentUserId);
         var existingBookReview = new BookReview(bookReviewId, "Test content", 5, bookId, originalUserId);
 
         _bookReviewRepositoryMock
@@ -145,4 +145,4 @@ public sealed class DeleteBookReviewCommandHandlerTests
         _bookReviewRepositoryMock.Verify(x => x.Delete(existingBookReview), Times.Once);
         _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
-} 
+}

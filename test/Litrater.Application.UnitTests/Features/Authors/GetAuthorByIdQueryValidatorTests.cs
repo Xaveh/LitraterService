@@ -32,4 +32,4 @@ public sealed class GetAuthorByIdQueryValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Id);
     }
-} 
+}

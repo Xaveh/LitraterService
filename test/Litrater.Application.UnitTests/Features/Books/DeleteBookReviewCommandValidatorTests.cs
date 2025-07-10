@@ -11,7 +11,7 @@ public sealed class DeleteBookReviewCommandValidatorTests
     public void Validate_WhenAllFieldsAreValid_ShouldReturnTrue()
     {
         // Arrange
-        var command = new DeleteBookReviewCommand(Guid.NewGuid(), Guid.NewGuid(), false);
+        var command = new DeleteBookReviewCommand(Guid.NewGuid(), Guid.NewGuid());
 
         // Act
         var result = _validator.Validate(command);
@@ -24,7 +24,7 @@ public sealed class DeleteBookReviewCommandValidatorTests
     public void Validate_WhenIdIsEmpty_ShouldReturnFalse()
     {
         // Arrange
-        var command = new DeleteBookReviewCommand(Guid.Empty, Guid.NewGuid(), false);
+        var command = new DeleteBookReviewCommand(Guid.Empty, Guid.NewGuid());
 
         // Act
         var result = _validator.Validate(command);
@@ -38,7 +38,7 @@ public sealed class DeleteBookReviewCommandValidatorTests
     public void Validate_WhenUserIdIsEmpty_ShouldReturnFalse()
     {
         // Arrange
-        var command = new DeleteBookReviewCommand(Guid.NewGuid(), Guid.Empty, false);
+        var command = new DeleteBookReviewCommand(Guid.NewGuid(), Guid.Empty);
 
         // Act
         var result = _validator.Validate(command);
@@ -65,7 +65,7 @@ public sealed class DeleteBookReviewCommandValidatorTests
     public void Validate_WhenBothIdAndUserIdAreEmpty_ShouldReturnFalseWithMultipleErrors()
     {
         // Arrange
-        var command = new DeleteBookReviewCommand(Guid.Empty, Guid.Empty, false);
+        var command = new DeleteBookReviewCommand(Guid.Empty, Guid.Empty);
 
         // Act
         var result = _validator.Validate(command);

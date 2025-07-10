@@ -19,7 +19,7 @@ internal static class DependencyInjection
             .AddJwtBearer(options =>
             {
                 var jwtSettings = configuration.GetSection(JwtSettings.SectionName).Get<JwtSettings>()
-                    ?? throw new InvalidOperationException($"JWT configuration section '{JwtSettings.SectionName}' is missing.");
+                                  ?? throw new InvalidOperationException($"JWT configuration section '{JwtSettings.SectionName}' is missing.");
 
                 options.TokenValidationParameters = new TokenValidationParameters
                 {

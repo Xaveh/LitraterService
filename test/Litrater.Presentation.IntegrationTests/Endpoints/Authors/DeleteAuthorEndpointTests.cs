@@ -69,4 +69,4 @@ public class DeleteAuthorEndpointTests(DatabaseFixture fixture) : BaseIntegratio
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
     }
-} 
+}

@@ -13,4 +13,4 @@ internal sealed class GetAuthorByIdQueryHandler(IAuthorRepository authorReposito
 
         return author is null ? Result<AuthorDto>.NotFound() : author.ToDto();
     }
-} 
+}

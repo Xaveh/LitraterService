@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Primitives;
 using Serilog.Context;
 
 namespace Litrater.Presentation.Middlewares;
@@ -19,7 +18,7 @@ internal sealed class RequestContextLoggingMiddleware(RequestDelegate next)
     {
         context.Request.Headers.TryGetValue(
             CorrelationIdHeaderName,
-            out StringValues correlationId);
+            out var correlationId);
 
         return correlationId.FirstOrDefault() ?? context.TraceIdentifier;
     }

@@ -1,4 +1,3 @@
-using Ardalis.Result;
 using Litrater.Application.Abstractions.Data;
 using Litrater.Application.Features.Books.Queries.GetBooks;
 using Litrater.Domain.Authors;
@@ -10,8 +9,8 @@ namespace Litrater.Application.UnitTests.Features.Books;
 
 public class GetBooksQueryHandlerTests
 {
-    private readonly Mock<IBookRepository> _mockBookRepository;
     private readonly GetBooksQueryHandler _handler;
+    private readonly Mock<IBookRepository> _mockBookRepository;
 
     public GetBooksQueryHandlerTests()
     {
@@ -23,7 +22,7 @@ public class GetBooksQueryHandlerTests
     public async Task Handle_WithValidQuery_ShouldReturnPagedResult()
     {
         // Arrange
-        var query = new GetBooksQuery(1, 10);
+        var query = new GetBooksQuery();
         var author = new Author(Guid.NewGuid(), "John", "Doe");
         var books = new List<Book>
         {
@@ -52,7 +51,7 @@ public class GetBooksQueryHandlerTests
     public async Task Handle_WithEmptyResult_ShouldReturnEmptyPagedResult()
     {
         // Arrange
-        var query = new GetBooksQuery(1, 10);
+        var query = new GetBooksQuery();
         var books = new List<Book>();
 
         _mockBookRepository

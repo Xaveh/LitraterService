@@ -11,7 +11,7 @@ public sealed class UpdateBookReviewCommandValidatorTests
     public void Validate_WhenCommandIsValid_ShouldReturnTrue()
     {
         // Arrange
-        var command = new UpdateBookReviewCommand(Guid.NewGuid(), "Updated content", 4, Guid.NewGuid(), false);
+        var command = new UpdateBookReviewCommand(Guid.NewGuid(), "Updated content", 4, Guid.NewGuid());
 
         // Act
         var result = _validator.Validate(command);
@@ -24,7 +24,7 @@ public sealed class UpdateBookReviewCommandValidatorTests
     public void Validate_WhenIdIsEmpty_ShouldReturnFalse()
     {
         // Arrange
-        var command = new UpdateBookReviewCommand(Guid.Empty, "Updated content", 4, Guid.NewGuid(), false);
+        var command = new UpdateBookReviewCommand(Guid.Empty, "Updated content", 4, Guid.NewGuid());
 
         // Act
         var result = _validator.Validate(command);
@@ -38,7 +38,7 @@ public sealed class UpdateBookReviewCommandValidatorTests
     public void Validate_WhenContentIsEmpty_ShouldReturnFalse()
     {
         // Arrange
-        var command = new UpdateBookReviewCommand(Guid.NewGuid(), "", 4, Guid.NewGuid(), false);
+        var command = new UpdateBookReviewCommand(Guid.NewGuid(), "", 4, Guid.NewGuid());
 
         // Act
         var result = _validator.Validate(command);
@@ -53,7 +53,7 @@ public sealed class UpdateBookReviewCommandValidatorTests
     {
         // Arrange
         var longContent = new string('a', 1001);
-        var command = new UpdateBookReviewCommand(Guid.NewGuid(), longContent, 4, Guid.NewGuid(), false);
+        var command = new UpdateBookReviewCommand(Guid.NewGuid(), longContent, 4, Guid.NewGuid());
 
         // Act
         var result = _validator.Validate(command);
@@ -67,7 +67,7 @@ public sealed class UpdateBookReviewCommandValidatorTests
     public void Validate_WhenRatingIsZero_ShouldReturnFalse()
     {
         // Arrange
-        var command = new UpdateBookReviewCommand(Guid.NewGuid(), "Updated content", 0, Guid.NewGuid(), false);
+        var command = new UpdateBookReviewCommand(Guid.NewGuid(), "Updated content", 0, Guid.NewGuid());
 
         // Act
         var result = _validator.Validate(command);
@@ -81,7 +81,7 @@ public sealed class UpdateBookReviewCommandValidatorTests
     public void Validate_WhenRatingIsGreaterThanFive_ShouldReturnFalse()
     {
         // Arrange
-        var command = new UpdateBookReviewCommand(Guid.NewGuid(), "Updated content", 6, Guid.NewGuid(), false);
+        var command = new UpdateBookReviewCommand(Guid.NewGuid(), "Updated content", 6, Guid.NewGuid());
 
         // Act
         var result = _validator.Validate(command);
@@ -95,7 +95,7 @@ public sealed class UpdateBookReviewCommandValidatorTests
     public void Validate_WhenUserIdIsEmpty_ShouldReturnFalse()
     {
         // Arrange
-        var command = new UpdateBookReviewCommand(Guid.NewGuid(), "Updated content", 4, Guid.Empty, false);
+        var command = new UpdateBookReviewCommand(Guid.NewGuid(), "Updated content", 4, Guid.Empty);
 
         // Act
         var result = _validator.Validate(command);
@@ -117,4 +117,4 @@ public sealed class UpdateBookReviewCommandValidatorTests
         // Assert
         result.IsValid.ShouldBeTrue();
     }
-} 
+}

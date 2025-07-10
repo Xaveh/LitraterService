@@ -42,7 +42,7 @@ public class UpdateBookEndpointTests(DatabaseFixture fixture) : BaseIntegrationT
 
         // Refresh the DbContext to get the latest data
         WebApplication.DbContext.ChangeTracker.Clear();
-        
+
         var updatedBook = await WebApplication.DbContext.Books
             .Include(b => b.Authors)
             .FirstOrDefaultAsync(b => b.Id == bookId);

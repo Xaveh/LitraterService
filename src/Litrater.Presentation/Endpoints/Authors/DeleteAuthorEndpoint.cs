@@ -31,4 +31,4 @@ internal sealed class DeleteAuthorEndpoint : IEndpoint
             .Produces(StatusCodes.Status404NotFound)
             .RequireAuthorization(AuthorizationPolicies.AdminOnly);
     }
-} 
+}

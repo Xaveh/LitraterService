@@ -2,8 +2,8 @@ using Ardalis.Result;
 using Litrater.Application.Abstractions.Authentication;
 using Litrater.Application.Abstractions.CQRS;
 using Litrater.Application.Abstractions.Data;
-using Litrater.Domain.Users;
 using Litrater.Application.Features.Authentication.Dtos;
+using Litrater.Domain.Users;
 
 namespace Litrater.Application.Features.Authentication.Commands.Register;
 

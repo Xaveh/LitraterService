@@ -10,9 +10,9 @@ namespace Litrater.Application.UnitTests.Behaviors;
 
 public sealed class QueryHandlerLoggingDecoratorTests
 {
+    private readonly QueryHandlerLoggingDecorator<TestQuery, string> _decorator;
     private readonly Mock<IQueryHandler<TestQuery, string>> _innerHandlerMock;
     private readonly Mock<ILogger<QueryHandlerLoggingDecorator<TestQuery, string>>> _loggerMock;
-    private readonly QueryHandlerLoggingDecorator<TestQuery, string> _decorator;
 
     public QueryHandlerLoggingDecoratorTests()
     {

@@ -123,4 +123,4 @@ public sealed class UpdateBookCommandValidatorTests
         result.ShouldHaveValidationErrorFor(x => x.AuthorIds)
             .WithErrorMessage("Author IDs must not be empty.");
     }
-} 
+}

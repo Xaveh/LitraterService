@@ -134,4 +134,4 @@ public sealed class UpdateAuthorCommandValidatorTests
         var result = _validator.TestValidate(command);
         result.ShouldNotHaveAnyValidationErrors();
     }
-} 
+}

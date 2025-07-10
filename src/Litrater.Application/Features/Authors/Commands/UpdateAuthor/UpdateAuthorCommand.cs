@@ -7,4 +7,4 @@ public sealed record UpdateAuthorCommand(
     string FirstName,
     string LastName,
     IEnumerable<Guid> BookIds
-) : ICommand; 
+) : ICommand;

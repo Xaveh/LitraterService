@@ -1,9 +1,9 @@
 using System.Net;
 using System.Net.Http.Json;
+using Litrater.Application.Features.Authentication.Dtos;
 using Litrater.Presentation.IntegrationTests.Common;
 using Microsoft.EntityFrameworkCore;
 using Shouldly;
-using Litrater.Application.Features.Authentication.Dtos;
 
 namespace Litrater.Presentation.IntegrationTests.Endpoints.Authentication;
 

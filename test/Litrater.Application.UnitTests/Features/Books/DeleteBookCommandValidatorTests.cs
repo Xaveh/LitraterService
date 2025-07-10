@@ -32,4 +32,4 @@ public sealed class DeleteBookCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Id);
     }
-} 
+}

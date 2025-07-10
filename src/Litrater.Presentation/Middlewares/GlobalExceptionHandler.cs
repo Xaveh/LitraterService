@@ -11,19 +11,19 @@ internal sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> log
     {
         logger.LogError(exception, "Unhandled exception occurred");
 
-        ProblemDetails problemDetails = exception switch
+        var problemDetails = exception switch
         {
             BadHttpRequestException => new ProblemDetails
             {
                 Status = StatusCodes.Status400BadRequest,
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                Title = "Bad Request",
+                Title = "Bad Request"
             },
             JsonException => new ProblemDetails
             {
                 Status = StatusCodes.Status400BadRequest,
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                Title = "Invalid JSON",
+                Title = "Invalid JSON"
             },
             _ => new ProblemDetails
             {

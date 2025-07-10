@@ -25,7 +25,7 @@ internal sealed class UpdateBookReviewEndpoint : IEndpoint
 
                     var userRole = user.FindFirst(ClaimTypes.Role)?.Value;
                     var isAdmin = userRole == nameof(UserRole.Admin);
-                    
+
                     var command = new UpdateBookReviewCommand(
                         Id: id,
                         Content: request.Content,
@@ -51,4 +51,4 @@ internal sealed class UpdateBookReviewEndpoint : IEndpoint
     }
 }
 
-internal sealed record UpdateBookReviewRequest(string Content, int Rating); 
+internal sealed record UpdateBookReviewRequest(string Content, int Rating);

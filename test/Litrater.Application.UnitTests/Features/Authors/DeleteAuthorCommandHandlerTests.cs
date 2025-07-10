@@ -10,8 +10,8 @@ namespace Litrater.Application.UnitTests.Features.Authors;
 public sealed class DeleteAuthorCommandHandlerTests
 {
     private readonly Mock<IAuthorRepository> _authorRepositoryMock;
-    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
     private readonly DeleteAuthorCommandHandler _handler;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
 
     public DeleteAuthorCommandHandlerTests()
     {
@@ -64,4 +64,4 @@ public sealed class DeleteAuthorCommandHandlerTests
         _authorRepositoryMock.Verify(x => x.Delete(It.IsAny<Author>()), Times.Never);
         _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
-} 
+}

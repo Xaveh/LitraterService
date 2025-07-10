@@ -11,8 +11,8 @@ namespace Litrater.Application.UnitTests.Features.Books;
 public sealed class DeleteBookCommandHandlerTests
 {
     private readonly Mock<IBookRepository> _bookRepositoryMock;
-    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
     private readonly DeleteBookCommandHandler _handler;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
 
     public DeleteBookCommandHandlerTests()
     {
@@ -66,4 +66,4 @@ public sealed class DeleteBookCommandHandlerTests
         _bookRepositoryMock.Verify(x => x.Delete(It.IsAny<Book>()), Times.Never);
         _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
-} 
+}
