@@ -33,7 +33,8 @@ public sealed class CreateBookCommandValidatorTests
         var result = _validator.TestValidate(command);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(x => x.Title);
+        result.ShouldHaveValidationErrorFor(x => x.Title)
+            .WithErrorMessage("Title is required");
     }
 
     [Fact]
@@ -47,7 +48,8 @@ public sealed class CreateBookCommandValidatorTests
         var result = _validator.TestValidate(command);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(x => x.Title);
+        result.ShouldHaveValidationErrorFor(x => x.Title)
+            .WithErrorMessage("Title cannot exceed 200 characters");
     }
 
     [Theory]
@@ -63,7 +65,8 @@ public sealed class CreateBookCommandValidatorTests
         var result = _validator.TestValidate(command);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(x => x.Isbn);
+        result.ShouldHaveValidationErrorFor(x => x.Isbn)
+            .WithErrorMessage("ISBN is required");
     }
 
     [Theory]
@@ -94,7 +97,8 @@ public sealed class CreateBookCommandValidatorTests
         var result = _validator.TestValidate(command);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(x => x.AuthorIds);
+        result.ShouldHaveValidationErrorFor(x => x.AuthorIds)
+            .WithErrorMessage("Author IDs must not be empty.");
     }
 
     [Fact]

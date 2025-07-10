@@ -6,6 +6,8 @@ internal sealed class GetAuthorByIdQueryValidator : AbstractValidator<GetAuthorB
 {
     public GetAuthorByIdQueryValidator()
     {
-        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.Id)
+            .NotEmpty()
+            .WithMessage("Author ID is required");
     }
 }

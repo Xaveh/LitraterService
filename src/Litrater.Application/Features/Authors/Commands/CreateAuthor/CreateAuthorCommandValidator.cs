@@ -8,10 +8,14 @@ internal sealed class CreateAuthorCommandValidator : AbstractValidator<CreateAut
     {
         RuleFor(x => x.FirstName)
             .NotEmpty()
-            .MaximumLength(100);
+            .WithMessage("First name is required")
+            .MaximumLength(100)
+            .WithMessage("First name cannot exceed 100 characters");
 
         RuleFor(x => x.LastName)
             .NotEmpty()
-            .MaximumLength(100);
+            .WithMessage("Last name is required")
+            .MaximumLength(100)
+            .WithMessage("Last name cannot exceed 100 characters");
     }
 }

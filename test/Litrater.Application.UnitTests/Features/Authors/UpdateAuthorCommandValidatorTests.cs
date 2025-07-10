@@ -18,9 +18,12 @@ public sealed class UpdateAuthorCommandValidatorTests
             BookIds: [Guid.NewGuid()]
         );
 
-        // Act & Assert
+        // Act
         var result = _validator.TestValidate(command);
-        result.ShouldHaveValidationErrorFor(x => x.Id);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.Id)
+            .WithErrorMessage("Author ID is required");
     }
 
     [Fact]
@@ -34,9 +37,12 @@ public sealed class UpdateAuthorCommandValidatorTests
             BookIds: [Guid.NewGuid()]
         );
 
-        // Act & Assert
+        // Act
         var result = _validator.TestValidate(command);
-        result.ShouldHaveValidationErrorFor(x => x.FirstName);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.FirstName)
+            .WithErrorMessage("First name is required");
     }
 
     [Fact]
@@ -50,9 +56,12 @@ public sealed class UpdateAuthorCommandValidatorTests
             BookIds: [Guid.NewGuid()]
         );
 
-        // Act & Assert
+        // Act
         var result = _validator.TestValidate(command);
-        result.ShouldHaveValidationErrorFor(x => x.LastName);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.LastName)
+            .WithErrorMessage("Last name is required");
     }
 
     [Fact]
@@ -66,9 +75,12 @@ public sealed class UpdateAuthorCommandValidatorTests
             BookIds: [Guid.NewGuid()]
         );
 
-        // Act & Assert
+        // Act
         var result = _validator.TestValidate(command);
-        result.ShouldHaveValidationErrorFor(x => x.FirstName);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.FirstName)
+            .WithErrorMessage("First name cannot exceed 100 characters");
     }
 
     [Fact]
@@ -82,9 +94,12 @@ public sealed class UpdateAuthorCommandValidatorTests
             BookIds: [Guid.NewGuid()]
         );
 
-        // Act & Assert
+        // Act
         var result = _validator.TestValidate(command);
-        result.ShouldHaveValidationErrorFor(x => x.LastName);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.LastName)
+            .WithErrorMessage("Last name cannot exceed 100 characters");
     }
 
     [Fact]
@@ -98,9 +113,12 @@ public sealed class UpdateAuthorCommandValidatorTests
             BookIds: []
         );
 
-        // Act & Assert
+        // Act
         var result = _validator.TestValidate(command);
-        result.ShouldHaveValidationErrorFor(x => x.BookIds);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.BookIds)
+            .WithErrorMessage("Book IDs must not be empty.");
     }
 
     [Fact]
@@ -114,9 +132,12 @@ public sealed class UpdateAuthorCommandValidatorTests
             BookIds: [Guid.Empty]
         );
 
-        // Act & Assert
+        // Act
         var result = _validator.TestValidate(command);
-        result.ShouldHaveValidationErrorFor("BookIds[0]");
+
+        // Assert
+        result.ShouldHaveValidationErrorFor("BookIds[0]")
+            .WithErrorMessage("Book IDs must not be empty.");
     }
 
     [Fact]
@@ -130,8 +151,10 @@ public sealed class UpdateAuthorCommandValidatorTests
             BookIds: [Guid.NewGuid(), Guid.NewGuid()]
         );
 
-        // Act & Assert
+        // Act
         var result = _validator.TestValidate(command);
+
+        // Assert
         result.ShouldNotHaveAnyValidationErrors();
     }
 }

@@ -30,6 +30,7 @@ public sealed class GetBookByIdQueryValidatorTests
         var result = _validator.TestValidate(query);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(x => x.Id);
+        result.ShouldHaveValidationErrorFor(x => x.Id)
+            .WithErrorMessage("Book ID is required");
     }
 }

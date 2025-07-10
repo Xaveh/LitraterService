@@ -8,7 +8,9 @@ internal sealed class CreateBookReviewCommandValidator : AbstractValidator<Creat
     {
         RuleFor(x => x.Content)
             .NotEmpty()
-            .MaximumLength(1000);
+            .WithMessage("Content is required")
+            .MaximumLength(1000)
+            .WithMessage("Content cannot exceed 1000 characters");
 
         RuleFor(x => x.Rating)
             .InclusiveBetween(1, 5)

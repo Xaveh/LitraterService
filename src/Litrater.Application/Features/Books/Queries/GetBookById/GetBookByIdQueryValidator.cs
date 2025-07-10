@@ -6,6 +6,8 @@ internal sealed class GetBookByIdQueryValidator : AbstractValidator<GetBookByIdQ
 {
     public GetBookByIdQueryValidator()
     {
-        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.Id)
+            .NotEmpty()
+            .WithMessage("Book ID is required");
     }
 }
