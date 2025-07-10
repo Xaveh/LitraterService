@@ -52,6 +52,8 @@ public class UpdateAuthorEndpointTests(DatabaseFixture fixture) : BaseIntegratio
         updatedAuthor.LastName.ShouldBe(updateAuthorRequest.LastName);
         updatedAuthor.Books.ShouldHaveSingleItem();
         updatedAuthor.Books.First().Id.ShouldBe(hobbitBookId);
+        updatedAuthor.ModifiedDate.ShouldNotBeNull();
+        updatedAuthor.ModifiedDate.Value.ShouldBeGreaterThan(updatedAuthor.CreatedDate);
     }
 
     [Fact]

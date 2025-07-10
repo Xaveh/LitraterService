@@ -26,5 +26,6 @@ public sealed class Author : AggregateRoot
         LastName = lastName;
         _books.Clear();
         _books.AddRange(books);
+        SetModifiedDate();
     }
 }

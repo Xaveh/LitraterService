@@ -52,6 +52,8 @@ public class UpdateBookEndpointTests(DatabaseFixture fixture) : BaseIntegrationT
         updatedBook.Isbn.ShouldBe(updateBookRequest.Isbn);
         updatedBook.Authors.ShouldHaveSingleItem();
         updatedBook.Authors.First().Id.ShouldBe(tolkienAuthorId);
+        updatedBook.ModifiedDate.ShouldNotBeNull();
+        updatedBook.ModifiedDate.Value.ShouldBeGreaterThan(updatedBook.CreatedDate);
     }
 
     [Fact]

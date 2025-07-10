@@ -10,5 +10,10 @@ public abstract class Entity
 
     public Guid Id { get; }
     public DateTime CreatedDate { get; }
-    public DateTime? ModifiedDate { get; }
+    public DateTime? ModifiedDate { get; private set; }
+
+    protected void SetModifiedDate()
+    {
+        ModifiedDate = DateTime.UtcNow;
+    }
 }
