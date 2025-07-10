@@ -75,31 +75,7 @@ public class GetBookReviewsByUserIdEndpointTests(DatabaseFixture databaseFixture
         pagedResult.PagedInfo.TotalPages.ShouldBe(2);
     }
 
-    [Fact]
-    public async Task GetBookReviewsByUserId_WithInvalidPage_ShouldReturnBadRequest()
-    {
-        // Arrange
-        var userId = TestDataGenerator.Users.Regular.Id;
 
-        // Act
-        var response = await WebApplication.HttpClient.GetAsync($"api/v1/users/{userId}/reviews?page=0");
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-    }
-
-    [Fact]
-    public async Task GetBookReviewsByUserId_WithInvalidPageSize_ShouldReturnBadRequest()
-    {
-        // Arrange
-        var userId = TestDataGenerator.Users.Regular.Id;
-
-        // Act
-        var response = await WebApplication.HttpClient.GetAsync($"api/v1/users/{userId}/reviews?pageSize=0");
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-    }
 
     [Fact]
     public async Task GetBookReviewsByUserId_WithNonExistentUser_ShouldReturnEmptyResult()

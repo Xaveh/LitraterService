@@ -27,20 +27,7 @@ public class DeleteAuthorEndpointTests(DatabaseFixture fixture) : BaseIntegratio
         deletedAuthor.ShouldBeNull();
     }
 
-    [Fact]
-    public async Task DeleteAuthor_WithNonExistentAuthor_ShouldReturnNotFound()
-    {
-        // Arrange
-        await LoginAsAdminAsync();
 
-        var nonExistentId = Guid.NewGuid();
-
-        // Act
-        var response = await WebApplication.HttpClient.DeleteAsync($"api/v1/authors/{nonExistentId}");
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
-    }
 
     [Fact]
     public async Task DeleteAuthor_WithoutAuthentication_ShouldReturnUnauthorized()

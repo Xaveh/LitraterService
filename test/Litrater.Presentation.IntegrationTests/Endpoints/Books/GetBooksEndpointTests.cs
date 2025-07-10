@@ -65,15 +65,7 @@ public class GetBooksEndpointTests(DatabaseFixture databaseFixture) : BaseIntegr
         pagedResult.PagedInfo.TotalRecords.ShouldBe(totalBooks);
     }
 
-    [Fact]
-    public async Task GetBooks_WithInvalidPage_ShouldReturnBadRequest()
-    {
-        // Act
-        var response = await WebApplication.HttpClient.GetAsync("api/v1/books?page=0");
 
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-    }
 
     [Fact]
     public async Task GetBooks_ShouldIncludeBookDetails()

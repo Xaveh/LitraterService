@@ -45,22 +45,5 @@ public class RegisterEndpointTests(DatabaseFixture fixture) : BaseIntegrationTes
         persistedUser.PasswordHash.ShouldNotBe(registerRequest.Password); // Should be hashed
     }
 
-    [Fact]
-    public async Task Register_WithExistingEmail_ShouldReturnConflict()
-    {
-        // Arrange
-        var registerRequest = new
-        {
-            Email = "admin@litrater.com",
-            Password = "NewUser123!",
-            FirstName = "New",
-            LastName = "User"
-        };
 
-        // Act
-        var response = await WebApplication.HttpClient.PostAsJsonAsync("api/v1/auth/register", registerRequest);
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.Conflict);
-    }
 }

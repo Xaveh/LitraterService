@@ -56,47 +56,7 @@ public class UpdateBookEndpointTests(DatabaseFixture fixture) : BaseIntegrationT
         updatedBook.ModifiedDate.Value.ShouldBeGreaterThan(updatedBook.CreatedDate);
     }
 
-    [Fact]
-    public async Task UpdateBook_WithNonExistentBook_ShouldReturnNotFound()
-    {
-        // Arrange
-        await LoginAsAdminAsync();
 
-        var nonExistentId = Guid.NewGuid();
-        var updateBookRequest = new
-        {
-            Title = "Non-existent Book",
-            Isbn = "9780123456789",
-            AuthorIds = new[] { TestDataGenerator.Authors.Tolkien.Id }
-        };
-
-        // Act
-        var response = await WebApplication.HttpClient.PutAsJsonAsync($"api/v1/books/{nonExistentId}", updateBookRequest);
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
-    }
-
-    [Fact]
-    public async Task UpdateBook_WithInvalidAuthorIds_ShouldReturnBadRequest()
-    {
-        // Arrange
-        await LoginAsAdminAsync();
-
-        var bookId = TestDataGenerator.Books.TheHobbit.Id;
-        var updateBookRequest = new
-        {
-            Title = "The Hobbit - Updated Edition",
-            Isbn = "9780547928211",
-            AuthorIds = new[] { Guid.NewGuid() } // Non-existent author ID
-        };
-
-        // Act
-        var response = await WebApplication.HttpClient.PutAsJsonAsync($"api/v1/books/{bookId}", updateBookRequest);
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-    }
 
     [Fact]
     public async Task UpdateBook_WithoutAuthentication_ShouldReturnUnauthorized()

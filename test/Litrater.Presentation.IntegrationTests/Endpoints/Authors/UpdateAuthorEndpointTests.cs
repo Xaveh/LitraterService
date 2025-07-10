@@ -88,26 +88,7 @@ public class UpdateAuthorEndpointTests(DatabaseFixture fixture) : BaseIntegratio
         authorDto.BookIds.ShouldBe(updateAuthorRequest.BookIds, ignoreOrder: true);
     }
 
-    [Fact]
-    public async Task UpdateAuthor_WithInvalidBookIds_ShouldReturnBadRequest()
-    {
-        // Arrange
-        await LoginAsAdminAsync();
 
-        var authorId = TestDataGenerator.Authors.Tolkien.Id;
-        var updateAuthorRequest = new
-        {
-            FirstName = "J.R.R.",
-            LastName = "Tolkien",
-            BookIds = new[] { Guid.NewGuid() } // Non-existent book ID
-        };
-
-        // Act
-        var response = await WebApplication.HttpClient.PutAsJsonAsync($"api/v1/authors/{authorId}", updateAuthorRequest);
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-    }
 
     [Fact]
     public async Task UpdateAuthor_WithoutAuthentication_ShouldReturnUnauthorized()

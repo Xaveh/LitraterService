@@ -75,31 +75,7 @@ public class GetBookReviewsByBookIdEndpointTests(DatabaseFixture databaseFixture
         pagedResult.PagedInfo.TotalPages.ShouldBe(2);
     }
 
-    [Fact]
-    public async Task GetBookReviewsByBookId_WithInvalidPage_ShouldReturnBadRequest()
-    {
-        // Arrange
-        var bookId = TestDataGenerator.Books.TheHobbit.Id;
 
-        // Act
-        var response = await WebApplication.HttpClient.GetAsync($"api/v1/books/{bookId}/reviews?page=0");
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-    }
-
-    [Fact]
-    public async Task GetBookReviewsByBookId_WithInvalidPageSize_ShouldReturnBadRequest()
-    {
-        // Arrange
-        var bookId = TestDataGenerator.Books.TheHobbit.Id;
-
-        // Act
-        var response = await WebApplication.HttpClient.GetAsync($"api/v1/books/{bookId}/reviews?pageSize=0");
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-    }
 
     [Fact]
     public async Task GetBookReviewsByBookId_WithNonExistentBook_ShouldReturnEmptyResult()

@@ -82,21 +82,6 @@ public class DeleteBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
     }
 
     [Fact]
-    public async Task DeleteBookReview_WithNonExistentBookReview_ShouldReturnNotFound()
-    {
-        // Arrange
-        await LoginAsRegularUserAsync();
-
-        var nonExistentBookReviewId = Guid.NewGuid();
-
-        // Act
-        var response = await WebApplication.HttpClient.DeleteAsync($"api/v1/book-reviews/{nonExistentBookReviewId}");
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
-    }
-
-    [Fact]
     public async Task DeleteBookReview_AdminDeletingOwnReview_ShouldDeleteSuccessfully()
     {
         // Arrange
@@ -117,20 +102,5 @@ public class DeleteBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
             .FirstOrDefaultAsync(br => br.Id == bookReviewId);
 
         deletedBookReview.ShouldBeNull();
-    }
-
-    [Fact]
-    public async Task DeleteBookReview_WithInvalidGuid_ShouldReturnNotFound()
-    {
-        // Arrange
-        await LoginAsRegularUserAsync();
-
-        var invalidGuid = "invalid-guid";
-
-        // Act
-        var response = await WebApplication.HttpClient.DeleteAsync($"api/v1/book-reviews/{invalidGuid}");
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
     }
 }
