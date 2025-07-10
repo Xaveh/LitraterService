@@ -19,7 +19,9 @@ public static class DatabaseSeeder
     private static async Task SeedUsersAsync(LitraterDbContext context)
     {
         if (await context.Users.AnyAsync())
+        {
             return;
+        }
 
         var passwordHasher = new PasswordHasher();
 
@@ -49,7 +51,9 @@ public static class DatabaseSeeder
     private static async Task<Dictionary<Guid, Author>> SeedAuthorsAsync(LitraterDbContext context)
     {
         if (await context.Authors.AnyAsync())
+        {
             return [];
+        }
 
         var authors = new[]
         {
@@ -69,10 +73,13 @@ public static class DatabaseSeeder
 
         return authors.ToDictionary(author => author.Id);
     }
+
     private static async Task SeedBooksAsync(LitraterDbContext context, Dictionary<Guid, Author> authors)
     {
         if (await context.Books.AnyAsync())
+        {
             return;
+        }
 
         var books = new[]
         {

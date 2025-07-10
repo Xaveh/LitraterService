@@ -1,6 +1,5 @@
 using FluentValidation.TestHelper;
 using Litrater.Application.Features.Books.Queries.GetBooks;
-using Shouldly;
 
 namespace Litrater.Application.UnitTests.Features.Books;
 
@@ -12,7 +11,7 @@ public class GetBooksQueryValidatorTests
     public void Validate_WithValidQuery_ShouldNotHaveValidationErrors()
     {
         // Arrange
-        var query = new GetBooksQuery(1, 10);
+        var query = new GetBooksQuery();
 
         // Act
         var result = _validator.TestValidate(query);
@@ -28,7 +27,7 @@ public class GetBooksQueryValidatorTests
     public void Validate_WithInvalidPage_ShouldHaveValidationError(int page)
     {
         // Arrange
-        var query = new GetBooksQuery(page, 10);
+        var query = new GetBooksQuery(page);
 
         // Act
         var result = _validator.TestValidate(query);
@@ -88,4 +87,4 @@ public class GetBooksQueryValidatorTests
         // Assert
         result.ShouldNotHaveAnyValidationErrors();
     }
-} 
+}

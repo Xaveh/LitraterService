@@ -16,4 +16,4 @@ internal sealed class GetBookReviewsByBookIdQueryHandler(IBookReviewRepository b
 
         return new PagedResult<IEnumerable<BookReviewDto>>(pagedInfo, reviews.Select(review => review.ToDto()));
     }
-} 
+}

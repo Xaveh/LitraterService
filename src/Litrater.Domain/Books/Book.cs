@@ -29,5 +29,6 @@ public sealed class Book : AggregateRoot
         Isbn = isbn;
         _authors.Clear();
         _authors.AddRange(authors);
+        SetModifiedDate();
     }
 }

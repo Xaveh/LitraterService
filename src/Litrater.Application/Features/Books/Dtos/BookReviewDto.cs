@@ -6,4 +6,4 @@ public record BookReviewDto(
     int Rating,
     Guid BookId,
     Guid UserId
-); 
+);

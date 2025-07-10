@@ -43,4 +43,4 @@ internal sealed record UpdateAuthorRequest(
     string FirstName,
     string LastName,
     IEnumerable<Guid> BookIds
-); 
+);

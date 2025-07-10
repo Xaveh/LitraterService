@@ -7,4 +7,4 @@ public record UserDto(
     string LastName,
     bool IsActive,
     string UserRole
-); 
+);

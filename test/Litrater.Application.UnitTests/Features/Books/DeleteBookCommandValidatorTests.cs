@@ -30,6 +30,7 @@ public sealed class DeleteBookCommandValidatorTests
         var result = _validator.TestValidate(command);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(x => x.Id);
+        result.ShouldHaveValidationErrorFor(x => x.Id)
+            .WithErrorMessage("Book ID is required");
     }
-} 
+}

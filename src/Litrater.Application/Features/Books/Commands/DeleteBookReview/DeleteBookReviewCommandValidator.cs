@@ -14,4 +14,4 @@ public sealed class DeleteBookReviewCommandValidator : AbstractValidator<DeleteB
             .NotEmpty()
             .WithMessage("User ID must not be empty.");
     }
-} 
+}

@@ -60,4 +60,4 @@ internal sealed class BookReviewRepository(LitraterDbContext dbContext) : Reposi
     {
         DbSet.Remove(bookReview);
     }
-} 
+}

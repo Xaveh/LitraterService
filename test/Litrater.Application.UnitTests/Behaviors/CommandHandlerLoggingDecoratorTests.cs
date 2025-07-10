@@ -10,9 +10,9 @@ namespace Litrater.Application.UnitTests.Behaviors;
 
 public sealed class CommandHandlerLoggingDecoratorTests
 {
+    private readonly CommandHandlerLoggingDecorator<TestCommand> _decorator;
     private readonly Mock<ICommandHandler<TestCommand>> _innerHandlerMock;
     private readonly Mock<ILogger<CommandHandlerLoggingDecorator<TestCommand>>> _loggerMock;
-    private readonly CommandHandlerLoggingDecorator<TestCommand> _decorator;
 
     public CommandHandlerLoggingDecoratorTests()
     {

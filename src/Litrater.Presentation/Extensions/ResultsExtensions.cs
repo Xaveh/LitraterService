@@ -7,10 +7,14 @@ namespace Litrater.Presentation.Extensions;
 internal static class ResultsExtensions
 {
     public static IResult ToHttpResult<T>(this Result<T> result)
-        => ToHttpResultCore(result.Status, result.Errors, result.ValidationErrors, result.Value);
+    {
+        return ToHttpResultCore(result.Status, result.Errors, result.ValidationErrors, result.Value);
+    }
 
     public static IResult ToHttpResult(this Result result)
-        => ToHttpResultCore(result.Status, result.Errors, result.ValidationErrors);
+    {
+        return ToHttpResultCore(result.Status, result.Errors, result.ValidationErrors);
+    }
 
     private static IResult ToHttpResultCore(ResultStatus status, IEnumerable<string>? errors,
         IEnumerable<ValidationError>? validationErrors, object? value = null)

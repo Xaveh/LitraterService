@@ -27,4 +27,4 @@ internal sealed class CreateAuthorCommandHandler(
 
         return author.ToDto();
     }
-} 
+}

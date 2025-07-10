@@ -10,8 +10,8 @@ namespace Litrater.Application.UnitTests.Features.Books;
 public sealed class UpdateBookReviewCommandHandlerTests
 {
     private readonly Mock<IBookReviewRepository> _bookReviewRepositoryMock;
-    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
     private readonly UpdateBookReviewCommandHandler _handler;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
 
     public UpdateBookReviewCommandHandlerTests()
     {
@@ -27,7 +27,7 @@ public sealed class UpdateBookReviewCommandHandlerTests
         var bookReviewId = Guid.NewGuid();
         var userId = Guid.NewGuid();
         var bookId = Guid.NewGuid();
-        var command = new UpdateBookReviewCommand(bookReviewId, "Updated content", 4, userId, false);
+        var command = new UpdateBookReviewCommand(bookReviewId, "Updated content", 4, userId);
         var existingBookReview = new BookReview(bookReviewId, "Original content", 5, bookId, userId);
 
         _bookReviewRepositoryMock
@@ -83,7 +83,7 @@ public sealed class UpdateBookReviewCommandHandlerTests
         // Arrange
         var bookReviewId = Guid.NewGuid();
         var userId = Guid.NewGuid();
-        var command = new UpdateBookReviewCommand(bookReviewId, "Updated content", 4, userId, false);
+        var command = new UpdateBookReviewCommand(bookReviewId, "Updated content", 4, userId);
 
         _bookReviewRepositoryMock
             .Setup(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()))
@@ -107,7 +107,7 @@ public sealed class UpdateBookReviewCommandHandlerTests
         var originalUserId = Guid.NewGuid();
         var differentUserId = Guid.NewGuid();
         var bookId = Guid.NewGuid();
-        var command = new UpdateBookReviewCommand(bookReviewId, "Unauthorized update", 4, differentUserId, false);
+        var command = new UpdateBookReviewCommand(bookReviewId, "Unauthorized update", 4, differentUserId);
         var existingBookReview = new BookReview(bookReviewId, "Original content", 5, bookId, originalUserId);
 
         _bookReviewRepositoryMock
@@ -152,4 +152,4 @@ public sealed class UpdateBookReviewCommandHandlerTests
         _bookReviewRepositoryMock.Verify(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()), Times.Once);
         _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
-} 
+}

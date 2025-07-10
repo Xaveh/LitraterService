@@ -10,10 +10,10 @@ namespace Litrater.Application.UnitTests.Features.Books;
 
 public sealed class UpdateBookCommandHandlerTests
 {
-    private readonly Mock<IBookRepository> _bookRepositoryMock;
     private readonly Mock<IAuthorRepository> _authorRepositoryMock;
-    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    private readonly Mock<IBookRepository> _bookRepositoryMock;
     private readonly UpdateBookCommandHandler _handler;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
 
     public UpdateBookCommandHandlerTests()
     {
@@ -110,4 +110,4 @@ public sealed class UpdateBookCommandHandlerTests
         _authorRepositoryMock.Verify(x => x.GetAuthorsByIdsAsync(authorIds, It.IsAny<CancellationToken>()), Times.Once);
         _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
-} 
+}

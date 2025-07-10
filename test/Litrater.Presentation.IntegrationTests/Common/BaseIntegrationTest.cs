@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
@@ -6,8 +7,8 @@ namespace Litrater.Presentation.IntegrationTests.Common;
 
 public abstract class BaseIntegrationTest(DatabaseFixture databaseFixture) : IClassFixture<DatabaseFixture>, IAsyncLifetime
 {
-    protected readonly LitraterWebApplication WebApplication = new(databaseFixture.DbContainer.GetConnectionString());
     private static readonly JsonSerializerOptions JsonOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+    protected readonly LitraterWebApplication WebApplication = new(databaseFixture.DbContainer.GetConnectionString());
 
     public Task InitializeAsync()
     {
@@ -49,6 +50,6 @@ public abstract class BaseIntegrationTest(DatabaseFixture databaseFixture) : ICl
 
         var token = await response.Content.ReadAsStringAsync();
         WebApplication.HttpClient.DefaultRequestHeaders.Authorization =
-            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token.Trim('"'));
+            new AuthenticationHeaderValue("Bearer", token.Trim('"'));
     }
 }

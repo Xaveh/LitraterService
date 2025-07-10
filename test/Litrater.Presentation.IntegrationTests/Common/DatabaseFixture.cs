@@ -1,5 +1,6 @@
 using Litrater.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using Respawn;
 using Testcontainers.PostgreSql;
 
@@ -7,6 +8,8 @@ namespace Litrater.Presentation.IntegrationTests.Common;
 
 public class DatabaseFixture : IAsyncLifetime
 {
+    private Respawner _respawner = null!;
+
     public PostgreSqlContainer DbContainer { get; } = new PostgreSqlBuilder()
         .WithImage("postgres:latest")
         .WithDatabase("LitraterTestDb")
@@ -15,8 +18,6 @@ public class DatabaseFixture : IAsyncLifetime
         .WithCleanUp(true)
         .Build();
 
-    private Respawner _respawner = null!;
-
     public async Task InitializeAsync()
     {
         await DbContainer.StartAsync();
@@ -24,11 +25,14 @@ public class DatabaseFixture : IAsyncLifetime
         await CreateRespawnerAsync();
     }
 
-    public Task DisposeAsync() => DbContainer.DisposeAsync().AsTask();
+    public Task DisposeAsync()
+    {
+        return DbContainer.DisposeAsync().AsTask();
+    }
 
     public async Task ResetDatabaseAsync()
     {
-        await using var connection = new Npgsql.NpgsqlConnection(DbContainer.GetConnectionString());
+        await using var connection = new NpgsqlConnection(DbContainer.GetConnectionString());
         await connection.OpenAsync();
         await _respawner.ResetAsync(connection);
     }
@@ -42,7 +46,7 @@ public class DatabaseFixture : IAsyncLifetime
 
     private async Task CreateRespawnerAsync()
     {
-        await using var connection = new Npgsql.NpgsqlConnection(DbContainer.GetConnectionString());
+        await using var connection = new NpgsqlConnection(DbContainer.GetConnectionString());
         await connection.OpenAsync();
 
         _respawner = await Respawner.CreateAsync(connection, new RespawnerOptions

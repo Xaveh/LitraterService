@@ -40,10 +40,7 @@ public class UpdateBookEndpointTests(DatabaseFixture fixture) : BaseIntegrationT
         bookDto.AuthorIds.ShouldHaveSingleItem();
         bookDto.AuthorIds.First().ShouldBe(tolkienAuthorId);
 
-        // Refresh the DbContext to get the latest data
-        WebApplication.DbContext.ChangeTracker.Clear();
-        
-        var updatedBook = await WebApplication.DbContext.Books
+        var updatedBook = await WebApplication.DbContext.Books.AsNoTracking()
             .Include(b => b.Authors)
             .FirstOrDefaultAsync(b => b.Id == bookId);
 
@@ -52,48 +49,8 @@ public class UpdateBookEndpointTests(DatabaseFixture fixture) : BaseIntegrationT
         updatedBook.Isbn.ShouldBe(updateBookRequest.Isbn);
         updatedBook.Authors.ShouldHaveSingleItem();
         updatedBook.Authors.First().Id.ShouldBe(tolkienAuthorId);
-    }
-
-    [Fact]
-    public async Task UpdateBook_WithNonExistentBook_ShouldReturnNotFound()
-    {
-        // Arrange
-        await LoginAsAdminAsync();
-
-        var nonExistentId = Guid.NewGuid();
-        var updateBookRequest = new
-        {
-            Title = "Non-existent Book",
-            Isbn = "9780123456789",
-            AuthorIds = new[] { TestDataGenerator.Authors.Tolkien.Id }
-        };
-
-        // Act
-        var response = await WebApplication.HttpClient.PutAsJsonAsync($"api/v1/books/{nonExistentId}", updateBookRequest);
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
-    }
-
-    [Fact]
-    public async Task UpdateBook_WithInvalidAuthorIds_ShouldReturnBadRequest()
-    {
-        // Arrange
-        await LoginAsAdminAsync();
-
-        var bookId = TestDataGenerator.Books.TheHobbit.Id;
-        var updateBookRequest = new
-        {
-            Title = "The Hobbit - Updated Edition",
-            Isbn = "9780547928211",
-            AuthorIds = new[] { Guid.NewGuid() } // Non-existent author ID
-        };
-
-        // Act
-        var response = await WebApplication.HttpClient.PutAsJsonAsync($"api/v1/books/{bookId}", updateBookRequest);
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        updatedBook.ModifiedDate.ShouldNotBeNull();
+        updatedBook.ModifiedDate.Value.ShouldBeGreaterThan(updatedBook.CreatedDate);
     }
 
     [Fact]

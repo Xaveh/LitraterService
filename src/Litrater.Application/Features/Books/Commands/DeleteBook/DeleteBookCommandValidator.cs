@@ -7,6 +7,7 @@ public sealed class DeleteBookCommandValidator : AbstractValidator<DeleteBookCom
     public DeleteBookCommandValidator()
     {
         RuleFor(x => x.Id)
-            .NotEmpty();
+            .NotEmpty()
+            .WithMessage("Book ID is required");
     }
 }

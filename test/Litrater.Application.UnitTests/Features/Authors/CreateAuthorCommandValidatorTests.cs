@@ -33,7 +33,8 @@ public sealed class CreateAuthorCommandValidatorTests
         var result = _validator.TestValidate(command);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(x => x.FirstName);
+        result.ShouldHaveValidationErrorFor(x => x.FirstName)
+            .WithErrorMessage("First name is required");
     }
 
     [Fact]
@@ -47,7 +48,8 @@ public sealed class CreateAuthorCommandValidatorTests
         var result = _validator.TestValidate(command);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(x => x.FirstName);
+        result.ShouldHaveValidationErrorFor(x => x.FirstName)
+            .WithErrorMessage("First name cannot exceed 100 characters");
     }
 
     [Theory]
@@ -63,7 +65,8 @@ public sealed class CreateAuthorCommandValidatorTests
         var result = _validator.TestValidate(command);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(x => x.LastName);
+        result.ShouldHaveValidationErrorFor(x => x.LastName)
+            .WithErrorMessage("Last name is required");
     }
 
     [Fact]
@@ -77,6 +80,7 @@ public sealed class CreateAuthorCommandValidatorTests
         var result = _validator.TestValidate(command);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(x => x.LastName);
+        result.ShouldHaveValidationErrorFor(x => x.LastName)
+            .WithErrorMessage("Last name cannot exceed 100 characters");
     }
-} 
+}

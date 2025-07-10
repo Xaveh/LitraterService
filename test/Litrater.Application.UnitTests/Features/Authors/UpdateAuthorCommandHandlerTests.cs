@@ -13,8 +13,8 @@ public class UpdateAuthorCommandHandlerTests
 {
     private readonly Mock<IAuthorRepository> _authorRepositoryMock;
     private readonly Mock<IBookRepository> _bookRepositoryMock;
-    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
     private readonly UpdateAuthorCommandHandler _handler;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
 
     public UpdateAuthorCommandHandlerTests()
     {

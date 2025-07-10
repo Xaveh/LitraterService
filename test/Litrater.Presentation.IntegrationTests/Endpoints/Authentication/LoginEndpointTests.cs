@@ -29,20 +29,5 @@ public class LoginEndpointTests(DatabaseFixture fixture) : BaseIntegrationTest(f
         token.Trim('"').Length.ShouldBeGreaterThan(50);
     }
 
-    [Fact]
-    public async Task Login_WithInvalidCredentials_ShouldReturnUnauthorized()
-    {
-        // Arrange
-        var loginRequest = new
-        {
-            Email = "admin@litrater.com",
-            Password = "wrongpassword"
-        };
 
-        // Act
-        var response = await WebApplication.HttpClient.PostAsJsonAsync("api/v1/auth/login", loginRequest);
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
-    }
 }

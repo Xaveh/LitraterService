@@ -31,4 +31,4 @@ public sealed class UpdateAuthorCommandHandler(
 
         return author.ToDto();
     }
-} 
+}

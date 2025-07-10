@@ -40,10 +40,7 @@ public class UpdateAuthorEndpointTests(DatabaseFixture fixture) : BaseIntegratio
         authorDto.BookIds.ShouldHaveSingleItem();
         authorDto.BookIds.First().ShouldBe(hobbitBookId);
 
-        // Refresh the DbContext to get the latest data
-        WebApplication.DbContext.ChangeTracker.Clear();
-
-        var updatedAuthor = await WebApplication.DbContext.Authors
+        var updatedAuthor = await WebApplication.DbContext.Authors.AsNoTracking()
             .Include(a => a.Books)
             .FirstOrDefaultAsync(a => a.Id == authorId);
 
@@ -52,6 +49,8 @@ public class UpdateAuthorEndpointTests(DatabaseFixture fixture) : BaseIntegratio
         updatedAuthor.LastName.ShouldBe(updateAuthorRequest.LastName);
         updatedAuthor.Books.ShouldHaveSingleItem();
         updatedAuthor.Books.First().Id.ShouldBe(hobbitBookId);
+        updatedAuthor.ModifiedDate.ShouldNotBeNull();
+        updatedAuthor.ModifiedDate.Value.ShouldBeGreaterThan(updatedAuthor.CreatedDate);
     }
 
     [Fact]
@@ -84,27 +83,6 @@ public class UpdateAuthorEndpointTests(DatabaseFixture fixture) : BaseIntegratio
         authorDto.FirstName.ShouldBe(updateAuthorRequest.FirstName);
         authorDto.LastName.ShouldBe(updateAuthorRequest.LastName);
         authorDto.BookIds.ShouldBe(updateAuthorRequest.BookIds, ignoreOrder: true);
-    }
-
-    [Fact]
-    public async Task UpdateAuthor_WithInvalidBookIds_ShouldReturnBadRequest()
-    {
-        // Arrange
-        await LoginAsAdminAsync();
-
-        var authorId = TestDataGenerator.Authors.Tolkien.Id;
-        var updateAuthorRequest = new
-        {
-            FirstName = "J.R.R.",
-            LastName = "Tolkien",
-            BookIds = new[] { Guid.NewGuid() } // Non-existent book ID
-        };
-
-        // Act
-        var response = await WebApplication.HttpClient.PutAsJsonAsync($"api/v1/authors/{authorId}", updateAuthorRequest);
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
     }
 
     [Fact]

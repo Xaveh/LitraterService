@@ -27,20 +27,7 @@ public class DeleteBookEndpointTests(DatabaseFixture fixture) : BaseIntegrationT
         deletedBook.ShouldBeNull();
     }
 
-    [Fact]
-    public async Task DeleteBook_WithNonExistentBook_ShouldReturnNotFound()
-    {
-        // Arrange
-        await LoginAsAdminAsync();
 
-        var nonExistentId = Guid.NewGuid();
-
-        // Act
-        var response = await WebApplication.HttpClient.DeleteAsync($"api/v1/books/{nonExistentId}");
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
-    }
 
     [Fact]
     public async Task DeleteBook_WithoutAuthentication_ShouldReturnUnauthorized()

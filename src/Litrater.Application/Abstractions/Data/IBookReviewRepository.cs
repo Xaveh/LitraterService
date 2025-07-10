@@ -10,4 +10,4 @@ public interface IBookReviewRepository : IRepository
     Task AddAsync(BookReview bookReview, CancellationToken cancellationToken = default);
     Task<bool> ExistsByUserAndBookAsync(Guid userId, Guid bookId, CancellationToken cancellationToken = default);
     void Delete(BookReview bookReview);
-} 
+}

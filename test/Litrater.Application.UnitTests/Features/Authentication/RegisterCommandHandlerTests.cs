@@ -5,16 +5,15 @@ using Litrater.Application.Features.Authentication.Commands.Register;
 using Litrater.Domain.Users;
 using Moq;
 using Shouldly;
-using Litrater.Application.Features.Authentication.Dtos;
 
 namespace Litrater.Application.UnitTests.Features.Authentication;
 
 public sealed class RegisterCommandHandlerTests
 {
-    private readonly Mock<IUserRepository> _userRepositoryMock;
+    private readonly RegisterCommandHandler _handler;
     private readonly Mock<IPasswordHasher> _passwordHasherMock;
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
-    private readonly RegisterCommandHandler _handler;
+    private readonly Mock<IUserRepository> _userRepositoryMock;
 
     public RegisterCommandHandlerTests()
     {

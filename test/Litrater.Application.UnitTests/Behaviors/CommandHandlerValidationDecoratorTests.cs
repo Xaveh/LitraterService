@@ -11,9 +11,9 @@ namespace Litrater.Application.UnitTests.Behaviors;
 
 public sealed class CommandHandlerValidationDecoratorTests
 {
+    private readonly CommandHandlerValidationDecorator<TestCommand> _decorator;
     private readonly Mock<ICommandHandler<TestCommand>> _innerHandlerMock;
     private readonly Mock<IValidator<TestCommand>> _validatorMock;
-    private readonly CommandHandlerValidationDecorator<TestCommand> _decorator;
 
     public CommandHandlerValidationDecoratorTests()
     {

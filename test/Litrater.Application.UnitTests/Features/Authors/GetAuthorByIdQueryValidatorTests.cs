@@ -30,6 +30,7 @@ public sealed class GetAuthorByIdQueryValidatorTests
         var result = _validator.TestValidate(query);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(x => x.Id);
+        result.ShouldHaveValidationErrorFor(x => x.Id)
+            .WithErrorMessage("Author ID is required");
     }
-} 
+}

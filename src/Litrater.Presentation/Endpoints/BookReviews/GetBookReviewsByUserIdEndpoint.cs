@@ -29,4 +29,4 @@ internal sealed class GetBookReviewsByUserIdEndpoint : IEndpoint
             .Produces<PagedResult<IEnumerable<BookReviewDto>>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest);
     }
-} 
+}

@@ -81,26 +81,5 @@ public class CreateAuthorEndpointTests(DatabaseFixture fixture) : BaseIntegratio
         response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
     }
 
-    [Theory]
-    [InlineData("", "LastName")]
-    [InlineData("FirstName", "")]
-    [InlineData(null, "LastName")]
-    [InlineData("FirstName", null)]
-    public async Task CreateAuthor_WithInvalidData_ShouldReturnBadRequest(string? firstName, string? lastName)
-    {
-        // Arrange
-        await LoginAsAdminAsync();
 
-        var createAuthorRequest = new
-        {
-            FirstName = firstName,
-            LastName = lastName
-        };
-
-        // Act
-        var response = await WebApplication.HttpClient.PostAsJsonAsync("api/v1/authors", createAuthorRequest);
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-    }
 }

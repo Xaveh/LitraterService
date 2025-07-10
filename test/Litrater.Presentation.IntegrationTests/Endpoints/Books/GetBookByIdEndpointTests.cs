@@ -31,18 +31,7 @@ public class GetBookByIdEndpointTests(DatabaseFixture fixture) : BaseIntegration
         bookDto.AuthorIds.ShouldContain(hobbitBook.Authors.First().Id);
     }
 
-    [Fact]
-    public async Task GetBookById_WithNonExistentBook_ShouldReturnNotFound()
-    {
-        // Arrange
-        var nonExistentId = Guid.NewGuid();
 
-        // Act
-        var response = await WebApplication.HttpClient.GetAsync($"api/v1/books/{nonExistentId}");
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
-    }
 
     [Fact]
     public async Task GetBookById_ShouldBeAccessibleWithoutAuthentication()

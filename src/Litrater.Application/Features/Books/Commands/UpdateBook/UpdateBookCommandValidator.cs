@@ -7,14 +7,18 @@ public sealed class UpdateBookCommandValidator : AbstractValidator<UpdateBookCom
     public UpdateBookCommandValidator()
     {
         RuleFor(x => x.Id)
-            .NotEmpty();
+            .NotEmpty()
+            .WithMessage("Book ID is required");
 
         RuleFor(x => x.Title)
             .NotEmpty()
-            .MaximumLength(200);
+            .WithMessage("Title is required")
+            .MaximumLength(200)
+            .WithMessage("Title cannot exceed 200 characters");
 
         RuleFor(x => x.Isbn)
             .NotEmpty()
+            .WithMessage("ISBN is required")
             .Matches(@"^\d{13}$")
             .WithMessage("ISBN must be exactly 13 digits.");
 
