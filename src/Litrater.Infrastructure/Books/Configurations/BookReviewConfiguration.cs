@@ -19,5 +19,8 @@ public class BookReviewConfiguration : EntityConfiguration<BookReview>
 
         builder.Property(r => r.BookId)
             .IsRequired();
+
+        builder.Property(r => r.UserId)
+            .IsRequired();
     }
 }

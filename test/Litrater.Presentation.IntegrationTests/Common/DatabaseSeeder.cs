@@ -9,6 +9,7 @@ internal static class DatabaseSeeder
     {
         await SeedUsersAsync(dbContext);
         await SeedBooksAndAuthorsAsync(dbContext);
+        await SeedBookReviewsAsync(dbContext);
         await dbContext.SaveChangesAsync();
     }
 
@@ -29,12 +30,30 @@ internal static class DatabaseSeeder
         {
             TestDataGenerator.Books.TheHobbit,
             TestDataGenerator.Books.HarryPotter,
-            TestDataGenerator.Books.Dune
+            TestDataGenerator.Books.Dune,
+            TestDataGenerator.Books.Foundation
         };
 
         var authors = books.SelectMany(x => x.Authors).Distinct();
 
         dbContext.Authors.AddRange(authors);
         dbContext.Books.AddRange(books);
+    }
+
+    private static async Task SeedBookReviewsAsync(LitraterDbContext dbContext)
+    {
+        if (await dbContext.BookReviews.AnyAsync())
+            return;
+
+        var bookReviews = new[]
+        {
+            TestDataGenerator.BookReviews.HobbitReview1,
+            TestDataGenerator.BookReviews.HobbitReview2,
+            TestDataGenerator.BookReviews.HarryPotterReview1,
+            TestDataGenerator.BookReviews.DuneReview1,
+            TestDataGenerator.BookReviews.DuneReview2
+        };
+
+        dbContext.BookReviews.AddRange(bookReviews);
     }
 }
