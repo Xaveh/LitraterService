@@ -21,10 +21,7 @@ public class DeleteBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        // Clear the change tracker to ensure we get fresh data from the database
-        WebApplication.DbContext.ChangeTracker.Clear();
-
-        var deletedBookReview = await WebApplication.DbContext.BookReviews
+        var deletedBookReview = await WebApplication.DbContext.BookReviews.AsNoTracking()
             .FirstOrDefaultAsync(br => br.Id == bookReviewId);
 
         deletedBookReview.ShouldBeNull();
@@ -44,10 +41,7 @@ public class DeleteBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        // Clear the change tracker to ensure we get fresh data from the database
-        WebApplication.DbContext.ChangeTracker.Clear();
-
-        var deletedBookReview = await WebApplication.DbContext.BookReviews
+        var deletedBookReview = await WebApplication.DbContext.BookReviews.AsNoTracking()
             .FirstOrDefaultAsync(br => br.Id == bookReviewId);
 
         deletedBookReview.ShouldBeNull();
@@ -95,10 +89,7 @@ public class DeleteBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        // Clear the change tracker to ensure we get fresh data from the database
-        WebApplication.DbContext.ChangeTracker.Clear();
-
-        var deletedBookReview = await WebApplication.DbContext.BookReviews
+        var deletedBookReview = await WebApplication.DbContext.BookReviews.AsNoTracking()
             .FirstOrDefaultAsync(br => br.Id == bookReviewId);
 
         deletedBookReview.ShouldBeNull();

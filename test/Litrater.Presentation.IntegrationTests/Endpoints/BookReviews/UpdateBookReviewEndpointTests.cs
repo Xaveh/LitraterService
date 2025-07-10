@@ -37,10 +37,7 @@ public class UpdateBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
         bookReviewDto.BookId.ShouldBe(TestDataGenerator.Books.TheHobbit.Id);
         bookReviewDto.UserId.ShouldBe(TestDataGenerator.Users.Regular.Id);
 
-        // Clear the change tracker to ensure we get fresh data from the database
-        WebApplication.DbContext.ChangeTracker.Clear();
-
-        var persistedBookReview = await WebApplication.DbContext.BookReviews
+        var persistedBookReview = await WebApplication.DbContext.BookReviews.AsNoTracking()
             .FirstOrDefaultAsync(br => br.Id == bookReviewId);
 
         persistedBookReview.ShouldNotBeNull();
@@ -79,10 +76,7 @@ public class UpdateBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
         bookReviewDto.BookId.ShouldBe(TestDataGenerator.Books.TheHobbit.Id);
         bookReviewDto.UserId.ShouldBe(TestDataGenerator.Users.Regular.Id); // Original owner should remain
 
-        // Clear the change tracker to ensure we get fresh data from the database
-        WebApplication.DbContext.ChangeTracker.Clear();
-
-        var persistedBookReview = await WebApplication.DbContext.BookReviews
+        var persistedBookReview = await WebApplication.DbContext.BookReviews.AsNoTracking()
             .FirstOrDefaultAsync(br => br.Id == bookReviewId);
 
         persistedBookReview.ShouldNotBeNull();
@@ -130,8 +124,6 @@ public class UpdateBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
     }
-
-
 
     [Fact]
     public async Task UpdateBookReview_AdminUpdatingOwnReview_ShouldUpdateSuccessfully()

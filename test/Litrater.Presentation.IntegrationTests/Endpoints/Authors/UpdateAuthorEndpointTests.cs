@@ -40,10 +40,7 @@ public class UpdateAuthorEndpointTests(DatabaseFixture fixture) : BaseIntegratio
         authorDto.BookIds.ShouldHaveSingleItem();
         authorDto.BookIds.First().ShouldBe(hobbitBookId);
 
-        // Refresh the DbContext to get the latest data
-        WebApplication.DbContext.ChangeTracker.Clear();
-
-        var updatedAuthor = await WebApplication.DbContext.Authors
+        var updatedAuthor = await WebApplication.DbContext.Authors.AsNoTracking()
             .Include(a => a.Books)
             .FirstOrDefaultAsync(a => a.Id == authorId);
 
@@ -87,8 +84,6 @@ public class UpdateAuthorEndpointTests(DatabaseFixture fixture) : BaseIntegratio
         authorDto.LastName.ShouldBe(updateAuthorRequest.LastName);
         authorDto.BookIds.ShouldBe(updateAuthorRequest.BookIds, ignoreOrder: true);
     }
-
-
 
     [Fact]
     public async Task UpdateAuthor_WithoutAuthentication_ShouldReturnUnauthorized()
