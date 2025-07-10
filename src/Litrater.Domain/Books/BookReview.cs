@@ -19,4 +19,10 @@ public sealed class BookReview : Entity
     public int Rating { get; private set; }
     public Guid BookId { get; private set; }
     public Guid UserId { get; private set; }
+
+    public void Update(string content, int rating)
+    {
+        Content = content;
+        Rating = rating;
+    }
 }
