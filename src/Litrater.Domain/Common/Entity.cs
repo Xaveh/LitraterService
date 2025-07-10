@@ -5,15 +5,19 @@ public abstract class Entity
     protected Entity(Guid? id = null)
     {
         Id = id ?? Guid.NewGuid();
-        CreatedDate = DateTime.UtcNow;
     }
 
     public Guid Id { get; }
-    public DateTime CreatedDate { get; }
-    public DateTime? ModifiedDate { get; private set; }
+    public DateTimeOffset CreatedDate { get; private set; }
+    public DateTimeOffset? ModifiedDate { get; private set; }
 
-    protected void SetModifiedDate()
+    public void SetCreatedDate(DateTimeOffset createdDate)
     {
-        ModifiedDate = DateTime.UtcNow;
+        CreatedDate = createdDate;
+    }
+
+    public void SetModifiedDate(DateTimeOffset modifiedDate)
+    {
+        ModifiedDate = modifiedDate;
     }
 }
