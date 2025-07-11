@@ -4,10 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Litrater.Presentation.Middlewares;
 
-internal sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
+internal sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger, IWebHostEnvironment environment) : IExceptionHandler
 {
-    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception,
-        CancellationToken cancellationToken)
+    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
         logger.LogError(exception, "Unhandled exception occurred");
 
@@ -33,6 +32,13 @@ internal sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> log
                 Detail = "An unexpected error occurred while processing your request."
             }
         };
+
+        if (environment.IsDevelopment())
+        {
+            problemDetails.Detail = exception.Message;
+            problemDetails.Extensions["stackTrace"] = exception.StackTrace;
+            problemDetails.Extensions["exceptionType"] = exception.GetType().Name;
+        }
 
         if (problemDetails.Status.HasValue)
         {
