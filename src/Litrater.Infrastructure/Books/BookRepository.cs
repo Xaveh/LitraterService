@@ -17,14 +17,12 @@ internal sealed class BookRepository(LitraterDbContext context) : Repository<Boo
 
     public async Task<(List<Book> Books, int TotalCount)> GetBooksAsync(int page, int pageSize, CancellationToken cancellationToken = default)
     {
-        var query = DbSet
+        var totalCount = await DbSet.CountAsync(cancellationToken);
+
+        var books = await DbSet
             .Include(b => b.Reviews)
             .Include(b => b.Authors)
-            .OrderBy(b => b.Title);
-
-        var totalCount = await query.CountAsync(cancellationToken);
-
-        var books = await query
+            .OrderBy(b => b.Title)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync(cancellationToken);

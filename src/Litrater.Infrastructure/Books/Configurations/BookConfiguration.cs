@@ -23,5 +23,10 @@ public class BookConfiguration : EntityConfiguration<Book>
             .WithOne()
             .HasForeignKey(r => r.BookId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasIndex(b => b.Title);
+
+        builder.HasIndex(b => b.Isbn)
+            .IsUnique();
     }
 }
