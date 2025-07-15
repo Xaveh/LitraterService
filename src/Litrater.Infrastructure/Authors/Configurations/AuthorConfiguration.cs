@@ -22,5 +22,7 @@ public class AuthorConfiguration : EntityConfiguration<Author>
         builder.HasMany(a => a.Books)
             .WithMany(b => b.Authors)
             .UsingEntity(j => j.ToTable("AuthorBooks"));
+
+        builder.HasIndex(a => new { a.FirstName, a.LastName });
     }
 }

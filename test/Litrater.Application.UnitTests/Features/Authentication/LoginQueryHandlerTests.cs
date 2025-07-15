@@ -2,6 +2,7 @@ using Ardalis.Result;
 using Litrater.Application.Abstractions.Authentication;
 using Litrater.Application.Features.Authentication.Queries.Login;
 using Litrater.Domain.Users;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Shouldly;
 
@@ -19,8 +20,7 @@ public sealed class LoginQueryHandlerTests
         _userRepositoryMock = new Mock<IUserRepository>();
         _passwordHasherMock = new Mock<IPasswordHasher>();
         _tokenProviderMock = new Mock<ITokenProvider>();
-        _handler = new LoginQueryHandler(_userRepositoryMock.Object, _passwordHasherMock.Object,
-            _tokenProviderMock.Object);
+        _handler = new LoginQueryHandler(_userRepositoryMock.Object, _passwordHasherMock.Object, _tokenProviderMock.Object, new Mock<ILogger<LoginQueryHandler>>().Object);
     }
 
     [Fact]

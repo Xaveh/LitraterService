@@ -24,6 +24,5 @@ public sealed class BookReview : Entity
     {
         Content = content;
         Rating = rating;
-        SetModifiedDate();
     }
 }

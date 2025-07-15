@@ -1,8 +1,10 @@
 using Litrater.Application.Abstractions.Authentication;
+using Litrater.Application.Abstractions.Common;
 using Litrater.Application.Abstractions.Data;
 using Litrater.Infrastructure.Authentication;
 using Litrater.Infrastructure.Authors;
 using Litrater.Infrastructure.Books;
+using Litrater.Infrastructure.Common;
 using Litrater.Infrastructure.Data;
 using Litrater.Infrastructure.Users;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +32,8 @@ public static class DependencyInjection
         services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
         services.AddScoped<ITokenProvider, TokenGenerator>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
+
+        services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>();
 
         services.AddHealthChecks()
             .AddNpgSql(connectionString);

@@ -22,5 +22,12 @@ public class BookReviewConfiguration : EntityConfiguration<BookReview>
 
         builder.Property(r => r.UserId)
             .IsRequired();
+
+        builder.HasIndex(r => r.UserId);
+
+        builder.HasIndex(r => r.CreatedDate);
+
+        builder.HasIndex(r => new { r.UserId, r.BookId })
+            .IsUnique();
     }
 }

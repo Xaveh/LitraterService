@@ -59,6 +59,7 @@ internal static class DependencyInjection
 
         services.AddEndpoints(typeof(DependencyInjection).Assembly);
         services.ConfigureOptions<ConfigureSwaggerOptions>();
+        services.AddLifecycleLogging();
 
         return services;
     }
