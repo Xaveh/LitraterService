@@ -16,9 +16,7 @@ internal sealed class RequestContextLoggingMiddleware(RequestDelegate next)
 
     private static string GetCorrelationId(HttpContext context)
     {
-        context.Request.Headers.TryGetValue(
-            CorrelationIdHeaderName,
-            out var correlationId);
+        context.Request.Headers.TryGetValue(CorrelationIdHeaderName, out var correlationId);
 
         return correlationId.FirstOrDefault() ?? context.TraceIdentifier;
     }

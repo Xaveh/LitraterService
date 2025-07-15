@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Litrater.Presentation.Middlewares;
 
@@ -8,7 +9,18 @@ internal sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> log
 {
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
-        logger.LogError(exception, "Unhandled exception occurred");
+        var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userEmail = httpContext.User.FindFirst(ClaimTypes.Email)?.Value;
+        var requestPath = httpContext.Request.Path;
+        var requestMethod = httpContext.Request.Method;
+        var userAgent = httpContext.Request.Headers.UserAgent.ToString();
+        var remoteIpAddress = httpContext.Connection.RemoteIpAddress?.ToString();
+
+        logger.LogError(exception,
+            "Unhandled exception occurred for {RequestMethod} {RequestPath}. " +
+            "User: {UserId} ({UserEmail}), IP: {RemoteIpAddress}, UserAgent: {UserAgent}",
+            requestMethod, requestPath, userId ?? "Anonymous", userEmail ?? "Anonymous",
+            remoteIpAddress, userAgent);
 
         var problemDetails = exception switch
         {

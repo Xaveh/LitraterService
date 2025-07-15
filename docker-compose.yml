@@ -34,8 +34,27 @@ services:
       - Jwt__Issuer=${JWT_ISSUER:-LitraterAPI}
       - Jwt__Audience=${JWT_AUDIENCE:-LitraterUsers}
       - Jwt__ExpirationInMinutes=${JWT_EXPIRATION_MINUTES:-60}
+      - Serilog__MinimumLevel__Default=${SERILOG_MIN_LEVEL:-Information}
+      - Serilog__MinimumLevel__Override__Microsoft=${SERILOG_MICROSOFT_LEVEL:-Warning}
+      - Serilog__MinimumLevel__Override__System=${SERILOG_SYSTEM_LEVEL:-Warning}
+      - Serilog__WriteTo__0__Name=Console
+      - Serilog__WriteTo__1__Name=File
+      - Serilog__WriteTo__1__Args__path=/app/logs/litrater-.log
+      - Serilog__WriteTo__1__Args__rollingInterval=Day
+      - Serilog__WriteTo__1__Args__retainedFileCountLimit=7
+      - Serilog__WriteTo__2__Name=File
+      - Serilog__WriteTo__2__Args__path=/app/logs/security-.log
+      - Serilog__WriteTo__2__Args__rollingInterval=Day
+      - Serilog__WriteTo__2__Args__retainedFileCountLimit=30
+      - Serilog__WriteTo__2__Args__restrictedToMinimumLevel=Warning
+      - Serilog__Enrich__0=FromLogContext
+      - Serilog__Enrich__1=WithMachineName
+      - Serilog__Enrich__2=WithThreadId
+      - Serilog__Properties__Application=Litrater
     ports:
       - "${API_PORT:-8080}:8080"
+    volumes:
+      - litrater_logs:/app/logs
     depends_on:
       postgres:
         condition: service_healthy
@@ -50,6 +69,7 @@ services:
 
 volumes:
   postgres_data:
+  litrater_logs:
 
 networks:
   litrater-network:
