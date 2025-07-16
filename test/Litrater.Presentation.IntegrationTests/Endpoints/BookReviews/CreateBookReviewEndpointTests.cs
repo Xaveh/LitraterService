@@ -13,7 +13,7 @@ public class CreateBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
     public async Task CreateBookReview_WithValidDataAndAuthentication_ShouldCreateBookReview()
     {
         // Arrange
-        await LoginAsRegularUserAsync();
+        LoginAsRegularUserAsync();
 
         var bookId = TestDataGenerator.Books.Foundation.Id; // Regular user hasn't reviewed Foundation
 
@@ -65,6 +65,4 @@ public class CreateBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
-
-
 }

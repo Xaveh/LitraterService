@@ -8,4 +8,9 @@ internal static class MiddlewareExtensions
     {
         return app.UseMiddleware<RequestContextLoggingMiddleware>();
     }
+
+    public static IApplicationBuilder UseUserSync(this IApplicationBuilder app)
+    {
+        return app.UseMiddleware<UserSyncMiddleware>();
+    }
 }

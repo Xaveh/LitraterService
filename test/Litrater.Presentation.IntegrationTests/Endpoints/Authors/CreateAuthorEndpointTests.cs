@@ -13,7 +13,7 @@ public class CreateAuthorEndpointTests(DatabaseFixture fixture) : BaseIntegratio
     public async Task CreateAuthor_WithValidDataAndAuthorization_ShouldCreateAuthor()
     {
         // Arrange
-        await LoginAsAdminAsync();
+        LoginAsAdminAsync();
 
         var createAuthorRequest = new
         {
@@ -66,7 +66,7 @@ public class CreateAuthorEndpointTests(DatabaseFixture fixture) : BaseIntegratio
     public async Task CreateAuthor_WithRegularUserRole_ShouldReturnForbidden()
     {
         // Arrange
-        await LoginAsRegularUserAsync();
+        LoginAsRegularUserAsync();
 
         var createAuthorRequest = new
         {
@@ -80,6 +80,4 @@ public class CreateAuthorEndpointTests(DatabaseFixture fixture) : BaseIntegratio
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
     }
-
-
 }

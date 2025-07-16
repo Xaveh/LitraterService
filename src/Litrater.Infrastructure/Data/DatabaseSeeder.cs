@@ -1,7 +1,6 @@
 using Litrater.Domain.Authors;
 using Litrater.Domain.Books;
 using Litrater.Domain.Users;
-using Litrater.Infrastructure.Authentication;
 using Microsoft.EntityFrameworkCore;
 
 namespace Litrater.Infrastructure.Data;
@@ -23,25 +22,15 @@ public static class DatabaseSeeder
             return;
         }
 
-        var passwordHasher = new PasswordHasher();
-
         var users = new[]
         {
             new User(
                 new Guid("11111111-1111-1111-1111-111111111111"),
-                "admin@litrater.com",
-                passwordHasher.Hash("admin123"),
-                "Admin",
-                "User",
-                userRole: UserRole.Admin
+                "admin-keycloak-id"
             ),
             new User(
                 new Guid("22222222-2222-2222-2222-222222222222"),
-                "user@litrater.com",
-                passwordHasher.Hash("user123"),
-                "Regular",
-                "User",
-                userRole: UserRole.User
+                "user-keycloak-id"
             )
         };
 

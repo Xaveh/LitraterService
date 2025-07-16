@@ -1,31 +1,20 @@
 using Litrater.Domain.Authors;
 using Litrater.Domain.Books;
 using Litrater.Domain.Users;
-using Litrater.Infrastructure.Authentication;
 
 namespace Litrater.Presentation.IntegrationTests.Common;
 
 public static class TestDataGenerator
 {
-    private static readonly PasswordHasher PasswordHasher = new();
-
     public static class Users
     {
         public static User Admin => new(
             new Guid("a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
-            "admin@litrater.com",
-            PasswordHasher.Hash("admin123"),
-            "Admin",
-            "User",
-            true,
-            UserRole.Admin);
+            "admin-keycloak-id");
 
         public static User Regular => new(
             new Guid("b2c3d4e5-f617-4901-bcde-f23456789012"),
-            "user@litrater.com",
-            PasswordHasher.Hash("user123"),
-            "Regular",
-            "User");
+            "user-keycloak-id");
     }
 
     public static class Books

@@ -13,7 +13,7 @@ public class UpdateBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
     public async Task UpdateBookReview_WithValidDataAndOwnerAuthentication_ShouldUpdateBookReview()
     {
         // Arrange
-        await LoginAsRegularUserAsync();
+        LoginAsRegularUserAsync();
 
         var bookReviewId = TestDataGenerator.BookReviews.HobbitReview1.Id; // Regular user owns this review
         var updateBookReviewRequest = new
@@ -52,7 +52,7 @@ public class UpdateBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
     public async Task UpdateBookReview_WithAdminAuthentication_ShouldUpdateAnyBookReview()
     {
         // Arrange
-        await LoginAsAdminAsync();
+        LoginAsAdminAsync();
 
         var bookReviewId = TestDataGenerator.BookReviews.HobbitReview1.Id; // Regular user owns this review
         var updateBookReviewRequest = new
@@ -109,7 +109,7 @@ public class UpdateBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
     public async Task UpdateBookReview_WhenUserIsNotOwner_ShouldReturnForbidden()
     {
         // Arrange
-        await LoginAsRegularUserAsync();
+        LoginAsRegularUserAsync();
 
         var bookReviewId = TestDataGenerator.BookReviews.HobbitReview2.Id; // Admin owns this review
         var updateBookReviewRequest = new
@@ -129,7 +129,7 @@ public class UpdateBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
     public async Task UpdateBookReview_AdminUpdatingOwnReview_ShouldUpdateSuccessfully()
     {
         // Arrange
-        await LoginAsAdminAsync();
+        LoginAsAdminAsync();
 
         var bookReviewId = TestDataGenerator.BookReviews.HobbitReview2.Id; // Admin owns this review
         var updateBookReviewRequest = new

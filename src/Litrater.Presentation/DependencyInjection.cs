@@ -1,13 +1,8 @@
-using System.Text;
 using Asp.Versioning;
-using Litrater.Domain.Users;
-using Litrater.Infrastructure.Authentication;
 using Litrater.Presentation.Authorization;
 using Litrater.Presentation.Configurations;
 using Litrater.Presentation.Extensions;
 using Litrater.Presentation.Middlewares;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Litrater.Presentation;
 
@@ -15,28 +10,11 @@ internal static class DependencyInjection
 {
     internal static IServiceCollection AddPresentation(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                var jwtSettings = configuration.GetSection(JwtSettings.SectionName).Get<JwtSettings>()
-                                  ?? throw new InvalidOperationException($"JWT configuration section '{JwtSettings.SectionName}' is missing.");
-
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = jwtSettings.Issuer,
-                    ValidAudience = jwtSettings.Audience,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),
-                    ClockSkew = TimeSpan.Zero
-                };
-            });
+        services.AddKeycloakAuthentication(configuration);
 
         services.AddAuthorizationBuilder()
-            .AddPolicy(AuthorizationPolicies.AdminOnly, policy => policy.RequireRole(nameof(UserRole.Admin)))
-            .AddPolicy(AuthorizationPolicies.UserOrAdmin, policy => policy.RequireRole(nameof(UserRole.User), nameof(UserRole.Admin)));
+            .AddPolicy(AuthorizationPolicies.AdminOnly, policy => policy.RequireRole("admin"))
+            .AddPolicy(AuthorizationPolicies.UserOrAdmin, policy => policy.RequireRole("user", "admin"));
 
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();

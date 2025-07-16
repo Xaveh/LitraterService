@@ -1,6 +1,5 @@
 using Litrater.Domain.Users;
 using Litrater.Infrastructure.Common.Configurations;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Litrater.Infrastructure.Users.Configurations;
@@ -11,32 +10,11 @@ public class UserConfiguration : EntityConfiguration<User>
     {
         base.Configure(builder);
 
-        builder.Property(u => u.Email)
+        builder.Property(u => u.KeycloakUserId)
             .IsRequired()
             .HasMaxLength(255);
 
-        builder.Property(u => u.PasswordHash)
-            .IsRequired()
-            .HasMaxLength(500);
-
-        builder.Property(u => u.FirstName)
-            .IsRequired()
-            .HasMaxLength(100);
-
-        builder.Property(u => u.LastName)
-            .IsRequired()
-            .HasMaxLength(100);
-
-        builder.Property(u => u.IsActive)
-            .IsRequired()
-            .HasDefaultValue(true);
-
-        builder.Property(u => u.UserRole)
-            .IsRequired()
-            .HasConversion<int>()
-            .HasDefaultValue(UserRole.User);
-
-        builder.HasIndex(u => u.Email)
+        builder.HasIndex(u => u.KeycloakUserId)
             .IsUnique();
     }
 }
