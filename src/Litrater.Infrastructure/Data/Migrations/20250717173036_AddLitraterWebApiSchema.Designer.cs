@@ -3,17 +3,20 @@ using System;
 using Litrater.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Litrater.Infrastructure.Migrations
+namespace Litrater.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(LitraterDbContext))]
-    partial class LitraterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250717173036_AddLitraterWebApiSchema")]
+    partial class AddLitraterWebApiSchema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
