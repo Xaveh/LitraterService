@@ -10,11 +10,11 @@ public static class TestDataGenerator
     {
         public static User Admin => new(
             new Guid("a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
-            "admin-keycloak-id");
+            new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"));
 
         public static User Regular => new(
             new Guid("b2c3d4e5-f617-4901-bcde-f23456789012"),
-            "user-keycloak-id");
+            new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"));
     }
 
     public static class Books

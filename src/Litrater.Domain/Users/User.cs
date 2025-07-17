@@ -4,12 +4,12 @@ namespace Litrater.Domain.Users;
 
 public sealed class User : AggregateRoot
 {
-    public string KeycloakUserId { get; private set; }
+    public Guid KeycloakUserId { get; private set; }
 
 #pragma warning disable CS8618 // Required by Entity Framework
     private User() { }
 
-    public User(Guid id, string keycloakUserId) : base(id)
+    public User(Guid id, Guid keycloakUserId) : base(id)
     {
         KeycloakUserId = keycloakUserId;
     }

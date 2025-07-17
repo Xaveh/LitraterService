@@ -26,11 +26,11 @@ public static class DatabaseSeeder
         {
             new User(
                 new Guid("11111111-1111-1111-1111-111111111111"),
-                "admin-keycloak-id"
+                new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
             ),
             new User(
                 new Guid("22222222-2222-2222-2222-222222222222"),
-                "user-keycloak-id"
+                new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb")
             )
         };
 

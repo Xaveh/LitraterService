@@ -11,8 +11,7 @@ public class UserConfiguration : EntityConfiguration<User>
         base.Configure(builder);
 
         builder.Property(u => u.KeycloakUserId)
-            .IsRequired()
-            .HasMaxLength(255);
+            .IsRequired();
 
         builder.HasIndex(u => u.KeycloakUserId)
             .IsUnique();

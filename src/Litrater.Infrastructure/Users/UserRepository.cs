@@ -7,7 +7,7 @@ namespace Litrater.Infrastructure.Users;
 
 internal sealed class UserRepository(LitraterDbContext context) : Repository<User>(context), IUserRepository
 {
-    public async Task<User?> GetByKeycloakUserIdAsync(string keycloakUserId, CancellationToken cancellationToken = default)
+    public async Task<User?> GetByKeycloakUserIdAsync(Guid keycloakUserId, CancellationToken cancellationToken = default)
     {
         return await DbSet
             .FirstOrDefaultAsync(u => u.KeycloakUserId == keycloakUserId, cancellationToken);

@@ -43,12 +43,12 @@ services:
       postgres:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8080/health/ready || exit 1"]
+      test: [ "CMD-SHELL", "timeout 10s bash -c '</dev/tcp/localhost/8080' || exit 1" ]
       interval: 30s
-      timeout: 10s
+      timeout: 15s
       retries: 5
-      start_period: 60s
-    command: ["start-dev"]
+      start_period: 120s
+    command: [ "start-dev" ]
 
   # Litrater Web Application
   litrater.presentation:
@@ -59,7 +59,6 @@ services:
     container_name: litrater-api
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Development}
-      - ASPNETCORE_URLS=http://+:8081
       - ConnectionStrings__Database=Host=postgres;Port=5432;Database=${POSTGRES_DB:-litrater};Username=${POSTGRES_USER:-litrater_user};Password=${POSTGRES_PASSWORD:-litrater_password}
       - Keycloak__Authority=${KEYCLOAK_AUTHORITY:-http://keycloak:8080/realms/litrater}
       - Keycloak__Audience=${KEYCLOAK_AUDIENCE:-litrater-web-api}
@@ -85,7 +84,7 @@ services:
       - Serilog__Enrich__2=WithThreadId
       - Serilog__Properties__Application=Litrater
     ports:
-      - "${API_PORT:-8081}:8081"
+      - "${API_PORT:-5001}:8081"
     volumes:
       - litrater_logs:/app/logs
     depends_on:
