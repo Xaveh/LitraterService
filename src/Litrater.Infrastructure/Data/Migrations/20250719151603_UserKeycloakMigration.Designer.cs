@@ -12,15 +12,14 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Litrater.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(LitraterDbContext))]
-    [Migration("20250717173036_AddLitraterWebApiSchema")]
-    partial class AddLitraterWebApiSchema
+    [Migration("20250719151603_UserKeycloakMigration")]
+    partial class UserKeycloakMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("litrater_web_api")
                 .HasAnnotation("ProductVersion", "9.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
@@ -38,7 +37,7 @@ namespace Litrater.Infrastructure.Data.Migrations
 
                     b.HasIndex("BooksId");
 
-                    b.ToTable("AuthorBooks", "litrater_web_api");
+                    b.ToTable("AuthorBooks", (string)null);
                 });
 
             modelBuilder.Entity("Litrater.Domain.Authors.Author", b =>
@@ -66,7 +65,7 @@ namespace Litrater.Infrastructure.Data.Migrations
 
                     b.HasIndex("FirstName", "LastName");
 
-                    b.ToTable("Authors", "litrater_web_api");
+                    b.ToTable("Authors");
                 });
 
             modelBuilder.Entity("Litrater.Domain.Books.Book", b =>
@@ -97,7 +96,7 @@ namespace Litrater.Infrastructure.Data.Migrations
 
                     b.HasIndex("Title");
 
-                    b.ToTable("Books", "litrater_web_api");
+                    b.ToTable("Books");
                 });
 
             modelBuilder.Entity("Litrater.Domain.Books.BookReview", b =>
@@ -136,7 +135,7 @@ namespace Litrater.Infrastructure.Data.Migrations
                     b.HasIndex("UserId", "BookId")
                         .IsUnique();
 
-                    b.ToTable("BookReviews", "litrater_web_api");
+                    b.ToTable("BookReviews");
                 });
 
             modelBuilder.Entity("Litrater.Domain.Users.User", b =>
@@ -158,7 +157,7 @@ namespace Litrater.Infrastructure.Data.Migrations
                     b.HasIndex("KeycloakUserId")
                         .IsUnique();
 
-                    b.ToTable("Users", "litrater_web_api");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("AuthorBook", b =>

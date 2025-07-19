@@ -1,4 +1,3 @@
-using System.Text;
 using Litrater.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
@@ -22,29 +21,18 @@ public class LitraterWebApplication : IDisposable
                 builder.UseSetting("Keycloak:Authority", "http://keycloak:8080/realms/litrater");
                 builder.UseSetting("Keycloak:Audience", "litrater-web-api");
                 builder.UseSetting("Keycloak:RequireHttpsMetadata", "false");
-                builder.UseSetting("Keycloak:ValidateIssuer", "false");
-                builder.UseSetting("Keycloak:ValidateAudience", "false");
-                builder.UseSetting("Keycloak:ValidateLifetime", "false");
                 builder.UseEnvironment("Testing");
 
-                builder.ConfigureServices(services =>
-                {
-                    // Override JWT Bearer configuration for testing
-                    services.PostConfigure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
+                builder.ConfigureServices(services => services.PostConfigure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme,
+                    options => options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        options.TokenValidationParameters = new TokenValidationParameters
-                        {
-#pragma warning disable CA5404 // Disable token validation for integration tests
-                            ValidateIssuer = false,
-                            ValidateAudience = false,
-                            ValidateLifetime = false,
-#pragma warning restore CA5404
-                            ValidateIssuerSigningKey = true,
-                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("test-secret-key-for-integration-tests-must-be-at-least-32-characters-long")),
-                            ClockSkew = TimeSpan.Zero
-                        };
-                    });
-                });
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = false,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey("test-secret-key-for-integration-tests-must-be-at-least-32-characters-long"u8.ToArray()),
+                        ClockSkew = TimeSpan.Zero
+                    }));
             });
 
         HttpClient = _factory.CreateClient();

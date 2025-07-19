@@ -65,10 +65,7 @@ services:
       - ConnectionStrings__Database=Host=postgres;Port=5432;Database=${POSTGRES_DB:-litrater};Username=${POSTGRES_USER:-litrater_user};Password=${POSTGRES_PASSWORD:-litrater_password}
       - Keycloak__Authority=${KEYCLOAK_AUTHORITY:-http://keycloak:8080/realms/litrater}
       - Keycloak__Audience=${KEYCLOAK_AUDIENCE:-litrater-web-api}
-      - Keycloak__RequireHttpsMetadata=${KEYCLOAK_REQUIRE_HTTPS:-false}
-      - Keycloak__ValidateIssuer=${KEYCLOAK_VALIDATE_ISSUER:-true}
-      - Keycloak__ValidateAudience=${KEYCLOAK_VALIDATE_AUDIENCE:-true}
-      - Keycloak__ValidateLifetime=${KEYCLOAK_VALIDATE_LIFETIME:-true}
+      - Keycloak__RequireHttpsMetadata=${KEYCLOAK_REQUIRE_HTTPS:-true}
       - Serilog__MinimumLevel__Default=${SERILOG_MIN_LEVEL:-Information}
       - Serilog__MinimumLevel__Override__Microsoft=${SERILOG_MICROSOFT_LEVEL:-Warning}
       - Serilog__MinimumLevel__Override__System=${SERILOG_SYSTEM_LEVEL:-Warning}
