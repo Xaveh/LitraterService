@@ -19,7 +19,7 @@ public static class DependencyInjection
         var connectionString = configuration.GetConnectionString("Database")
                                ?? throw new InvalidOperationException("Database connection string is missing.");
 
-        services.AddDbContext<LitraterDbContext>(options => options.UseNpgsql(connectionString));
+        services.AddDbContext<LitraterDbContext>(options => options.UseNpgsql(connectionString, o => o.MigrationsHistoryTable("__EFMigrationsHistory", LitraterDbContext.DefaultSchema)));
 
         services.AddScoped<IBookRepository, BookRepository>();
         services.AddScoped<IBookReviewRepository, BookReviewRepository>();

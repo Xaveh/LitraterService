@@ -10,6 +10,8 @@ namespace Litrater.Infrastructure.Data;
 
 public class LitraterDbContext : DbContext
 {
+    public const string DefaultSchema = "litrater_web_api";
+
     public LitraterDbContext(DbContextOptions<LitraterDbContext> options) : base(options)
     {
     }
@@ -21,7 +23,7 @@ public class LitraterDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.HasDefaultSchema("litrater_web_api");
+        modelBuilder.HasDefaultSchema(DefaultSchema);
 
         modelBuilder.ApplyConfiguration(new AuthorConfiguration());
         modelBuilder.ApplyConfiguration(new BookConfiguration());
