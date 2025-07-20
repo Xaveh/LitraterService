@@ -6,7 +6,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 namespace Litrater.Presentation.Configurations;
 
 internal sealed class ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider, IConfiguration configuration)
-    : IConfigureNamedOptions<SwaggerGenOptions>
+    : IConfigureOptions<SwaggerGenOptions>
 {
     public void Configure(SwaggerGenOptions options)
     {
@@ -45,11 +45,6 @@ internal sealed class ConfigureSwaggerOptions(IApiVersionDescriptionProvider pro
                 ["openid", "profile", "email"]
             }
         });
-    }
-
-    public void Configure(string? name, SwaggerGenOptions options)
-    {
-        Configure(options);
     }
 
     private static OpenApiInfo CreateInfoForApiVersion(ApiVersionDescription description)

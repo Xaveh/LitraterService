@@ -4,14 +4,16 @@ using Litrater.Presentation.Authorization;
 using Litrater.Presentation.Configurations;
 using Litrater.Presentation.Extensions;
 using Litrater.Presentation.Middlewares;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Litrater.Presentation;
 
 internal static class DependencyInjection
 {
-    internal static IServiceCollection AddPresentation(this IServiceCollection services, IConfiguration configuration, bool isProduction)
+    internal static IServiceCollection AddPresentation(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddKeycloakAuthentication(configuration, isProduction);
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer();
 
         services.AddAuthorization()
             .AddKeycloakAuthorization(options => options.RolesResource = configuration["Keycloak:Audience"])
@@ -39,8 +41,11 @@ internal static class DependencyInjection
             });
 
         services.AddEndpoints(typeof(DependencyInjection).Assembly);
-        services.ConfigureOptions<ConfigureSwaggerOptions>();
         services.AddLifecycleLogging();
+
+        services.ConfigureOptions<ConfigureAuthenticationOptions>();
+        services.ConfigureOptions<ConfigureSwaggerOptions>();
+        services.ConfigureOptions<ConfigureSwaggerUiOptions>();
 
         return services;
     }

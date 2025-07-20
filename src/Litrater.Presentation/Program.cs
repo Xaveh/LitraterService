@@ -13,7 +13,7 @@ builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Confi
 
 builder.Services
     .AddApplication()
-    .AddPresentation(builder.Configuration, builder.Environment.IsProduction())
+    .AddPresentation(builder.Configuration)
     .AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
@@ -33,19 +33,7 @@ app.MapEndpoints(versionedGroup);
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(options =>
-    {
-        var descriptions = app.DescribeApiVersions();
-
-        foreach (var description in descriptions)
-        {
-            options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",
-                $"Litrater API {description.GroupName.ToUpperInvariant()}");
-        }
-
-        options.OAuthRealm("litrater");
-        options.OAuthClientId("litrater-web-api");
-    });
+    app.UseSwaggerUI();
 
     await app.Services.MigrateDatabaseAsync();
     await app.Services.SeedDatabaseAsync();
