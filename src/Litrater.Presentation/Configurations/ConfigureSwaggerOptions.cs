@@ -1,12 +1,11 @@
 using Asp.Versioning.ApiExplorer;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Litrater.Presentation.Configurations;
 
-internal sealed class ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider)
+internal sealed class ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider, IConfiguration configuration)
     : IConfigureNamedOptions<SwaggerGenOptions>
 {
     public void Configure(SwaggerGenOptions options)
@@ -16,30 +15,34 @@ internal sealed class ConfigureSwaggerOptions(IApiVersionDescriptionProvider pro
             options.SwaggerDoc(description.GroupName, CreateInfoForApiVersion(description));
         }
 
-        // Add JWT Bearer Authentication
-        options.AddSecurityDefinition("Bearer",
-            new OpenApiSecurityScheme
+        options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+        {
+            Type = SecuritySchemeType.OAuth2,
+            Flows = new OpenApiOAuthFlows
             {
-                Description =
-                    "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
-                Name = "Authorization",
-                In = ParameterLocation.Header,
-                Type = SecuritySchemeType.ApiKey,
-                Scheme = JwtBearerDefaults.AuthenticationScheme,
-                BearerFormat = "JWT"
-            });
+                AuthorizationCode = new OpenApiOAuthFlow
+                {
+                    AuthorizationUrl = new Uri($"{configuration["Keycloak:Authority"]}/protocol/openid-connect/auth".Replace("keycloak:", "localhost:")),
+                    TokenUrl = new Uri($"{configuration["Keycloak:Authority"]}/protocol/openid-connect/token".Replace("keycloak:", "localhost:")),
+                    Scopes = new Dictionary<string, string>
+                    {
+                        { "openid", "OpenID" },
+                        { "profile", "Profile" },
+                        { "email", "Email" },
+                    }
+                }
+            },
+            Description = "Keycloak OAuth2/OpenID Connect"
+        });
 
         options.AddSecurityRequirement(new OpenApiSecurityRequirement
         {
             {
                 new OpenApiSecurityScheme
                 {
-                    Reference = new OpenApiReference
-                    {
-                        Type = ReferenceType.SecurityScheme, Id = JwtBearerDefaults.AuthenticationScheme
-                    }
+                    Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" }
                 },
-                []
+                ["openid", "profile", "email"]
             }
         });
     }

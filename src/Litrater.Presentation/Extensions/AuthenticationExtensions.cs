@@ -5,7 +5,7 @@ namespace Litrater.Presentation.Extensions;
 
 internal static class AuthenticationExtensions
 {
-    internal static IServiceCollection AddKeycloakAuthentication(this IServiceCollection services, IConfiguration configuration)
+    internal static IServiceCollection AddKeycloakAuthentication(this IServiceCollection services, IConfiguration configuration, bool isProduction)
     {
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
@@ -18,8 +18,8 @@ internal static class AuthenticationExtensions
 
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    RoleClaimType = "resource_access.litrater-web-api.roles",
-                    NameClaimType = "preferred_username"
+                    NameClaimType = "preferred_username",
+                    ValidateIssuer = isProduction
                 };
             });
 

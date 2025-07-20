@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using Keycloak.AuthServices.Authorization;
 using Litrater.Presentation.Authorization;
 using Litrater.Presentation.Configurations;
 using Litrater.Presentation.Extensions;
@@ -8,13 +9,15 @@ namespace Litrater.Presentation;
 
 internal static class DependencyInjection
 {
-    internal static IServiceCollection AddPresentation(this IServiceCollection services, IConfiguration configuration)
+    internal static IServiceCollection AddPresentation(this IServiceCollection services, IConfiguration configuration, bool isProduction)
     {
-        services.AddKeycloakAuthentication(configuration);
+        services.AddKeycloakAuthentication(configuration, isProduction);
 
-        services.AddAuthorizationBuilder()
-            .AddPolicy(AuthorizationPolicies.AdminOnly, policy => policy.RequireRole("admin"))
-            .AddPolicy(AuthorizationPolicies.UserOrAdmin, policy => policy.RequireRole("user", "admin"));
+        services.AddAuthorization()
+            .AddKeycloakAuthorization(options => options.RolesResource = configuration["Keycloak:Audience"])
+            .AddAuthorizationBuilder()
+            .AddPolicy(AuthorizationPolicies.AdminOnly, policy => policy.RequireResourceRoles("admin"))
+            .AddPolicy(AuthorizationPolicies.UserOrAdmin, policy => policy.RequireResourceRoles("admin", "user"));
 
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
