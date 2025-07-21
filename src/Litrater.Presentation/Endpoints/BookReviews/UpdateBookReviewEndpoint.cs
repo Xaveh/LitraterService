@@ -22,14 +22,12 @@ internal sealed class UpdateBookReviewEndpoint : IEndpoint
                         return Results.Unauthorized();
                     }
 
-                    var isAdmin = user.HasClaim(ClaimTypes.Role, "admin");
-
                     var command = new UpdateBookReviewCommand(
                         Id: id,
                         Content: request.Content,
                         Rating: request.Rating,
                         UserId: userId,
-                        IsAdmin: isAdmin
+                        IsAdmin: user.HasResourceRole("admin")
                     );
 
                     var result = await handler.Handle(command, cancellationToken);

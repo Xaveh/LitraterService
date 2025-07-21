@@ -21,12 +21,10 @@ internal sealed class DeleteBookReviewEndpoint : IEndpoint
                         return Results.Unauthorized();
                     }
 
-                    var isAdmin = user.HasClaim(ClaimTypes.Role, "admin");
-
                     var command = new DeleteBookReviewCommand(
                         Id: id,
                         UserId: userId,
-                        IsAdmin: isAdmin
+                        IsAdmin: user.HasResourceRole("admin")
                     );
 
                     var result = await handler.Handle(command, cancellationToken);

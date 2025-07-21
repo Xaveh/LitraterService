@@ -20,10 +20,8 @@ internal static class TestJwtTokenGenerator
             new(ClaimTypes.GivenName, firstName),
             new(ClaimTypes.Surname, lastName),
             new("preferred_username", email),
-            new("resource_access", $$$"""{"litrater-web-api": {"roles": [{{{string.Join(",", roles.Select(r => $"\"{r}\""))}}}]}}""")
+            new("resource_access", $$$"""{"litrater-web-api":{"roles":[{{{string.Join(",", roles.Select(r => $"\"{r}\""))}}}]}}""", "JSON")
         };
-
-        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecretKey));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
