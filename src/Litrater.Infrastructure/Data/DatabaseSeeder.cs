@@ -1,6 +1,5 @@
 using Litrater.Domain.Authors;
 using Litrater.Domain.Books;
-using Litrater.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace Litrater.Infrastructure.Data;
@@ -9,32 +8,9 @@ public static class DatabaseSeeder
 {
     public static async Task SeedDataAsync(LitraterDbContext context)
     {
-        await SeedUsersAsync(context);
         var authors = await SeedAuthorsAsync(context);
         await SeedBooksAsync(context, authors);
         await context.SaveChangesAsync();
-    }
-
-    private static async Task SeedUsersAsync(LitraterDbContext context)
-    {
-        if (await context.Users.AnyAsync())
-        {
-            return;
-        }
-
-        var users = new[]
-        {
-            new User(
-                new Guid("11111111-1111-1111-1111-111111111111"),
-                new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
-            ),
-            new User(
-                new Guid("22222222-2222-2222-2222-222222222222"),
-                new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb")
-            )
-        };
-
-        await context.Users.AddRangeAsync(users);
     }
 
     private static async Task<Dictionary<Guid, Author>> SeedAuthorsAsync(LitraterDbContext context)
