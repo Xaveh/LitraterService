@@ -16,5 +16,6 @@ internal sealed class ConfigureSwaggerUiOptions(IApiVersionDescriptionProvider p
         }
 
         options.OAuthClientId(configuration["Keycloak:Audience"]);
+        options.OAuthUsePkce();
     }
 }
