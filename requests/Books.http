@@ -1,0 +1,292 @@
+###
+# Books Endpoints
+# Test various book management operations
+# Uses real Keycloak authentication and seeded database data
+###
+
+@keycloakHost = http://localhost:8080
+@apiHost = https://localhost:5001
+
+### Login as Admin to get token first
+# @name adminLogin
+POST {{keycloakHost}}/realms/litrater/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type = password &
+client_id = litrater-web-api &
+username = admin@litrater.com &
+password = admin123 &
+scope = openid profile email
+
+> {%
+    if (response.status === 200) {
+        client.global.set("adminToken", response.body.access_token);
+    }
+%}
+
+### Login as Regular User to get token
+# @name userLogin  
+POST {{keycloakHost}}/realms/litrater/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type = password &
+client_id = litrater-web-api &
+username = user@litrater.com &
+password = user123 &
+scope = openid profile email
+
+> {%
+    if (response.status === 200) {
+        client.global.set("userToken", response.body.access_token);
+    }
+%}
+
+###
+### BOOKS ENDPOINTS
+###
+
+### 1. Get All Books (Paginated) - Public, Default pagination
+# @name getAllBooks
+GET {{apiHost}}/api/v1/books
+Accept: application/json
+
+### 2. Get All Books - Custom pagination (page 1, 5 items)
+GET {{apiHost}}/api/v1/books?page=1&pageSize=5
+Accept: application/json
+
+### 3. Get All Books - Second page pagination
+GET {{apiHost}}/api/v1/books?page=2&pageSize=5
+Accept: application/json
+
+### 4. Get Book by ID - Harry Potter (seeded data)
+# @name getBookById
+GET {{apiHost}}/api/v1/books/41111111-1111-1111-1111-111111111111
+Accept: application/json
+
+### 5. Get Book by ID - The Hobbit (seeded data)
+GET {{apiHost}}/api/v1/books/47777777-7777-7777-7777-777777777777
+Accept: application/json
+
+### 6. Get Book by ID - 1984 (seeded data)
+GET {{apiHost}}/api/v1/books/42222222-2222-2222-2222-222222222222
+Accept: application/json
+
+### 7. Get Book by ID - Non-existent ID (404)
+GET {{apiHost}}/api/v1/books/00000000-0000-0000-0000-000000000001
+Accept: application/json
+
+### 8. Create Book - Admin Only (Success)
+# @name createBook
+POST {{apiHost}}/api/v1/books
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "title": "The Fellowship of the Ring",
+  "isbn": "9780547928205",
+  "authorIds": [
+    "37777777-7777-7777-7777-777777777777"
+  ]
+}
+
+> {%
+    if (response.status === 200) {
+        client.global.set("newBookId", response.body.id);
+    }
+%}
+
+### 9. Create Book - Without Authentication (401 Unauthorized)
+POST {{apiHost}}/api/v1/books
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "Test Book",
+  "isbn": "9780123456789",
+  "authorIds": [
+    "37777777-7777-7777-7777-777777777777"
+  ]
+}
+
+### 10. Create Book - Regular User (403 Forbidden)
+POST {{apiHost}}/api/v1/books
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "title": "Test Book",
+  "isbn": "9780123456789",
+  "authorIds": [
+    "37777777-7777-7777-7777-777777777777"
+  ]
+}
+
+### 11. Create Book - Invalid Data (400 Bad Request)
+POST {{apiHost}}/api/v1/books
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "title": "",
+  "isbn": "",
+  "authorIds": []
+}
+
+### 12. Create Book - Non-existent Author (400 Bad Request)
+POST {{apiHost}}/api/v1/books
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "title": "Test Book",
+  "isbn": "9780123456789",
+  "authorIds": [
+    "00000000-0000-0000-0000-000000000001"
+  ]
+}
+
+### 13. Create Book - Duplicate ISBN (409 Conflict)
+POST {{apiHost}}/api/v1/books
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "title": "Duplicate Book",
+  "isbn": "9780547928227",
+  "authorIds": [
+    "37777777-7777-7777-7777-777777777777"
+  ]
+}
+
+### 14. Create Book - Multiple Authors (Success)
+POST {{apiHost}}/api/v1/books
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "title": "Collaborative Work",
+  "isbn": "9780123456780",
+  "authorIds": [
+    "31111111-1111-1111-1111-111111111111",
+    "32222222-2222-2222-2222-222222222222"
+  ]
+}
+
+### 15. Update Book - Admin Only (Success)
+PUT {{apiHost}}/api/v1/books/{{newBookId}}
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "title": "The Fellowship of the Ring - Updated Edition",
+  "isbn": "9780547928205",
+  "authorIds": [
+    "37777777-7777-7777-7777-777777777777"
+  ]
+}
+
+### 16. Update Book - Without Authentication (401 Unauthorized)
+PUT {{apiHost}}/api/v1/books/47777777-7777-7777-7777-777777777777
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "The Hobbit - Updated",
+  "isbn": "9780547928227",
+  "authorIds": [
+    "37777777-7777-7777-7777-777777777777"
+  ]
+}
+
+### 17. Update Book - Regular User (403 Forbidden)
+PUT {{apiHost}}/api/v1/books/47777777-7777-7777-7777-777777777777
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "title": "The Hobbit - Updated",
+  "isbn": "9780547928227",
+  "authorIds": [
+    "37777777-7777-7777-7777-777777777777"
+  ]
+}
+
+### 18. Update Book - Non-existent ID (404 Not Found)
+PUT {{apiHost}}/api/v1/books/00000000-0000-0000-0000-000000000001
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "title": "Non-existent Book",
+  "isbn": "9780123456789",
+  "authorIds": [
+    "37777777-7777-7777-7777-777777777777"
+  ]
+}
+
+### 19. Update Book - Change Authors (Success)
+PUT {{apiHost}}/api/v1/books/41111111-1111-1111-1111-111111111111
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "title": "Harry Potter and the Philosopher's Stone",
+  "isbn": "9780747532699",
+  "authorIds": [
+    "31111111-1111-1111-1111-111111111111",
+    "35555555-5555-5555-5555-555555555555"
+  ]
+}
+
+### 20. Delete Book - Admin Only (Success)
+DELETE {{apiHost}}/api/v1/books/{{newBookId}}
+Authorization: Bearer {{adminToken}}
+
+### 21. Delete Book - Without Authentication (401 Unauthorized)
+DELETE {{apiHost}}/api/v1/books/4aaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa
+
+### 22. Delete Book - Regular User (403 Forbidden)
+DELETE {{apiHost}}/api/v1/books/4aaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa
+Authorization: Bearer {{userToken}}
+
+### 23. Delete Book - Non-existent ID (404 Not Found)
+DELETE {{apiHost}}/api/v1/books/00000000-0000-0000-0000-000000000001
+Authorization: Bearer {{adminToken}}
+
+###
+### Seeded Books Available (from DatabaseSeeder.cs):
+# 41111111-1111-1111-1111-111111111111 - Harry Potter and the Philosopher's Stone (J.K. Rowling)
+# 42222222-2222-2222-2222-222222222222 - 1984 (George Orwell)
+# 43333333-3333-3333-3333-333333333333 - To Kill a Mockingbird (Harper Lee)
+# 44444444-4444-4444-4444-444444444444 - The Great Gatsby (F. Scott Fitzgerald)
+# 45555555-5555-5555-5555-555555555555 - Pride and Prejudice (Jane Austen)
+# 46666666-6666-6666-6666-666666666666 - The Old Man and the Sea (Ernest Hemingway)
+# 47777777-7777-7777-7777-777777777777 - The Hobbit (J.R.R. Tolkien)
+# 48888888-8888-8888-8888-888888888888 - Fahrenheit 451 (Ray Bradbury)
+# 49999999-9999-9999-9999-999999999999 - Brave New World (Aldous Huxley)
+# 4aaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa - The Handmaid's Tale (Margaret Atwood)
+###
+
+###
+### Seeded Authors Available (from DatabaseSeeder.cs):
+# 31111111-1111-1111-1111-111111111111 - J.K. Rowling
+# 32222222-2222-2222-2222-222222222222 - George Orwell  
+# 33333333-3333-3333-3333-333333333333 - Harper Lee
+# 34444444-4444-4444-4444-444444444444 - F. Scott Fitzgerald
+# 35555555-5555-5555-5555-555555555555 - Jane Austen
+# 36666666-6666-6666-6666-666666666666 - Ernest Hemingway
+# 37777777-7777-7777-7777-777777777777 - J.R.R. Tolkien
+# 38888888-8888-8888-8888-888888888888 - Ray Bradbury
+# 39999999-9999-9999-9999-999999999999 - Aldous Huxley
+# 3aaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa - Margaret Atwood
+###

@@ -1,0 +1,191 @@
+###
+# Authors Endpoints
+# Test various author management operations
+# Uses real Keycloak authentication and seeded database data
+###
+
+@keycloakHost = http://localhost:8080
+@apiHost = https://localhost:5001
+
+### Login as Admin to get token first
+# @name adminLogin
+POST {{keycloakHost}}/realms/litrater/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type = password &
+client_id = litrater-web-api &
+username = admin@litrater.com &
+password = admin123 &
+scope = openid profile email
+
+> {%
+    if (response.status === 200) {
+        client.global.set("adminToken", response.body.access_token);
+    }
+%}
+
+### Login as Regular User to get token
+# @name userLogin  
+POST {{keycloakHost}}/realms/litrater/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type = password &
+client_id = litrater-web-api &
+username = user@litrater.com &
+password = user123 &
+scope = openid profile email
+
+> {%
+    if (response.status === 200) {
+        client.global.set("userToken", response.body.access_token);
+    }
+%}
+
+###
+### AUTHORS ENDPOINTS
+###
+
+### 1. Get Author by ID - J.K. Rowling (seeded data)
+# @name getAuthorById
+GET {{apiHost}}/api/v1/authors/31111111-1111-1111-1111-111111111111
+Accept: application/json
+
+### 2. Get Author by ID - J.R.R. Tolkien (seeded data)
+GET {{apiHost}}/api/v1/authors/37777777-7777-7777-7777-777777777777
+Accept: application/json
+
+### 3. Get Author by ID - George Orwell (seeded data)
+GET {{apiHost}}/api/v1/authors/32222222-2222-2222-2222-222222222222
+Accept: application/json
+
+### 4. Get Author by ID - Non-existent ID (404)
+GET {{apiHost}}/api/v1/authors/00000000-0000-0000-0000-000000000001
+Accept: application/json
+
+### 5. Create Author - Admin Only (Success)
+# @name createAuthor
+POST {{apiHost}}/api/v1/authors
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "firstName": "Brandon",
+  "lastName": "Sanderson"
+}
+
+> {%
+    if (response.status === 200) {
+        client.global.set("newAuthorId", response.body.id);
+    }
+%}
+
+### 6. Create Author - Without Authentication (401 Unauthorized)
+POST {{apiHost}}/api/v1/authors
+Accept: application/json
+Content-Type: application/json
+
+{
+  "firstName": "Test",
+  "lastName": "Author"
+}
+
+### 7. Create Author - Regular User (403 Forbidden)
+POST {{apiHost}}/api/v1/authors
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "firstName": "Test",
+  "lastName": "Author"
+}
+
+### 8. Create Author - Invalid Data (400 Bad Request)
+POST {{apiHost}}/api/v1/authors
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "firstName": "",
+  "lastName": ""
+}
+
+### 9. Update Author - Admin Only (Success)
+PUT {{apiHost}}/api/v1/authors/{{newAuthorId}}
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "firstName": "Brandon",
+  "lastName": "Sanderson",
+  "bookIds": []
+}
+
+### 10. Update Author - Without Authentication (401 Unauthorized)
+PUT {{apiHost}}/api/v1/authors/37777777-7777-7777-7777-777777777777
+Accept: application/json
+Content-Type: application/json
+
+{
+  "firstName": "J.R.R.",
+  "lastName": "Tolkien",
+  "bookIds": []
+}
+
+### 11. Update Author - Regular User (403 Forbidden)
+PUT {{apiHost}}/api/v1/authors/37777777-7777-7777-7777-777777777777
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "firstName": "J.R.R.",
+  "lastName": "Tolkien",
+  "bookIds": []
+}
+
+### 12. Update Author - Non-existent ID (404 Not Found)
+PUT {{apiHost}}/api/v1/authors/00000000-0000-0000-0000-000000000001
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "firstName": "Test",
+  "lastName": "Author",
+  "bookIds": [
+    "00000000-0000-0000-0000-000000000001"
+  ]
+}
+
+### 13. Delete Author - Admin Only (Success)
+DELETE {{apiHost}}/api/v1/authors/{{newAuthorId}}
+Authorization: Bearer {{adminToken}}
+
+### 14. Delete Author - Without Authentication (401 Unauthorized)
+DELETE {{apiHost}}/api/v1/authors/3aaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa
+
+### 15. Delete Author - Regular User (403 Forbidden)
+DELETE {{apiHost}}/api/v1/authors/3aaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa
+Authorization: Bearer {{userToken}}
+
+### 16. Delete Author - Non-existent ID (404 Not Found)
+DELETE {{apiHost}}/api/v1/authors/00000000-0000-0000-0000-000000000001
+Authorization: Bearer {{adminToken}}
+
+###
+### Seeded Authors Available (from DatabaseSeeder.cs):
+# 31111111-1111-1111-1111-111111111111 - J.K. Rowling
+# 32222222-2222-2222-2222-222222222222 - George Orwell  
+# 33333333-3333-3333-3333-333333333333 - Harper Lee
+# 34444444-4444-4444-4444-444444444444 - F. Scott Fitzgerald
+# 35555555-5555-5555-5555-555555555555 - Jane Austen
+# 36666666-6666-6666-6666-666666666666 - Ernest Hemingway
+# 37777777-7777-7777-7777-777777777777 - J.R.R. Tolkien
+# 38888888-8888-8888-8888-888888888888 - Ray Bradbury
+# 39999999-9999-9999-9999-999999999999 - Aldous Huxley
+# 3aaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa - Margaret Atwood
+###
