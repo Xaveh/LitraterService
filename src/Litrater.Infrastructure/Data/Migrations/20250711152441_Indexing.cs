@@ -13,33 +13,39 @@ namespace Litrater.Infrastructure.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Books_Isbn",
                 table: "Books",
+                schema: "litrater_web_api",
                 column: "Isbn",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Books_Title",
                 table: "Books",
+                schema: "litrater_web_api",
                 column: "Title");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BookReviews_CreatedDate",
                 table: "BookReviews",
+                schema: "litrater_web_api",
                 column: "CreatedDate");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BookReviews_UserId",
                 table: "BookReviews",
+                schema: "litrater_web_api",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BookReviews_UserId_BookId",
                 table: "BookReviews",
+                schema: "litrater_web_api",
                 columns: ["UserId", "BookId"],
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Authors_FirstName_LastName",
                 table: "Authors",
+                schema: "litrater_web_api",
                 columns: ["FirstName", "LastName"]);
         }
 
@@ -48,27 +54,33 @@ namespace Litrater.Infrastructure.Data.Migrations
         {
             migrationBuilder.DropIndex(
                 name: "IX_Books_Isbn",
-                table: "Books");
+                table: "Books",
+                schema: "litrater_web_api");
 
             migrationBuilder.DropIndex(
                 name: "IX_Books_Title",
-                table: "Books");
+                table: "Books",
+                schema: "litrater_web_api");
 
             migrationBuilder.DropIndex(
                 name: "IX_BookReviews_CreatedDate",
-                table: "BookReviews");
+                table: "BookReviews",
+                schema: "litrater_web_api");
 
             migrationBuilder.DropIndex(
                 name: "IX_BookReviews_UserId",
-                table: "BookReviews");
+                table: "BookReviews",
+                schema: "litrater_web_api");
 
             migrationBuilder.DropIndex(
                 name: "IX_BookReviews_UserId_BookId",
-                table: "BookReviews");
+                table: "BookReviews",
+                schema: "litrater_web_api");
 
             migrationBuilder.DropIndex(
                 name: "IX_Authors_FirstName_LastName",
-                table: "Authors");
+                table: "Authors",
+                schema: "litrater_web_api");
         }
     }
 }

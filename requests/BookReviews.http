@@ -1,0 +1,198 @@
+###
+# Book Reviews Endpoints
+# Test various book review management operations
+# Uses real Keycloak authentication and seeded database data
+###
+
+@keycloakHost = http://localhost:8080
+@apiHost = https://localhost:5001
+
+### Login as Admin to get token first
+# @name adminLogin
+POST {{keycloakHost}}/realms/litrater/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type = password &
+client_id = litrater-web-api &
+username = admin@litrater.com &
+password = admin123 &
+scope = openid profile email
+
+> {%
+    if (response.status === 200) {
+        client.global.set("adminToken", response.body.access_token);
+    }
+%}
+
+### Login as Regular User to get token
+# @name userLogin  
+POST {{keycloakHost}}/realms/litrater/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type = password &
+client_id = litrater-web-api &
+username = user@litrater.com &
+password = user123 &
+scope = openid profile email
+
+> {%
+    if (response.status === 200) {
+        client.global.set("userToken", response.body.access_token);
+    }
+%}
+
+###
+### BOOK REVIEWS ENDPOINTS
+###
+
+### 1. Get Book Reviews by Book ID - Harry Potter (no authentication required)
+# @name getBookReviewsByBookId
+GET {{apiHost}}/api/v1/books/41111111-1111-1111-1111-111111111111/reviews?page=1&pageSize=10
+Accept: application/json
+
+### 2. Get Book Reviews by Book ID - The Hobbit (seeded data)
+GET {{apiHost}}/api/v1/books/47777777-7777-7777-7777-777777777777/reviews?page=1&pageSize=10
+Accept: application/json
+
+### 3. Get Book Reviews by Book ID - Non-existent book (404)
+GET {{apiHost}}/api/v1/books/00000000-0000-0000-0000-000000000000/reviews?page=1&pageSize=10
+Accept: application/json
+
+### 4. Get Book Reviews by User ID - Requires authentication (get admin user's reviews)
+GET {{apiHost}}/api/v1/users/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa/reviews?page=1&pageSize=10
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### 5. Get Book Reviews by User ID - Regular user's reviews
+GET {{apiHost}}/api/v1/users/bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb/reviews?page=1&pageSize=10
+Accept: application/json
+Authorization: Bearer {{userToken}}
+
+### 6. Create Book Review - User/Admin (Success)
+# @name createBookReview
+POST {{apiHost}}/api/v1/books/41111111-1111-1111-1111-111111111111/reviews
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "content": "This is an amazing book! Really enjoyed reading it.",
+  "rating": 5
+}
+
+> {%
+    if (response.status === 200) {
+        client.global.set("newReviewId", response.body.id);
+    }
+%}
+
+### 7. Create Book Review - Without Authentication (401 Unauthorized)
+POST {{apiHost}}/api/v1/books/41111111-1111-1111-1111-111111111111/reviews
+Accept: application/json
+Content-Type: application/json
+
+{
+  "content": "This should fail without authentication",
+  "rating": 4
+}
+
+### 8. Create Book Review - Non-existent book (404 Not Found)
+POST {{apiHost}}/api/v1/books/00000000-0000-0000-0000-000000000001/reviews
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "content": "Review for non-existent book",
+  "rating": 3
+}
+
+### 9. Create Book Review - Invalid data (400 Bad Request)
+POST {{apiHost}}/api/v1/books/41111111-1111-1111-1111-111111111111/reviews
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "content": "",
+  "rating": 6
+}
+
+### 10. Create Book Review - Duplicate review (409 Conflict)
+# User already has a review for this book
+POST {{apiHost}}/api/v1/books/41111111-1111-1111-1111-111111111111/reviews
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "content": "Another review for the same book",
+  "rating": 4
+}
+
+### 11. Update Book Review - Own review (Success)
+PUT {{apiHost}}/api/v1/book-reviews/{{newReviewId}}
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "content": "Updated review content - even better than I initially thought!",
+  "rating": 5
+}
+
+### 12. Update Book Review - Without Authentication (401 Unauthorized)
+PUT {{apiHost}}/api/v1/book-reviews/{{newReviewId}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "content": "This should fail",
+  "rating": 3
+}
+
+### 13. Update Book Review - Another user's review (Success if admin)
+PUT {{apiHost}}/api/v1/book-reviews/{{newReviewId}}
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "content": "Admin trying to update user's review",
+  "rating": 2
+}
+
+### 14. Update Book Review - Non-existent review (404 Not Found)
+PUT {{apiHost}}/api/v1/book-reviews/00000000-0000-0000-0000-000000000001
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "content": "Review for non-existent review",
+  "rating": 3
+}
+
+### 15. Delete Book Review - Own review (Success)
+DELETE {{apiHost}}/api/v1/book-reviews/{{newReviewId}}
+Authorization: Bearer {{userToken}}
+
+### 16. Delete Book Review - Without Authentication (401 Unauthorized)  
+DELETE {{apiHost}}/api/v1/book-reviews/{{newReviewId}}
+
+### 17. Delete Book Review - Another user's review (Success if admin)
+DELETE {{apiHost}}/api/v1/book-reviews/{{newReviewId}}
+Authorization: Bearer {{adminToken}}
+
+### 18. Delete Book Review - Non-existent review (404 Not Found)
+DELETE {{apiHost}}/api/v1/book-reviews/00000000-0000-0000-0000-000000000001
+Authorization: Bearer {{userToken}}
+
+###
+### Notes about seeded data:
+# - Test users are created during integration testing
+# - Admin user ID: aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa
+# - Regular user ID: bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb
+# - Books are available from the DatabaseSeeder (see Books.http for full list)
+# - Book reviews may be created during testing, check test data generator for existing reviews
+###

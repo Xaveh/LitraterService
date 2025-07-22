@@ -1,3 +1,4 @@
+using Litrater.Application.Abstractions.Data;
 using Litrater.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +18,8 @@ internal static class DatabaseExtensions
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<LitraterDbContext>();
+        var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
 
-        await DatabaseSeeder.SeedDataAsync(context);
+        await DatabaseSeeder.SeedDataAsync(context, unitOfWork);
     }
 }

@@ -1,0 +1,67 @@
+###
+# Authentication Endpoints
+# Real Keycloak authentication - requires docker-compose to be running
+# Keycloak runs on http://localhost:8080, API on https://localhost:5001
+###
+
+@keycloakHost = http://localhost:8080
+@apiHost = https://localhost:5001
+
+### Generate Admin Token
+# @name adminLogin
+POST {{keycloakHost}}/realms/litrater/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type = password &
+client_id = litrater-web-api &
+username = admin@litrater.com &
+password = admin123 &
+scope = openid profile email
+
+> {%
+    if (response.status === 200) {
+        client.global.set("adminToken", response.body.access_token);
+    }
+%}
+
+### Generate User Token
+# @name userLogin
+POST {{keycloakHost}}/realms/litrater/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type = password &
+client_id = litrater-web-api &
+username = user@litrater.com &
+password = user123 &
+scope = openid profile email
+
+> {%
+    if (response.status === 200) {
+        client.global.set("userToken", response.body.access_token);
+    }
+%}
+
+### Test Admin Token - Health Check
+GET {{apiHost}}/health
+Authorization: Bearer {{adminToken}}
+
+### Test User Token - Health Check
+GET {{apiHost}}/health
+Authorization: Bearer {{userToken}}
+
+### Get Token Info (Admin)
+GET {{keycloakHost}}/realms/litrater/protocol/openid-connect/userinfo
+Authorization: Bearer {{adminToken}}
+
+### Get Token Info (User)
+GET {{keycloakHost}}/realms/litrater/protocol/openid-connect/userinfo
+Authorization: Bearer {{userToken}}
+
+### Note: 
+# Prerequisites:
+# 1. Run: docker-compose up -d
+# 2. Wait for Keycloak to fully initialize (check logs)
+# 3. The realm configuration will be automatically imported from keycloak-init/litrater-realm.json
+# 4. Default users should be created with the realm import:
+#    - admin@litrater.com (roles: admin, user)
+#    - user@litrater.com (roles: user)
