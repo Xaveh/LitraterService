@@ -1,3 +1,4 @@
+using Litrater.Application.Abstractions.Data;
 using Litrater.Domain.Authors;
 using Litrater.Domain.Books;
 using Microsoft.EntityFrameworkCore;
@@ -6,11 +7,11 @@ namespace Litrater.Infrastructure.Data;
 
 public static class DatabaseSeeder
 {
-    public static async Task SeedDataAsync(LitraterDbContext context)
+    public static async Task SeedDataAsync(LitraterDbContext context, IUnitOfWork unitOfWork)
     {
         var authors = await SeedAuthorsAsync(context);
         await SeedBooksAsync(context, authors);
-        await context.SaveChangesAsync();
+        await unitOfWork.SaveChangesAsync();
     }
 
     private static async Task<Dictionary<Guid, Author>> SeedAuthorsAsync(LitraterDbContext context)
