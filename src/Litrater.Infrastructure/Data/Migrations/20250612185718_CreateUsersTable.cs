@@ -13,6 +13,7 @@ namespace Litrater.Infrastructure.Data.Migrations
         {
             migrationBuilder.CreateTable(
                 name: "Users",
+                schema: "litrater_web_api",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -33,6 +34,7 @@ namespace Litrater.Infrastructure.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",
                 table: "Users",
+                schema: "litrater_web_api",
                 column: "Email",
                 unique: true);
         }
@@ -41,7 +43,8 @@ namespace Litrater.Infrastructure.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Users",
+                schema: "litrater_web_api");
         }
     }
 }

@@ -13,6 +13,7 @@ namespace Litrater.Infrastructure.Migrations
         {
             migrationBuilder.CreateTable(
                 name: "Authors",
+                schema: "litrater_web_api",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -28,6 +29,7 @@ namespace Litrater.Infrastructure.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Books",
+                schema: "litrater_web_api",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -43,6 +45,7 @@ namespace Litrater.Infrastructure.Migrations
 
             migrationBuilder.CreateTable(
                 name: "AuthorBooks",
+                schema: "litrater_web_api",
                 columns: table => new
                 {
                     AuthorsId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -55,18 +58,21 @@ namespace Litrater.Infrastructure.Migrations
                         name: "FK_AuthorBooks_Authors_AuthorsId",
                         column: x => x.AuthorsId,
                         principalTable: "Authors",
+                        principalSchema:"litrater_web_api",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AuthorBooks_Books_BooksId",
                         column: x => x.BooksId,
                         principalTable: "Books",
+                        principalSchema:"litrater_web_api",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "BookReviews",
+                schema: "litrater_web_api",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -83,6 +89,7 @@ namespace Litrater.Infrastructure.Migrations
                         name: "FK_BookReviews_Books_BookId",
                         column: x => x.BookId,
                         principalTable: "Books",
+                        principalSchema: "litrater_web_api",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -90,11 +97,13 @@ namespace Litrater.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_AuthorBooks_BooksId",
                 table: "AuthorBooks",
+                schema: "litrater_web_api",
                 column: "BooksId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BookReviews_BookId",
                 table: "BookReviews",
+                schema: "litrater_web_api",
                 column: "BookId");
         }
 
@@ -102,16 +111,20 @@ namespace Litrater.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AuthorBooks");
+                name: "AuthorBooks",
+                schema: "litrater_web_api");
 
             migrationBuilder.DropTable(
-                name: "BookReviews");
+                name: "BookReviews",
+                schema: "litrater_web_api");
 
             migrationBuilder.DropTable(
-                name: "Authors");
+                name: "Authors",
+                schema: "litrater_web_api");
 
             migrationBuilder.DropTable(
-                name: "Books");
+                name: "Books",
+                schema: "litrater_web_api");
         }
     }
 }

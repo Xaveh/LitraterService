@@ -14,6 +14,7 @@ namespace Litrater.Infrastructure.Data.Migrations
             migrationBuilder.AddColumn<Guid>(
                 name: "UserId",
                 table: "BookReviews",
+                schema: "litrater_web_api",
                 type: "uuid",
                 nullable: false,
                 defaultValue: Guid.Empty);
@@ -24,7 +25,8 @@ namespace Litrater.Infrastructure.Data.Migrations
         {
             migrationBuilder.DropColumn(
                 name: "UserId",
-                table: "BookReviews");
+                table: "BookReviews",
+                schema: "litrater_web_api");
         }
     }
 }

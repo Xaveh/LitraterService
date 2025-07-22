@@ -20,6 +20,7 @@ namespace Litrater.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasDefaultSchema("litrater_web_api")
                 .HasAnnotation("ProductVersion", "9.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
@@ -37,7 +38,7 @@ namespace Litrater.Infrastructure.Migrations
 
                     b.HasIndex("BooksId");
 
-                    b.ToTable("AuthorBooks", (string)null);
+                    b.ToTable("AuthorBooks", "litrater_web_api");
                 });
 
             modelBuilder.Entity("Litrater.Domain.Authors.Author", b =>
@@ -63,7 +64,7 @@ namespace Litrater.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Authors");
+                    b.ToTable("Authors","litrater_web_api");
                 });
 
             modelBuilder.Entity("Litrater.Domain.Books.Book", b =>
@@ -89,7 +90,7 @@ namespace Litrater.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Books");
+                    b.ToTable("Books","litrater_web_api");
                 });
 
             modelBuilder.Entity("Litrater.Domain.Books.BookReview", b =>
@@ -118,7 +119,7 @@ namespace Litrater.Infrastructure.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.ToTable("BookReviews");
+                    b.ToTable("BookReviews","litrater_web_api");
                 });
 
             modelBuilder.Entity("AuthorBook", b =>
