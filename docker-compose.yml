@@ -28,7 +28,7 @@ services:
       - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN:-admin}
       - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD:-admin}
       - KC_DB=postgres
-      - KC_DB_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB:-litrater}
+      - KC_DB_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB:-litrater}?currentSchema=litrater_keycloak
       - KC_DB_USERNAME=${POSTGRES_USER:-litrater_user}
       - KC_DB_PASSWORD=${POSTGRES_PASSWORD:-litrater_password}
       - KC_HOSTNAME_STRICT=false
