@@ -33,16 +33,7 @@ app.MapEndpoints(versionedGroup);
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(options =>
-    {
-        var descriptions = app.DescribeApiVersions();
-
-        foreach (var description in descriptions)
-        {
-            options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",
-                $"Litrater API {description.GroupName.ToUpperInvariant()}");
-        }
-    });
+    app.UseSwaggerUI();
 
     await app.Services.MigrateDatabaseAsync();
     await app.Services.SeedDatabaseAsync();
@@ -51,6 +42,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseUserSync();
 app.UseRequestContextLogging();
 app.UseSerilogRequestLogging();
 app.UseExceptionHandler();

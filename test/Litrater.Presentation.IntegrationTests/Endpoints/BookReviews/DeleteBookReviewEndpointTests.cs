@@ -11,7 +11,7 @@ public class DeleteBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
     public async Task DeleteBookReview_WithValidIdAndOwnerAuthentication_ShouldDeleteBookReview()
     {
         // Arrange
-        await LoginAsRegularUserAsync();
+        LoginAsRegularUserAsync();
 
         var bookReviewId = TestDataGenerator.BookReviews.HobbitReview1.Id; // Regular user owns this review
 
@@ -31,7 +31,7 @@ public class DeleteBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
     public async Task DeleteBookReview_WithAdminAuthentication_ShouldDeleteAnyBookReview()
     {
         // Arrange
-        await LoginAsAdminAsync();
+        LoginAsAdminAsync();
 
         var bookReviewId = TestDataGenerator.BookReviews.HobbitReview1.Id; // Regular user owns this review
 
@@ -64,7 +64,7 @@ public class DeleteBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
     public async Task DeleteBookReview_WhenUserIsNotOwner_ShouldReturnForbidden()
     {
         // Arrange
-        await LoginAsRegularUserAsync();
+        LoginAsRegularUserAsync();
 
         var bookReviewId = TestDataGenerator.BookReviews.HobbitReview2.Id; // Admin owns this review
 
@@ -79,7 +79,7 @@ public class DeleteBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
     public async Task DeleteBookReview_AdminDeletingOwnReview_ShouldDeleteSuccessfully()
     {
         // Arrange
-        await LoginAsAdminAsync();
+        LoginAsAdminAsync();
 
         var bookReviewId = TestDataGenerator.BookReviews.HobbitReview2.Id; // Admin owns this review
 

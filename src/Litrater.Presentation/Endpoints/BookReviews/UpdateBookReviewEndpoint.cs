@@ -2,7 +2,6 @@ using System.Security.Claims;
 using Litrater.Application.Abstractions.CQRS;
 using Litrater.Application.Features.Books.Commands.UpdateBookReview;
 using Litrater.Application.Features.Books.Dtos;
-using Litrater.Domain.Users;
 using Litrater.Presentation.Abstractions;
 using Litrater.Presentation.Authorization;
 using Litrater.Presentation.Extensions;
@@ -23,15 +22,12 @@ internal sealed class UpdateBookReviewEndpoint : IEndpoint
                         return Results.Unauthorized();
                     }
 
-                    var userRole = user.FindFirst(ClaimTypes.Role)?.Value;
-                    var isAdmin = userRole == nameof(UserRole.Admin);
-
                     var command = new UpdateBookReviewCommand(
                         Id: id,
                         Content: request.Content,
                         Rating: request.Rating,
                         UserId: userId,
-                        IsAdmin: isAdmin
+                        IsAdmin: user.HasResourceRole("admin")
                     );
 
                     var result = await handler.Handle(command, cancellationToken);

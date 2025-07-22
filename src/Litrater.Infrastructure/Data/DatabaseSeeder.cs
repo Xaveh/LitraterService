@@ -1,7 +1,5 @@
 using Litrater.Domain.Authors;
 using Litrater.Domain.Books;
-using Litrater.Domain.Users;
-using Litrater.Infrastructure.Authentication;
 using Microsoft.EntityFrameworkCore;
 
 namespace Litrater.Infrastructure.Data;
@@ -10,42 +8,9 @@ public static class DatabaseSeeder
 {
     public static async Task SeedDataAsync(LitraterDbContext context)
     {
-        await SeedUsersAsync(context);
         var authors = await SeedAuthorsAsync(context);
         await SeedBooksAsync(context, authors);
         await context.SaveChangesAsync();
-    }
-
-    private static async Task SeedUsersAsync(LitraterDbContext context)
-    {
-        if (await context.Users.AnyAsync())
-        {
-            return;
-        }
-
-        var passwordHasher = new PasswordHasher();
-
-        var users = new[]
-        {
-            new User(
-                new Guid("11111111-1111-1111-1111-111111111111"),
-                "admin@litrater.com",
-                passwordHasher.Hash("admin123"),
-                "Admin",
-                "User",
-                userRole: UserRole.Admin
-            ),
-            new User(
-                new Guid("22222222-2222-2222-2222-222222222222"),
-                "user@litrater.com",
-                passwordHasher.Hash("user123"),
-                "Regular",
-                "User",
-                userRole: UserRole.User
-            )
-        };
-
-        await context.Users.AddRangeAsync(users);
     }
 
     private static async Task<Dictionary<Guid, Author>> SeedAuthorsAsync(LitraterDbContext context)

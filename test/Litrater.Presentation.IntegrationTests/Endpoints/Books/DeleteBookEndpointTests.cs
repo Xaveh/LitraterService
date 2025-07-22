@@ -11,7 +11,7 @@ public class DeleteBookEndpointTests(DatabaseFixture fixture) : BaseIntegrationT
     public async Task DeleteBook_WithValidIdAndAuthorization_ShouldDeleteBook()
     {
         // Arrange
-        await LoginAsAdminAsync();
+        LoginAsAdminAsync();
 
         var bookId = TestDataGenerator.Books.TheHobbit.Id;
 
@@ -26,7 +26,6 @@ public class DeleteBookEndpointTests(DatabaseFixture fixture) : BaseIntegrationT
 
         deletedBook.ShouldBeNull();
     }
-
 
 
     [Fact]
@@ -46,7 +45,7 @@ public class DeleteBookEndpointTests(DatabaseFixture fixture) : BaseIntegrationT
     public async Task DeleteBook_WithRegularUserRole_ShouldReturnForbidden()
     {
         // Arrange
-        await LoginAsRegularUserAsync();
+        LoginAsRegularUserAsync();
 
         var bookId = TestDataGenerator.Books.TheHobbit.Id;
 

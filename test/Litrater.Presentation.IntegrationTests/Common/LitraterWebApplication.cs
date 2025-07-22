@@ -1,7 +1,9 @@
 using Litrater.Infrastructure.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Litrater.Presentation.IntegrationTests.Common;
 
@@ -16,10 +18,21 @@ public class LitraterWebApplication : IDisposable
             .WithWebHostBuilder(builder =>
             {
                 builder.UseSetting("ConnectionStrings:Database", connectionString);
-                builder.UseSetting("Jwt:SecretKey", "test_secret_key_123456789012345678901234567890");
-                builder.UseSetting("Jwt:Issuer", "test_issuer");
-                builder.UseSetting("Jwt:Audience", "test_audience");
+                builder.UseSetting("Keycloak:Authority", "http://keycloak:8080/realms/litrater");
+                builder.UseSetting("Keycloak:Audience", "litrater-web-api");
+                builder.UseSetting("Keycloak:RequireHttpsMetadata", "false");
                 builder.UseEnvironment("Testing");
+
+                builder.ConfigureServices(services => services.PostConfigure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme,
+                    options => options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = false,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey("test-secret-key-for-integration-tests-must-be-at-least-32-characters-long"u8.ToArray()),
+                        ClockSkew = TimeSpan.Zero
+                    }));
             });
 
         HttpClient = _factory.CreateClient();

@@ -11,7 +11,7 @@ public class DeleteAuthorEndpointTests(DatabaseFixture fixture) : BaseIntegratio
     public async Task DeleteAuthor_WithValidIdAndAuthorization_ShouldDeleteAuthor()
     {
         // Arrange
-        await LoginAsAdminAsync();
+        LoginAsAdminAsync();
 
         var authorId = TestDataGenerator.Authors.Herbert.Id;
 
@@ -26,7 +26,6 @@ public class DeleteAuthorEndpointTests(DatabaseFixture fixture) : BaseIntegratio
 
         deletedAuthor.ShouldBeNull();
     }
-
 
 
     [Fact]
@@ -46,7 +45,7 @@ public class DeleteAuthorEndpointTests(DatabaseFixture fixture) : BaseIntegratio
     public async Task DeleteAuthor_WithRegularUserRole_ShouldReturnForbidden()
     {
         // Arrange
-        await LoginAsRegularUserAsync();
+        LoginAsRegularUserAsync();
 
         var authorId = TestDataGenerator.Authors.Rowling.Id;
 

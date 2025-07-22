@@ -13,7 +13,7 @@ public class CreateBookEndpointTests(DatabaseFixture fixture) : BaseIntegrationT
     public async Task CreateBook_WithValidDataAndAuthorization_ShouldCreateBook()
     {
         // Arrange
-        await LoginAsAdminAsync();
+        LoginAsAdminAsync();
 
         var tolkienAuthorId = TestDataGenerator.Authors.Tolkien.Id;
 
@@ -71,7 +71,7 @@ public class CreateBookEndpointTests(DatabaseFixture fixture) : BaseIntegrationT
     public async Task CreateBook_WithRegularUserRole_ShouldReturnForbidden()
     {
         // Arrange
-        await LoginAsRegularUserAsync();
+        LoginAsRegularUserAsync();
 
         var createBookRequest = new
         {

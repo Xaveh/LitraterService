@@ -13,7 +13,7 @@ public class UpdateBookEndpointTests(DatabaseFixture fixture) : BaseIntegrationT
     public async Task UpdateBook_WithValidDataAndAuthorization_ShouldUpdateBook()
     {
         // Arrange
-        await LoginAsAdminAsync();
+        LoginAsAdminAsync();
 
         var bookId = TestDataGenerator.Books.TheHobbit.Id;
         var tolkienAuthorId = TestDataGenerator.Authors.Tolkien.Id;
@@ -76,7 +76,7 @@ public class UpdateBookEndpointTests(DatabaseFixture fixture) : BaseIntegrationT
     public async Task UpdateBook_WithRegularUserRole_ShouldReturnForbidden()
     {
         // Arrange
-        await LoginAsRegularUserAsync();
+        LoginAsRegularUserAsync();
 
         var bookId = TestDataGenerator.Books.TheHobbit.Id;
         var updateBookRequest = new

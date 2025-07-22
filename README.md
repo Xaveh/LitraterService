@@ -31,10 +31,8 @@ A modern, well-architected .NET 9 Web API showcasing advanced software engineeri
 - **Unit of Work Pattern**: Transactional consistency across repositories
 
 ### Authentication & Authorization
-- **JWT Bearer Authentication**: Stateless authentication mechanism
-- **Role-Based Authorization**: Flexible authorization policies
-- **Password Hashing**: Secure password storage with BCrypt
-- **Custom Token Generation**: JWT token creation and validation
+- **Keycloak Authentication & Authorization**: Centralized identity and access management
+- **Role-Based Authorization**: Flexible authorization policies managed by Keycloak
 
 ### Validation & Error Handling
 - **FluentValidation**: Comprehensive input validation
@@ -91,48 +89,43 @@ A modern, well-architected .NET 9 Web API showcasing advanced software engineeri
 ## 🚀 Getting Started
 
 ### Prerequisites
-- .NET 9 SDK
 - Docker Desktop (for containerized development)
-- PostgreSQL (optional for local development)
 
-### Local Development
+### Running the Application
+
+The recommended and only supported way to run the application is via **Docker Compose**. This will start all required services, including the API, PostgreSQL database, and Keycloak for authentication.
 
 #### Clone the repository
-   ```bash
-   git clone <repository-url>
-   cd LitraterService
-   ```
+```bash
+git clone <repository-url>
+cd LitraterService
+```
 
-#### Option 1: Run from IDE
-   
-   **Database Setup:**
-   - **Recommended**: Use PostgreSQL container
-     ```bash
-     docker run --name litrater-postgres -e POSTGRES_DB=litrater -e POSTGRES_USER=litrater_user -e POSTGRES_PASSWORD=litrater_password -p 5432:5432 -d postgres:17-alpine
-     ```
-   - **Alternative**: Install PostgreSQL locally and 
-   - Update the connection string in `appsettings.Development.json`
-   
-   **Run the Application:**
-   - Open the solution in your IDE (Visual Studio, Rider, VS Code)
-   - Set `Litrater.Presentation` as the startup project
-   - Press F5 or use the "Development" profile
-   
-   **Access the API:**
-   - **API**: https://localhost:7001 (HTTPS) or http://localhost:5001 (HTTP)
-   - **Swagger UI**: https://localhost:7001/swagger
-   - **Health Check**: https://localhost:7001/health
+#### Start the application
+```bash
+docker-compose up -d
+```
+This will start:
+- PostgreSQL database
+- Litrater API service
+- Keycloak authentication server (with preconfigured users)
+- Automatic database migrations and seeding
 
-#### Option 2: Run with Docker Compose
-   ```bash
-   docker-compose up -d
-   ```
-   This will start:
-   - PostgreSQL database
-   - Litrater API service
-   - Automatic database migrations and seeding
-   
-   **Access the API:**
-   - **API**: http://localhost:8080
-   - **Swagger UI**: http://localhost:8080/swagger
-   - **Health Check**: http://localhost:8080/health
+#### Access the API & Swagger UI
+
+- **Swagger UI**: https://localhost:5001/swagger
+- **API**: https://localhost:5001
+- **Health Check**: https://localhost:5001/health
+
+**Authentication for Swagger UI:**
+
+1. Click the **Authorize** button in Swagger UI.
+2. Log in with one of the following predefined users:
+   - **Regular user**  
+     Email: `user@litrater.com`  
+     Password: `user123`
+   - **Admin user**  
+     Email: `admin@litrater.com`  
+     Password: `admin123`
+
+Keycloak handles all authentication and authorization. No custom JWT logic is used.
