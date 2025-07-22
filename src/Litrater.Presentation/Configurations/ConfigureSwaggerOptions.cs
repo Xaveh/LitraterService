@@ -15,6 +15,9 @@ internal sealed class ConfigureSwaggerOptions(IApiVersionDescriptionProvider pro
             options.SwaggerDoc(description.GroupName, CreateInfoForApiVersion(description));
         }
 
+        var swaggerKeycloakAuthority = configuration["Keycloak:SwaggerAuthority"] ??
+                                       configuration["Keycloak:Authority"]?.Replace("keycloak:", "localhost:");
+
         options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
         {
             Type = SecuritySchemeType.OAuth2,
@@ -22,8 +25,8 @@ internal sealed class ConfigureSwaggerOptions(IApiVersionDescriptionProvider pro
             {
                 AuthorizationCode = new OpenApiOAuthFlow
                 {
-                    AuthorizationUrl = new Uri($"{configuration["Keycloak:Authority"]}/protocol/openid-connect/auth".Replace("keycloak:", "localhost:")),
-                    TokenUrl = new Uri($"{configuration["Keycloak:Authority"]}/protocol/openid-connect/token".Replace("keycloak:", "localhost:")),
+                    AuthorizationUrl = new Uri($"{swaggerKeycloakAuthority}/protocol/openid-connect/auth"),
+                    TokenUrl = new Uri($"{swaggerKeycloakAuthority}/protocol/openid-connect/token"),
                     Scopes = new Dictionary<string, string>
                     {
                         { "openid", "OpenID" },

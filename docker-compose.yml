@@ -64,6 +64,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Development}
       - ConnectionStrings__Database=Host=postgres;Port=5432;Database=${POSTGRES_DB:-litrater};Username=${POSTGRES_USER:-litrater_user};Password=${POSTGRES_PASSWORD:-litrater_password}
       - Keycloak__Authority=${KEYCLOAK_AUTHORITY:-http://keycloak:8080/realms/litrater}
+      - Keycloak__SwaggerAuthority=${KEYCLOAK_SWAGGER_AUTHORITY:-http://localhost:8080/realms/litrater}
       - Keycloak__Audience=${KEYCLOAK_AUDIENCE:-litrater-web-api}
       - Keycloak__RequireHttpsMetadata=${KEYCLOAK_REQUIRE_HTTPS:-false}
       - Serilog__MinimumLevel__Default=${SERILOG_MIN_LEVEL:-Information}
