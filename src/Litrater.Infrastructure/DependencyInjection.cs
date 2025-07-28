@@ -21,9 +21,12 @@ public static class DependencyInjection
 
         services.AddDbContext<LitraterDbContext>(options => options.UseNpgsql(connectionString, o => o.MigrationsHistoryTable("__EFMigrationsHistory", LitraterDbContext.DefaultSchema)));
 
-        services.AddScoped<IBookRepository, BookRepository>();
-        services.AddScoped<IBookReviewRepository, BookReviewRepository>();
-        services.AddScoped<IAuthorRepository, AuthorRepository>();
+        services.AddScoped<IBookQueryRepository, BookQueryRepository>();
+        services.AddScoped<IBookCommandRepository, BookCommandRepository>();
+        services.AddScoped<IBookReviewQueryRepository, BookReviewQueryRepository>();
+        services.AddScoped<IBookReviewCommandRepository, BookReviewCommandRepository>();
+        services.AddScoped<IAuthorQueryRepository, AuthorQueryRepository>();
+        services.AddScoped<IAuthorCommandRepository, AuthorCommandRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 

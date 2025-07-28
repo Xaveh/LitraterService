@@ -1,6 +1,6 @@
 using Litrater.Application.Abstractions.Data;
+using Litrater.Application.Features.Books.Dtos;
 using Litrater.Application.Features.Books.Queries.GetBookReviewsByUserId;
-using Litrater.Domain.Books;
 using Moq;
 using Shouldly;
 
@@ -9,12 +9,12 @@ namespace Litrater.Application.UnitTests.Features.Books;
 public class GetBookReviewsByUserIdQueryHandlerTests
 {
     private readonly GetBookReviewsByUserIdQueryHandler _handler;
-    private readonly Mock<IBookReviewRepository> _mockBookReviewRepository;
+    private readonly Mock<IBookReviewQueryRepository> _bookReviewQueryRepositoryMock;
 
     public GetBookReviewsByUserIdQueryHandlerTests()
     {
-        _mockBookReviewRepository = new Mock<IBookReviewRepository>();
-        _handler = new GetBookReviewsByUserIdQueryHandler(_mockBookReviewRepository.Object);
+        _bookReviewQueryRepositoryMock = new Mock<IBookReviewQueryRepository>();
+        _handler = new GetBookReviewsByUserIdQueryHandler(_bookReviewQueryRepositoryMock.Object);
     }
 
     [Fact]
@@ -24,15 +24,15 @@ public class GetBookReviewsByUserIdQueryHandlerTests
         var userId = Guid.NewGuid();
         var bookId = Guid.NewGuid();
         var query = new GetBookReviewsByUserIdQuery(userId);
-        var reviews = new List<BookReview>
+        var reviewDtos = new List<BookReviewDto>
         {
             new(Guid.NewGuid(), "Great book!", 5, bookId, userId),
             new(Guid.NewGuid(), "Good read", 4, bookId, userId)
         };
 
-        _mockBookReviewRepository
+        _bookReviewQueryRepositoryMock
             .Setup(x => x.GetBookReviewsByUserIdAsync(userId, It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync((reviews, 2));
+            .ReturnsAsync((reviewDtos, 2));
 
         // Act
         var result = await _handler.Handle(query, CancellationToken.None);
@@ -53,11 +53,11 @@ public class GetBookReviewsByUserIdQueryHandlerTests
         // Arrange
         var userId = Guid.NewGuid();
         var query = new GetBookReviewsByUserIdQuery(userId);
-        var reviews = new List<BookReview>();
+        var reviewDtos = new List<BookReviewDto>();
 
-        _mockBookReviewRepository
+        _bookReviewQueryRepositoryMock
             .Setup(x => x.GetBookReviewsByUserIdAsync(userId, It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync((reviews, 0));
+            .ReturnsAsync((reviewDtos, 0));
 
         // Act
         var result = await _handler.Handle(query, CancellationToken.None);
@@ -79,15 +79,15 @@ public class GetBookReviewsByUserIdQueryHandlerTests
         var userId = Guid.NewGuid();
         var bookId = Guid.NewGuid();
         var query = new GetBookReviewsByUserIdQuery(userId, 2, 5);
-        var reviews = new List<BookReview>
+        var reviewDtos = new List<BookReviewDto>
         {
             new(Guid.NewGuid(), "Review 1", 5, bookId, userId),
             new(Guid.NewGuid(), "Review 2", 4, bookId, userId)
         };
 
-        _mockBookReviewRepository
+        _bookReviewQueryRepositoryMock
             .Setup(x => x.GetBookReviewsByUserIdAsync(userId, It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync((reviews, 12)); // Total of 12 items
+            .ReturnsAsync((reviewDtos, 12)); // Total of 12 items
 
         // Act
         var result = await _handler.Handle(query, CancellationToken.None);
@@ -108,17 +108,17 @@ public class GetBookReviewsByUserIdQueryHandlerTests
         // Arrange
         var userId = Guid.NewGuid();
         var query = new GetBookReviewsByUserIdQuery(userId, 2, 15);
-        var reviews = new List<BookReview>();
+        var reviewDtos = new List<BookReviewDto>();
 
-        _mockBookReviewRepository
+        _bookReviewQueryRepositoryMock
             .Setup(x => x.GetBookReviewsByUserIdAsync(userId, 2, 15, It.IsAny<CancellationToken>()))
-            .ReturnsAsync((reviews, 0));
+            .ReturnsAsync((reviewDtos, 0));
 
         // Act
         await _handler.Handle(query, CancellationToken.None);
 
         // Assert
-        _mockBookReviewRepository.Verify(
+        _bookReviewQueryRepositoryMock.Verify(
             x => x.GetBookReviewsByUserIdAsync(userId, query.Page, query.PageSize, It.IsAny<CancellationToken>()), Times.Once);
     }
 
@@ -130,14 +130,14 @@ public class GetBookReviewsByUserIdQueryHandlerTests
         var bookId = Guid.NewGuid();
         var reviewId = Guid.NewGuid();
         var query = new GetBookReviewsByUserIdQuery(userId);
-        var reviews = new List<BookReview>
+        var reviewDtos = new List<BookReviewDto>
         {
             new(reviewId, "Excellent book!", 5, bookId, userId)
         };
 
-        _mockBookReviewRepository
+        _bookReviewQueryRepositoryMock
             .Setup(x => x.GetBookReviewsByUserIdAsync(userId, It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync((reviews, 1));
+            .ReturnsAsync((reviewDtos, 1));
 
         // Act
         var result = await _handler.Handle(query, CancellationToken.None);

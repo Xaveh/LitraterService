@@ -10,15 +10,15 @@ namespace Litrater.Application.UnitTests.Features.Books;
 
 public sealed class DeleteBookCommandHandlerTests
 {
-    private readonly Mock<IBookRepository> _bookRepositoryMock;
+    private readonly Mock<IBookCommandRepository> _bookCommandRepositoryMock;
     private readonly DeleteBookCommandHandler _handler;
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
 
     public DeleteBookCommandHandlerTests()
     {
-        _bookRepositoryMock = new Mock<IBookRepository>();
+        _bookCommandRepositoryMock = new Mock<IBookCommandRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
-        _handler = new DeleteBookCommandHandler(_bookRepositoryMock.Object, _unitOfWorkMock.Object);
+        _handler = new DeleteBookCommandHandler(_bookCommandRepositoryMock.Object, _unitOfWorkMock.Object);
     }
 
     [Fact]
@@ -30,7 +30,7 @@ public sealed class DeleteBookCommandHandlerTests
         var authors = new List<Author> { new(Guid.NewGuid(), "John", "Doe") };
         var book = new Book(bookId, "Test Book", "1234567890123", authors);
 
-        _bookRepositoryMock
+        _bookCommandRepositoryMock
             .Setup(x => x.GetByIdAsync(bookId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(book);
 
@@ -40,8 +40,8 @@ public sealed class DeleteBookCommandHandlerTests
         // Assert
         result.IsSuccess.ShouldBeTrue();
 
-        _bookRepositoryMock.Verify(x => x.GetByIdAsync(bookId, It.IsAny<CancellationToken>()), Times.Once);
-        _bookRepositoryMock.Verify(x => x.Delete(book), Times.Once);
+        _bookCommandRepositoryMock.Verify(x => x.GetByIdAsync(bookId, It.IsAny<CancellationToken>()), Times.Once);
+        _bookCommandRepositoryMock.Verify(x => x.Delete(book), Times.Once);
         _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
@@ -52,7 +52,7 @@ public sealed class DeleteBookCommandHandlerTests
         var bookId = Guid.NewGuid();
         var command = new DeleteBookCommand(bookId);
 
-        _bookRepositoryMock
+        _bookCommandRepositoryMock
             .Setup(x => x.GetByIdAsync(bookId, It.IsAny<CancellationToken>()))
             .ReturnsAsync((Book?)null);
 
@@ -62,8 +62,8 @@ public sealed class DeleteBookCommandHandlerTests
         // Assert
         result.Status.ShouldBe(ResultStatus.NotFound);
 
-        _bookRepositoryMock.Verify(x => x.GetByIdAsync(bookId, It.IsAny<CancellationToken>()), Times.Once);
-        _bookRepositoryMock.Verify(x => x.Delete(It.IsAny<Book>()), Times.Never);
+        _bookCommandRepositoryMock.Verify(x => x.GetByIdAsync(bookId, It.IsAny<CancellationToken>()), Times.Once);
+        _bookCommandRepositoryMock.Verify(x => x.Delete(It.IsAny<Book>()), Times.Never);
         _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 }

@@ -66,7 +66,7 @@ public class ArchitectureTests
     }
 
     [Fact]
-    public void Handlers_ShouldHaveDependency_OnDomain()
+    public void Application_ShouldHaveDependency_OnDomain()
     {
         // Arrange
         var applicationAssembly = Assembly.Load(ApplicationNamespace);
@@ -74,7 +74,7 @@ public class ArchitectureTests
         // Act
         var result = Types.InAssembly(applicationAssembly)
             .That()
-            .HaveNameEndingWith("Handler")
+            .HaveNameEndingWith("CommandHandler")
             .Should()
             .HaveDependencyOn(DomainNamespace)
             .GetResult();

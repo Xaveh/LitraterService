@@ -1,7 +1,7 @@
 using Ardalis.Result;
 using Litrater.Application.Abstractions.Data;
+using Litrater.Application.Features.Authors.Dtos;
 using Litrater.Application.Features.Authors.Queries.GetAuthorById;
-using Litrater.Domain.Authors;
 using Moq;
 using Shouldly;
 
@@ -9,13 +9,13 @@ namespace Litrater.Application.UnitTests.Features.Authors;
 
 public sealed class GetAuthorByIdQueryHandlerTests
 {
-    private readonly Mock<IAuthorRepository> _authorRepositoryMock;
+    private readonly Mock<IAuthorQueryRepository> _authorQueryRepositoryMock;
     private readonly GetAuthorByIdQueryHandler _handler;
 
     public GetAuthorByIdQueryHandlerTests()
     {
-        _authorRepositoryMock = new Mock<IAuthorRepository>();
-        _handler = new GetAuthorByIdQueryHandler(_authorRepositoryMock.Object);
+        _authorQueryRepositoryMock = new Mock<IAuthorQueryRepository>();
+        _handler = new GetAuthorByIdQueryHandler(_authorQueryRepositoryMock.Object);
     }
 
     [Fact]
@@ -24,11 +24,11 @@ public sealed class GetAuthorByIdQueryHandlerTests
         // Arrange
         var authorId = Guid.NewGuid();
         var query = new GetAuthorByIdQuery(authorId);
-        var author = new Author(authorId, "John", "Doe");
+        var authorDto = new AuthorDto(authorId, "John", "Doe", []);
 
-        _authorRepositoryMock
+        _authorQueryRepositoryMock
             .Setup(x => x.GetByIdAsync(authorId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(author);
+            .ReturnsAsync(authorDto);
 
         // Act
         var result = await _handler.Handle(query, CancellationToken.None);
@@ -39,7 +39,7 @@ public sealed class GetAuthorByIdQueryHandlerTests
         result.Value.FirstName.ShouldBe("John");
         result.Value.LastName.ShouldBe("Doe");
         result.Value.BookIds.ShouldNotBeNull();
-        _authorRepositoryMock.Verify(x => x.GetByIdAsync(authorId, It.IsAny<CancellationToken>()), Times.Once);
+        _authorQueryRepositoryMock.Verify(x => x.GetByIdAsync(authorId, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -49,9 +49,9 @@ public sealed class GetAuthorByIdQueryHandlerTests
         var authorId = Guid.NewGuid();
         var query = new GetAuthorByIdQuery(authorId);
 
-        _authorRepositoryMock
+        _authorQueryRepositoryMock
             .Setup(x => x.GetByIdAsync(authorId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync((Author?)null);
+            .ReturnsAsync((AuthorDto?)null);
 
         // Act
         var result = await _handler.Handle(query, CancellationToken.None);

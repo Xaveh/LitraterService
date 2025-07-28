@@ -1,8 +1,7 @@
 using Ardalis.Result;
 using Litrater.Application.Abstractions.Data;
+using Litrater.Application.Features.Books.Dtos;
 using Litrater.Application.Features.Books.Queries.GetBookById;
-using Litrater.Domain.Authors;
-using Litrater.Domain.Books;
 using Moq;
 using Shouldly;
 
@@ -10,13 +9,13 @@ namespace Litrater.Application.UnitTests.Features.Books;
 
 public sealed class GetBookByIdQueryHandlerTests
 {
-    private readonly Mock<IBookRepository> _bookRepositoryMock;
+    private readonly Mock<IBookQueryRepository> _bookQueryRepositoryMock;
     private readonly GetBookByIdQueryHandler _handler;
 
     public GetBookByIdQueryHandlerTests()
     {
-        _bookRepositoryMock = new Mock<IBookRepository>();
-        _handler = new GetBookByIdQueryHandler(_bookRepositoryMock.Object);
+        _bookQueryRepositoryMock = new Mock<IBookQueryRepository>();
+        _handler = new GetBookByIdQueryHandler(_bookQueryRepositoryMock.Object);
     }
 
     [Fact]
@@ -25,12 +24,11 @@ public sealed class GetBookByIdQueryHandlerTests
         // Arrange
         var bookId = Guid.NewGuid();
         var query = new GetBookByIdQuery(bookId);
-        var authors = new List<Author> { new(Guid.NewGuid(), "John", "Doe") };
-        var book = new Book(bookId, "Test Book", "1234567890123", authors);
+        var bookDto = new BookDto(bookId, "Test Book", "1234567890123", [Guid.NewGuid()], []);
 
-        _bookRepositoryMock
+        _bookQueryRepositoryMock
             .Setup(x => x.GetByIdAsync(bookId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(book);
+            .ReturnsAsync(bookDto);
 
         // Act
         var result = await _handler.Handle(query, CancellationToken.None);
@@ -40,8 +38,8 @@ public sealed class GetBookByIdQueryHandlerTests
         result.Value.Id.ShouldBe(bookId);
         result.Value.Title.ShouldBe("Test Book");
         result.Value.Isbn.ShouldBe("1234567890123");
-        result.Value.AuthorIds.ShouldContain(authors[0].Id);
-        _bookRepositoryMock.Verify(x => x.GetByIdAsync(bookId, It.IsAny<CancellationToken>()), Times.Once);
+        result.Value.AuthorIds.ShouldContain(bookDto.AuthorIds.First());
+        _bookQueryRepositoryMock.Verify(x => x.GetByIdAsync(bookId, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -51,9 +49,9 @@ public sealed class GetBookByIdQueryHandlerTests
         var bookId = Guid.NewGuid();
         var query = new GetBookByIdQuery(bookId);
 
-        _bookRepositoryMock
+        _bookQueryRepositoryMock
             .Setup(x => x.GetByIdAsync(bookId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync((Book?)null);
+            .ReturnsAsync((BookDto?)null);
 
         // Act
         var result = await _handler.Handle(query, CancellationToken.None);

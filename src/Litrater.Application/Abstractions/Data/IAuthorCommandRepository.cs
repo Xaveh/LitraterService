@@ -2,7 +2,7 @@ using Litrater.Domain.Authors;
 
 namespace Litrater.Application.Abstractions.Data;
 
-public interface IAuthorRepository : IRepository
+public interface IAuthorCommandRepository : ICommandRepository
 {
     Task<Author?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
     Task<List<Author>> GetAuthorsByIdsAsync(IEnumerable<Guid> authorIds, CancellationToken cancellationToken = default);
