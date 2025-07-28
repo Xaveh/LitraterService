@@ -10,17 +10,17 @@ namespace Litrater.Application.UnitTests.Features.Books;
 
 public sealed class UpdateBookCommandHandlerTests
 {
-    private readonly Mock<IAuthorRepository> _authorRepositoryMock;
-    private readonly Mock<IBookRepository> _bookRepositoryMock;
+    private readonly Mock<IAuthorCommandRepository> _authorCommandRepositoryMock;
+    private readonly Mock<IBookCommandRepository> _bookCommandRepositoryMock;
     private readonly UpdateBookCommandHandler _handler;
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
 
     public UpdateBookCommandHandlerTests()
     {
-        _bookRepositoryMock = new Mock<IBookRepository>();
-        _authorRepositoryMock = new Mock<IAuthorRepository>();
+        _bookCommandRepositoryMock = new Mock<IBookCommandRepository>();
+        _authorCommandRepositoryMock = new Mock<IAuthorCommandRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
-        _handler = new UpdateBookCommandHandler(_bookRepositoryMock.Object, _authorRepositoryMock.Object, _unitOfWorkMock.Object);
+        _handler = new UpdateBookCommandHandler(_bookCommandRepositoryMock.Object, _authorCommandRepositoryMock.Object, _unitOfWorkMock.Object);
     }
 
     [Fact]
@@ -34,11 +34,11 @@ public sealed class UpdateBookCommandHandlerTests
         var newAuthors = new List<Author> { new(authorIds[0], "John", "Doe"), new(authorIds[1], "Jane", "Smith") };
         var book = new Book(bookId, "Old Book", "1234567890123", existingAuthors);
 
-        _bookRepositoryMock
+        _bookCommandRepositoryMock
             .Setup(x => x.GetByIdAsync(bookId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(book);
 
-        _authorRepositoryMock
+        _authorCommandRepositoryMock
             .Setup(x => x.GetAuthorsByIdsAsync(authorIds, It.IsAny<CancellationToken>()))
             .ReturnsAsync(newAuthors);
 
@@ -52,8 +52,8 @@ public sealed class UpdateBookCommandHandlerTests
         result.Value.Isbn.ShouldBe(command.Isbn);
         result.Value.AuthorIds.ShouldBe(authorIds);
 
-        _bookRepositoryMock.Verify(x => x.GetByIdAsync(bookId, It.IsAny<CancellationToken>()), Times.Once);
-        _authorRepositoryMock.Verify(x => x.GetAuthorsByIdsAsync(authorIds, It.IsAny<CancellationToken>()), Times.Once);
+        _bookCommandRepositoryMock.Verify(x => x.GetByIdAsync(bookId, It.IsAny<CancellationToken>()), Times.Once);
+        _authorCommandRepositoryMock.Verify(x => x.GetAuthorsByIdsAsync(authorIds, It.IsAny<CancellationToken>()), Times.Once);
         _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
@@ -65,7 +65,7 @@ public sealed class UpdateBookCommandHandlerTests
         var authorIds = new List<Guid> { Guid.NewGuid() };
         var command = new UpdateBookCommand(bookId, "Updated Book", "9876543210123", authorIds);
 
-        _bookRepositoryMock
+        _bookCommandRepositoryMock
             .Setup(x => x.GetByIdAsync(bookId, It.IsAny<CancellationToken>()))
             .ReturnsAsync((Book?)null);
 
@@ -75,8 +75,8 @@ public sealed class UpdateBookCommandHandlerTests
         // Assert
         result.Status.ShouldBe(ResultStatus.NotFound);
 
-        _bookRepositoryMock.Verify(x => x.GetByIdAsync(bookId, It.IsAny<CancellationToken>()), Times.Once);
-        _authorRepositoryMock.Verify(x => x.GetAuthorsByIdsAsync(It.IsAny<IEnumerable<Guid>>(), It.IsAny<CancellationToken>()), Times.Never);
+        _bookCommandRepositoryMock.Verify(x => x.GetByIdAsync(bookId, It.IsAny<CancellationToken>()), Times.Once);
+        _authorCommandRepositoryMock.Verify(x => x.GetAuthorsByIdsAsync(It.IsAny<IEnumerable<Guid>>(), It.IsAny<CancellationToken>()), Times.Never);
         _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 
@@ -91,11 +91,11 @@ public sealed class UpdateBookCommandHandlerTests
         var book = new Book(bookId, "Old Book", "1234567890123", existingAuthors);
         var foundAuthors = new List<Author> { new(authorIds[0], "John", "Doe") }; // Only one author found
 
-        _bookRepositoryMock
+        _bookCommandRepositoryMock
             .Setup(x => x.GetByIdAsync(bookId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(book);
 
-        _authorRepositoryMock
+        _authorCommandRepositoryMock
             .Setup(x => x.GetAuthorsByIdsAsync(authorIds, It.IsAny<CancellationToken>()))
             .ReturnsAsync(foundAuthors);
 
@@ -106,8 +106,8 @@ public sealed class UpdateBookCommandHandlerTests
         result.Status.ShouldBe(ResultStatus.Invalid);
         result.ValidationErrors.ShouldContain(e => e.Identifier == nameof(command.AuthorIds));
 
-        _bookRepositoryMock.Verify(x => x.GetByIdAsync(bookId, It.IsAny<CancellationToken>()), Times.Once);
-        _authorRepositoryMock.Verify(x => x.GetAuthorsByIdsAsync(authorIds, It.IsAny<CancellationToken>()), Times.Once);
+        _bookCommandRepositoryMock.Verify(x => x.GetByIdAsync(bookId, It.IsAny<CancellationToken>()), Times.Once);
+        _authorCommandRepositoryMock.Verify(x => x.GetAuthorsByIdsAsync(authorIds, It.IsAny<CancellationToken>()), Times.Once);
         _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 }

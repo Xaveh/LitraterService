@@ -11,17 +11,17 @@ namespace Litrater.Application.UnitTests.Features.Authors;
 
 public class UpdateAuthorCommandHandlerTests
 {
-    private readonly Mock<IAuthorRepository> _authorRepositoryMock;
-    private readonly Mock<IBookRepository> _bookRepositoryMock;
+    private readonly Mock<IAuthorCommandRepository> _authorCommandRepositoryMock;
+    private readonly Mock<IBookCommandRepository> _bookCommandRepositoryMock;
     private readonly UpdateAuthorCommandHandler _handler;
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
 
     public UpdateAuthorCommandHandlerTests()
     {
-        _authorRepositoryMock = new Mock<IAuthorRepository>();
-        _bookRepositoryMock = new Mock<IBookRepository>();
+        _authorCommandRepositoryMock = new Mock<IAuthorCommandRepository>();
+        _bookCommandRepositoryMock = new Mock<IBookCommandRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
-        _handler = new UpdateAuthorCommandHandler(_authorRepositoryMock.Object, _bookRepositoryMock.Object, _unitOfWorkMock.Object);
+        _handler = new UpdateAuthorCommandHandler(_authorCommandRepositoryMock.Object, _bookCommandRepositoryMock.Object, _unitOfWorkMock.Object);
     }
 
     [Fact]
@@ -35,7 +35,7 @@ public class UpdateAuthorCommandHandlerTests
             BookIds: [Guid.NewGuid()]
         );
 
-        _authorRepositoryMock
+        _authorCommandRepositoryMock
             .Setup(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync((Author?)null);
 
@@ -63,11 +63,11 @@ public class UpdateAuthorCommandHandlerTests
             BookIds: [bookId1, bookId2]
         );
 
-        _authorRepositoryMock
+        _authorCommandRepositoryMock
             .Setup(x => x.GetByIdAsync(authorId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(author);
 
-        _bookRepositoryMock
+        _bookCommandRepositoryMock
             .Setup(x => x.GetBooksByIdsAsync(command.BookIds, It.IsAny<CancellationToken>()))
             .ReturnsAsync([book1]); // Only one book found, but two requested
 
@@ -97,11 +97,11 @@ public class UpdateAuthorCommandHandlerTests
             BookIds: [bookId1, bookId2]
         );
 
-        _authorRepositoryMock
+        _authorCommandRepositoryMock
             .Setup(x => x.GetByIdAsync(authorId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(author);
 
-        _bookRepositoryMock
+        _bookCommandRepositoryMock
             .Setup(x => x.GetBooksByIdsAsync(command.BookIds, It.IsAny<CancellationToken>()))
             .ReturnsAsync([book1, book2]);
 

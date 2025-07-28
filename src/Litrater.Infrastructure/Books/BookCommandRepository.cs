@@ -5,29 +5,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Litrater.Infrastructure.Books;
 
-internal sealed class BookRepository(LitraterDbContext context) : Repository<Book>(context), IBookRepository
+internal sealed class BookCommandRepository(LitraterDbContext context) : CommandRepository<Book>(context), IBookCommandRepository
 {
     public async Task<Book?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await DbSet
             .Include(b => b.Reviews)
             .Include(b => b.Authors)
+            .AsSplitQuery()
             .FirstOrDefaultAsync(b => b.Id == id, cancellationToken);
-    }
-
-    public async Task<(List<Book> Books, int TotalCount)> GetBooksAsync(int page, int pageSize, CancellationToken cancellationToken = default)
-    {
-        var totalCount = await DbSet.CountAsync(cancellationToken);
-
-        var books = await DbSet
-            .Include(b => b.Reviews)
-            .Include(b => b.Authors)
-            .OrderBy(b => b.Title)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .ToListAsync(cancellationToken);
-
-        return (books, totalCount);
     }
 
     public Task<List<Book>> GetBooksByIdsAsync(IEnumerable<Guid> bookIds, CancellationToken cancellationToken = default)
@@ -35,6 +21,7 @@ internal sealed class BookRepository(LitraterDbContext context) : Repository<Boo
         return DbSet.Where(book => bookIds.Contains(book.Id))
             .Include(b => b.Reviews)
             .Include(b => b.Authors)
+            .AsSplitQuery()
             .ToListAsync(cancellationToken);
     }
 

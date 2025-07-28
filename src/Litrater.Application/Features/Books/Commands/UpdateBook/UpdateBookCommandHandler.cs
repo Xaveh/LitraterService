@@ -6,20 +6,20 @@ using Litrater.Application.Features.Books.Dtos;
 namespace Litrater.Application.Features.Books.Commands.UpdateBook;
 
 public sealed class UpdateBookCommandHandler(
-    IBookRepository bookRepository,
-    IAuthorRepository authorRepository,
+    IBookCommandRepository bookCommandRepository,
+    IAuthorCommandRepository authorCommandRepository,
     IUnitOfWork unitOfWork)
     : ICommandHandler<UpdateBookCommand, BookDto>
 {
     public async Task<Result<BookDto>> Handle(UpdateBookCommand command, CancellationToken cancellationToken)
     {
-        var book = await bookRepository.GetByIdAsync(command.Id, cancellationToken);
+        var book = await bookCommandRepository.GetByIdAsync(command.Id, cancellationToken);
         if (book is null)
         {
             return Result.NotFound();
         }
 
-        var authors = await authorRepository.GetAuthorsByIdsAsync(command.AuthorIds, cancellationToken);
+        var authors = await authorCommandRepository.GetAuthorsByIdsAsync(command.AuthorIds, cancellationToken);
         if (authors.Count != command.AuthorIds.Count())
         {
             return Result<BookDto>.Invalid(new ValidationError(nameof(command.AuthorIds),

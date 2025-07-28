@@ -9,17 +9,17 @@ namespace Litrater.Application.UnitTests.Features.Books;
 
 public sealed class CreateBookReviewCommandHandlerTests
 {
-    private readonly Mock<IBookRepository> _bookRepositoryMock;
-    private readonly Mock<IBookReviewRepository> _bookReviewRepositoryMock;
+    private readonly Mock<IBookCommandRepository> _bookCommandRepositoryMock;
+    private readonly Mock<IBookReviewCommandRepository> _bookReviewCommandRepositoryMock;
     private readonly CreateBookReviewCommandHandler _handler;
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
 
     public CreateBookReviewCommandHandlerTests()
     {
-        _bookReviewRepositoryMock = new Mock<IBookReviewRepository>();
-        _bookRepositoryMock = new Mock<IBookRepository>();
+        _bookReviewCommandRepositoryMock = new Mock<IBookReviewCommandRepository>();
+        _bookCommandRepositoryMock = new Mock<IBookCommandRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
-        _handler = new CreateBookReviewCommandHandler(_bookReviewRepositoryMock.Object, _bookRepositoryMock.Object, _unitOfWorkMock.Object);
+        _handler = new CreateBookReviewCommandHandler(_bookReviewCommandRepositoryMock.Object, _bookCommandRepositoryMock.Object, _unitOfWorkMock.Object);
     }
 
     [Fact]
@@ -31,11 +31,11 @@ public sealed class CreateBookReviewCommandHandlerTests
         var command = new CreateBookReviewCommand("Great book!", 5, bookId, userId);
         var book = new Book(bookId, "Test Book", "1234567890123", []);
 
-        _bookRepositoryMock
+        _bookCommandRepositoryMock
             .Setup(x => x.GetByIdAsync(command.BookId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(book);
 
-        _bookReviewRepositoryMock
+        _bookReviewCommandRepositoryMock
             .Setup(x => x.ExistsByUserAndBookAsync(command.UserId, command.BookId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
@@ -49,10 +49,10 @@ public sealed class CreateBookReviewCommandHandlerTests
         result.Value.BookId.ShouldBe(command.BookId);
         result.Value.UserId.ShouldBe(command.UserId);
 
-        _bookRepositoryMock.Verify(x => x.GetByIdAsync(command.BookId, It.IsAny<CancellationToken>()), Times.Once);
-        _bookReviewRepositoryMock.Verify(x => x.ExistsByUserAndBookAsync(command.UserId, command.BookId, It.IsAny<CancellationToken>()), Times.Once);
+        _bookCommandRepositoryMock.Verify(x => x.GetByIdAsync(command.BookId, It.IsAny<CancellationToken>()), Times.Once);
+        _bookReviewCommandRepositoryMock.Verify(x => x.ExistsByUserAndBookAsync(command.UserId, command.BookId, It.IsAny<CancellationToken>()), Times.Once);
 
-        _bookReviewRepositoryMock.Verify(x => x.AddAsync(
+        _bookReviewCommandRepositoryMock.Verify(x => x.AddAsync(
             It.Is<BookReview>(br =>
                 br.Content == command.Content &&
                 br.Rating == command.Rating &&
@@ -71,7 +71,7 @@ public sealed class CreateBookReviewCommandHandlerTests
         var userId = Guid.NewGuid();
         var command = new CreateBookReviewCommand("Great book!", 5, bookId, userId);
 
-        _bookRepositoryMock
+        _bookCommandRepositoryMock
             .Setup(x => x.GetByIdAsync(command.BookId, It.IsAny<CancellationToken>()))
             .ReturnsAsync((Book?)null);
 
@@ -81,8 +81,8 @@ public sealed class CreateBookReviewCommandHandlerTests
         // Assert
         result.Status.ShouldBe(ResultStatus.NotFound);
 
-        _bookReviewRepositoryMock.Verify(x => x.ExistsByUserAndBookAsync(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
-        _bookReviewRepositoryMock.Verify(x => x.AddAsync(It.IsAny<BookReview>(), It.IsAny<CancellationToken>()), Times.Never);
+        _bookReviewCommandRepositoryMock.Verify(x => x.ExistsByUserAndBookAsync(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
+        _bookReviewCommandRepositoryMock.Verify(x => x.AddAsync(It.IsAny<BookReview>(), It.IsAny<CancellationToken>()), Times.Never);
         _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 
@@ -95,11 +95,11 @@ public sealed class CreateBookReviewCommandHandlerTests
         var command = new CreateBookReviewCommand("Great book!", 5, bookId, userId);
         var book = new Book(bookId, "Test Book", "1234567890123", []);
 
-        _bookRepositoryMock
+        _bookCommandRepositoryMock
             .Setup(x => x.GetByIdAsync(command.BookId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(book);
 
-        _bookReviewRepositoryMock
+        _bookReviewCommandRepositoryMock
             .Setup(x => x.ExistsByUserAndBookAsync(command.UserId, command.BookId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
@@ -109,7 +109,7 @@ public sealed class CreateBookReviewCommandHandlerTests
         // Assert
         result.Status.ShouldBe(ResultStatus.Conflict);
 
-        _bookReviewRepositoryMock.Verify(x => x.AddAsync(It.IsAny<BookReview>(), It.IsAny<CancellationToken>()), Times.Never);
+        _bookReviewCommandRepositoryMock.Verify(x => x.AddAsync(It.IsAny<BookReview>(), It.IsAny<CancellationToken>()), Times.Never);
         _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 }

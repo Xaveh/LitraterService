@@ -11,6 +11,9 @@ namespace Litrater.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "litrater_web_api");
+
             migrationBuilder.CreateTable(
                 name: "Authors",
                 schema: "litrater_web_api",
@@ -58,14 +61,14 @@ namespace Litrater.Infrastructure.Migrations
                         name: "FK_AuthorBooks_Authors_AuthorsId",
                         column: x => x.AuthorsId,
                         principalTable: "Authors",
-                        principalSchema:"litrater_web_api",
+                        principalSchema: "litrater_web_api",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AuthorBooks_Books_BooksId",
                         column: x => x.BooksId,
                         principalTable: "Books",
-                        principalSchema:"litrater_web_api",
+                        principalSchema: "litrater_web_api",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -125,6 +128,9 @@ namespace Litrater.Infrastructure.Migrations
             migrationBuilder.DropTable(
                 name: "Books",
                 schema: "litrater_web_api");
+
+            migrationBuilder.DropSchema(
+                name: "litrater_web_api");
         }
     }
 }

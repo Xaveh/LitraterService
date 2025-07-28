@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Litrater.Infrastructure.Authors;
 
-internal sealed class AuthorRepository(LitraterDbContext context) : Repository<Author>(context), IAuthorRepository
+internal sealed class AuthorCommandRepository(LitraterDbContext context) : CommandRepository<Author>(context), IAuthorCommandRepository
 {
     public async Task<Author?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {

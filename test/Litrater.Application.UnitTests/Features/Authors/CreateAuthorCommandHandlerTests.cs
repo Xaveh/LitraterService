@@ -9,15 +9,15 @@ namespace Litrater.Application.UnitTests.Features.Authors;
 
 public sealed class CreateAuthorCommandHandlerTests
 {
-    private readonly Mock<IAuthorRepository> _authorRepositoryMock;
+    private readonly Mock<IAuthorCommandRepository> _authorCommandRepositoryMock;
     private readonly CreateAuthorCommandHandler _handler;
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
 
     public CreateAuthorCommandHandlerTests()
     {
-        _authorRepositoryMock = new Mock<IAuthorRepository>();
+        _authorCommandRepositoryMock = new Mock<IAuthorCommandRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
-        _handler = new CreateAuthorCommandHandler(_authorRepositoryMock.Object, _unitOfWorkMock.Object);
+        _handler = new CreateAuthorCommandHandler(_authorCommandRepositoryMock.Object, _unitOfWorkMock.Object);
     }
 
     [Fact]
@@ -26,7 +26,7 @@ public sealed class CreateAuthorCommandHandlerTests
         // Arrange
         var command = new CreateAuthorCommand("John", "Doe");
 
-        _authorRepositoryMock
+        _authorCommandRepositoryMock
             .Setup(x => x.ExistsByNameAsync(command.FirstName, command.LastName, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
@@ -39,9 +39,9 @@ public sealed class CreateAuthorCommandHandlerTests
         result.Value.LastName.ShouldBe(command.LastName);
         result.Value.Id.ShouldNotBe(Guid.Empty);
 
-        _authorRepositoryMock.Verify(x => x.ExistsByNameAsync(command.FirstName, command.LastName, It.IsAny<CancellationToken>()), Times.Once);
+        _authorCommandRepositoryMock.Verify(x => x.ExistsByNameAsync(command.FirstName, command.LastName, It.IsAny<CancellationToken>()), Times.Once);
 
-        _authorRepositoryMock.Verify(x => x.AddAsync(
+        _authorCommandRepositoryMock.Verify(x => x.AddAsync(
             It.Is<Author>(a =>
                 a.FirstName == command.FirstName &&
                 a.LastName == command.LastName),
@@ -56,7 +56,7 @@ public sealed class CreateAuthorCommandHandlerTests
         // Arrange
         var command = new CreateAuthorCommand("John", "Doe");
 
-        _authorRepositoryMock
+        _authorCommandRepositoryMock
             .Setup(x => x.ExistsByNameAsync(command.FirstName, command.LastName, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
@@ -66,7 +66,7 @@ public sealed class CreateAuthorCommandHandlerTests
         // Assert
         result.Status.ShouldBe(ResultStatus.Conflict);
 
-        _authorRepositoryMock.Verify(x => x.AddAsync(It.IsAny<Author>(), It.IsAny<CancellationToken>()), Times.Never);
+        _authorCommandRepositoryMock.Verify(x => x.AddAsync(It.IsAny<Author>(), It.IsAny<CancellationToken>()), Times.Never);
         _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 }
