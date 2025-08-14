@@ -18,6 +18,21 @@ builder.Services
 
 var app = builder.Build();
 
+app.UseExceptionHandler();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseRequestContextLogging();
+app.UseSerilogRequestLogging();
+app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseUserSync();
+
 var apiVersionSet = app.NewApiVersionSet()
     .HasApiVersion(new ApiVersion(1))
     .HasApiVersion(new ApiVersion(2))
@@ -29,25 +44,13 @@ var versionedGroup = app.MapGroup("api/v{apiVersion:apiVersion}")
     .WithOpenApi();
 
 app.MapEndpoints(versionedGroup);
+app.MapHealthChecks("health", new HealthCheckOptions { ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse });
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-
     await app.Services.MigrateDatabaseAsync();
     await app.Services.SeedDatabaseAsync();
 }
-
-app.UseHttpsRedirection();
-app.UseAuthentication();
-app.UseAuthorization();
-app.UseUserSync();
-app.UseRequestContextLogging();
-app.UseSerilogRequestLogging();
-app.UseExceptionHandler();
-
-app.MapHealthChecks("health", new HealthCheckOptions { ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse });
 
 await app.RunAsync();
 
