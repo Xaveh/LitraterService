@@ -8,7 +8,7 @@ Litrater is a comprehensive book storage and review platform where users can dis
 
 ## 🎯 Purpose
 
-A modern, well-architected .NET 9 Web API showcasing advanced software engineering practices and design patterns. This portfolio application demonstrates expertise in building scalable, maintainable, and testable enterprise-grade applications.
+A modern, well-architected .NET 10 Web API showcasing advanced software engineering practices and design patterns. This portfolio application demonstrates expertise in building scalable, maintainable, and testable enterprise-grade applications.
 
 ## 🏗️ Architecture & Design Patterns
 
@@ -20,9 +20,9 @@ A modern, well-architected .NET 9 Web API showcasing advanced software engineeri
 ## 🛠️ Technical Stack
 
 ### Core Framework
-- **.NET 9**: Latest .NET version with cutting-edge features
+- **.NET 10**: Latest .NET version with cutting-edge features
 - **ASP.NET Core Minimal APIs**: Modern, lightweight API endpoints
-- **Entity Framework Core 9**: Latest ORM with PostgreSQL support
+- **Entity Framework Core 10**: Latest ORM with PostgreSQL support
 
 ### Database & Data Access
 - **PostgreSQL**: Robust, open-source relational database

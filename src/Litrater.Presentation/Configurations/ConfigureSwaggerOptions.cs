@@ -1,6 +1,6 @@
 using Asp.Versioning.ApiExplorer;
 using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Litrater.Presentation.Configurations;
@@ -31,20 +31,17 @@ internal sealed class ConfigureSwaggerOptions(IApiVersionDescriptionProvider pro
                     {
                         { "openid", "OpenID" },
                         { "profile", "Profile" },
-                        { "email", "Email" },
+                        { "email", "Email" }
                     }
                 }
             },
             Description = "Keycloak OAuth2/OpenID Connect"
         });
 
-        options.AddSecurityRequirement(new OpenApiSecurityRequirement
+        options.AddSecurityRequirement(_ => new OpenApiSecurityRequirement
         {
             {
-                new OpenApiSecurityScheme
-                {
-                    Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" }
-                },
+                new OpenApiSecuritySchemeReference("oauth2"),
                 ["openid", "profile", "email"]
             }
         });

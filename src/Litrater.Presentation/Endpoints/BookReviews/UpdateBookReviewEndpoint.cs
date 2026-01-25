@@ -37,7 +37,6 @@ internal sealed class UpdateBookReviewEndpoint : IEndpoint
             .WithName("UpdateBookReview")
             .WithTags("BookReviews")
             .MapToApiVersion(1)
-            .WithOpenApi()
             .Produces<BookReviewDto>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status401Unauthorized)

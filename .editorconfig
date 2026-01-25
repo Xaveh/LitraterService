@@ -8,6 +8,9 @@ indent_style = space
 [*.xml]
 indent_size = 2
 
+[*.{csproj,props,targets,xml}]
+ij_xml_space_inside_empty_tag = true
+
 # C# files
 [*.cs]
 

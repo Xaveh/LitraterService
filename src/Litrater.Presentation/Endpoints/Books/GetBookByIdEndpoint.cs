@@ -22,7 +22,6 @@ internal sealed class GetBookByIdEndpoint : IEndpoint
             .WithName("GetBookById")
             .WithTags("Books")
             .MapToApiVersion(1)
-            .WithOpenApi()
             .Produces<BookDto>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status401Unauthorized)
