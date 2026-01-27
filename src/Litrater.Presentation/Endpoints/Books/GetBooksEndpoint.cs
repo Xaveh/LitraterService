@@ -25,7 +25,6 @@ internal sealed class GetBooksEndpoint : IEndpoint
             .WithName("GetBooks")
             .WithTags("Books")
             .MapToApiVersion(1)
-            .WithOpenApi()
             .Produces<PagedResult<IEnumerable<BookDto>>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest);
     }

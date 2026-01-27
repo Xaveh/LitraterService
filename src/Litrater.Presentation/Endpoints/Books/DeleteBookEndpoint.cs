@@ -23,7 +23,6 @@ internal sealed class DeleteBookEndpoint : IEndpoint
             .WithName("DeleteBook")
             .WithTags("Books")
             .MapToApiVersion(1)
-            .WithOpenApi()
             .Produces(StatusCodes.Status204NoContent)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status401Unauthorized)

@@ -27,7 +27,6 @@ internal sealed class CreateAuthorEndpoint : IEndpoint
             .WithName("CreateAuthor")
             .WithTags("Authors")
             .MapToApiVersion(1)
-            .WithOpenApi()
             .Produces<AuthorDto>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status401Unauthorized)

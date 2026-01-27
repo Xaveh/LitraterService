@@ -34,7 +34,6 @@ internal sealed class DeleteBookReviewEndpoint : IEndpoint
             .WithName("DeleteBookReview")
             .WithTags("BookReviews")
             .MapToApiVersion(1)
-            .WithOpenApi()
             .Produces(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status401Unauthorized)

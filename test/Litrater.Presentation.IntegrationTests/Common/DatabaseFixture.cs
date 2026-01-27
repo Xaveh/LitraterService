@@ -10,8 +10,7 @@ public class DatabaseFixture : IAsyncLifetime
 {
     private Respawner _respawner = null!;
 
-    public PostgreSqlContainer DbContainer { get; } = new PostgreSqlBuilder()
-        .WithImage("postgres:latest")
+    public PostgreSqlContainer DbContainer { get; } = new PostgreSqlBuilder("postgres:17-alpine")
         .WithDatabase("LitraterTestDb")
         .WithUsername("LitraterTest")
         .WithPassword("LitraterTest1234")

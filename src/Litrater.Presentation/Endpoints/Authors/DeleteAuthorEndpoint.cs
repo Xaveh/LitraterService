@@ -23,7 +23,6 @@ internal sealed class DeleteAuthorEndpoint : IEndpoint
             .WithName("DeleteAuthor")
             .WithTags("Authors")
             .MapToApiVersion(1)
-            .WithOpenApi()
             .Produces(StatusCodes.Status204NoContent)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status401Unauthorized)

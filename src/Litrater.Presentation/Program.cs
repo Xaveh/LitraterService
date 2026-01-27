@@ -40,8 +40,7 @@ var apiVersionSet = app.NewApiVersionSet()
     .Build();
 
 var versionedGroup = app.MapGroup("api/v{apiVersion:apiVersion}")
-    .WithApiVersionSet(apiVersionSet)
-    .WithOpenApi();
+    .WithApiVersionSet(apiVersionSet);
 
 app.MapEndpoints(versionedGroup);
 app.MapHealthChecks("health", new HealthCheckOptions { ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse });

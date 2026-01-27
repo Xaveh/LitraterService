@@ -25,7 +25,6 @@ internal sealed class GetBookReviewsByUserIdEndpoint : IEndpoint
             .WithName("GetBookReviewsByUserId")
             .WithTags("BookReviews")
             .MapToApiVersion(1)
-            .WithOpenApi()
             .Produces<PagedResult<IEnumerable<BookReviewDto>>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest);
     }
