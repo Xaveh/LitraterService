@@ -4,8 +4,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
 USER $APP_UID
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
+EXPOSE 5001
 
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
@@ -20,7 +19,7 @@ COPY ["src/Litrater.Application/Litrater.Application.csproj", "src/Litrater.Appl
 RUN dotnet restore "./src/Litrater.Presentation/Litrater.Presentation.csproj"
 COPY . .
 WORKDIR "/src/src/Litrater.Presentation"
-RUN dotnet build "./Litrater.Presentation.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./Litrater.Presentation.csproj" -c $BUILD_CONFIGURATION -o /app/build --no-restore
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish

@@ -28,7 +28,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseRequestContextLogging();
 app.UseSerilogRequestLogging();
-app.UseHttpsRedirection();
+
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseUserSync();
