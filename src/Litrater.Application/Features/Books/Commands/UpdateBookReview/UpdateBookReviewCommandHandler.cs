@@ -2,6 +2,7 @@ using Ardalis.Result;
 using Litrater.Application.Abstractions.CQRS;
 using Litrater.Application.Abstractions.Data;
 using Litrater.Application.Features.Books.Dtos;
+using Litrater.Domain.Books;
 
 namespace Litrater.Application.Features.Books.Commands.UpdateBookReview;
 
@@ -24,7 +25,7 @@ public sealed class UpdateBookReviewCommandHandler(
             return Result.Forbidden();
         }
 
-        bookReview.Update(command.Content, command.Rating);
+        bookReview.Update(command.Content, new Rating(command.Rating));
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return bookReview.ToDto();

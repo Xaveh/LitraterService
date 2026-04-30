@@ -32,7 +32,8 @@ internal sealed class BookCommandRepository(LitraterDbContext context) : Command
 
     public Task<bool> ExistsByIsbnAsync(string isbn, CancellationToken cancellationToken = default)
     {
-        return DbSet.AnyAsync(b => b.Isbn == isbn, cancellationToken);
+        var isbnValue = new Isbn(isbn);
+        return DbSet.AnyAsync(b => b.Isbn == isbnValue, cancellationToken);
     }
 
     public void Delete(Book book)

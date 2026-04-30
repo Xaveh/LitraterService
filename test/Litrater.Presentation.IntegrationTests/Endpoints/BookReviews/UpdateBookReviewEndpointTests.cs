@@ -42,7 +42,7 @@ public class UpdateBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
 
         persistedBookReview.ShouldNotBeNull();
         persistedBookReview.Content.ShouldBe(updateBookReviewRequest.Content);
-        persistedBookReview.Rating.ShouldBe(updateBookReviewRequest.Rating);
+        persistedBookReview.Rating.Value.ShouldBe(updateBookReviewRequest.Rating);
         persistedBookReview.UserId.ShouldBe(TestDataGenerator.Users.Regular.Id); // Should remain unchanged
         persistedBookReview.ModifiedDate.ShouldNotBeNull();
         persistedBookReview.ModifiedDate.Value.ShouldBeGreaterThan(persistedBookReview.CreatedDate);
@@ -81,7 +81,7 @@ public class UpdateBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
 
         persistedBookReview.ShouldNotBeNull();
         persistedBookReview.Content.ShouldBe(updateBookReviewRequest.Content);
-        persistedBookReview.Rating.ShouldBe(updateBookReviewRequest.Rating);
+        persistedBookReview.Rating.Value.ShouldBe(updateBookReviewRequest.Rating);
         persistedBookReview.UserId.ShouldBe(TestDataGenerator.Users.Regular.Id); // Should remain unchanged
         persistedBookReview.ModifiedDate.ShouldNotBeNull();
         persistedBookReview.ModifiedDate.Value.ShouldBeGreaterThan(persistedBookReview.CreatedDate);

@@ -11,18 +11,23 @@ public class AuthorConfiguration : EntityConfiguration<Author>
     {
         base.Configure(builder);
 
-        builder.Property(a => a.FirstName)
-            .IsRequired()
-            .HasMaxLength(100);
+        builder.OwnsOne(a => a.Name, name =>
+        {
+            name.Property(n => n.FirstName)
+                .IsRequired()
+                .HasMaxLength(100)
+                .HasColumnName("FirstName");
 
-        builder.Property(a => a.LastName)
-            .IsRequired()
-            .HasMaxLength(100);
+            name.Property(n => n.LastName)
+                .IsRequired()
+                .HasMaxLength(100)
+                .HasColumnName("LastName");
+
+            name.HasIndex(n => new { n.FirstName, n.LastName });
+        });
 
         builder.HasMany(a => a.Books)
             .WithMany(b => b.Authors)
             .UsingEntity(j => j.ToTable("AuthorBooks"));
-
-        builder.HasIndex(a => new { a.FirstName, a.LastName });
     }
 }

@@ -29,7 +29,7 @@ public sealed class CreateBookReviewCommandHandlerTests
         var bookId = Guid.NewGuid();
         var userId = Guid.NewGuid();
         var command = new CreateBookReviewCommand("Great book!", 5, bookId, userId);
-        var book = new Book(bookId, "Test Book", "1234567890123", []);
+        var book = new Book(bookId, "Test Book", new Isbn("1234567890123"), []);
 
         _bookCommandRepositoryMock
             .Setup(x => x.GetByIdAsync(command.BookId, It.IsAny<CancellationToken>()))
@@ -55,7 +55,7 @@ public sealed class CreateBookReviewCommandHandlerTests
         _bookReviewCommandRepositoryMock.Verify(x => x.AddAsync(
             It.Is<BookReview>(br =>
                 br.Content == command.Content &&
-                br.Rating == command.Rating &&
+                br.Rating.Value == command.Rating &&
                 br.BookId == command.BookId &&
                 br.UserId == command.UserId),
             It.IsAny<CancellationToken>()), Times.Once);
@@ -93,7 +93,7 @@ public sealed class CreateBookReviewCommandHandlerTests
         var bookId = Guid.NewGuid();
         var userId = Guid.NewGuid();
         var command = new CreateBookReviewCommand("Great book!", 5, bookId, userId);
-        var book = new Book(bookId, "Test Book", "1234567890123", []);
+        var book = new Book(bookId, "Test Book", new Isbn("1234567890123"), []);
 
         _bookCommandRepositoryMock
             .Setup(x => x.GetByIdAsync(command.BookId, It.IsAny<CancellationToken>()))

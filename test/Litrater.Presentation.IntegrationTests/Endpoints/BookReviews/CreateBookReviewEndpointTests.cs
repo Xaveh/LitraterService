@@ -42,7 +42,7 @@ public class CreateBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
 
         persistedBookReview.ShouldNotBeNull();
         persistedBookReview.Content.ShouldBe(createBookReviewRequest.Content);
-        persistedBookReview.Rating.ShouldBe(createBookReviewRequest.Rating);
+        persistedBookReview.Rating.Value.ShouldBe(createBookReviewRequest.Rating);
         persistedBookReview.BookId.ShouldBe(bookId);
         persistedBookReview.UserId.ShouldBe(TestDataGenerator.Users.Regular.Id);
     }

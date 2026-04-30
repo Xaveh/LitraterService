@@ -8,8 +8,8 @@ public static class AuthorDtoExtensions
     {
         return new AuthorDto(
             Id: author.Id,
-            FirstName: author.FirstName,
-            LastName: author.LastName,
+            FirstName: author.Name.FirstName,
+            LastName: author.Name.LastName,
             BookIds: author.Books.Select(b => b.Id)
         );
     }

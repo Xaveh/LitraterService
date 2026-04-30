@@ -8,5 +8,6 @@ public interface IAuthorCommandRepository : ICommandRepository
     Task<List<Author>> GetAuthorsByIdsAsync(IEnumerable<Guid> authorIds, CancellationToken cancellationToken = default);
     Task<bool> ExistsByNameAsync(string firstName, string lastName, CancellationToken cancellationToken = default);
     Task AddAsync(Author author, CancellationToken cancellationToken = default);
+    void Update(Author author);
     void Delete(Author author);
 }

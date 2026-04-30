@@ -2,6 +2,7 @@ using Ardalis.Result;
 using Litrater.Application.Abstractions.CQRS;
 using Litrater.Application.Abstractions.Data;
 using Litrater.Application.Features.Authors.Dtos;
+using Litrater.Domain.Authors;
 
 namespace Litrater.Application.Features.Authors.Commands.UpdateAuthor;
 
@@ -26,7 +27,8 @@ public sealed class UpdateAuthorCommandHandler(
                 $"Some book IDs are invalid or missing. Requested: {command.BookIds.Count()}, Found: {books.Count}"));
         }
 
-        author.Update(command.FirstName, command.LastName, books);
+        author.Update(new PersonName(command.FirstName, command.LastName), books);
+        authorCommandRepository.Update(author);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return author.ToDto();

@@ -28,7 +28,7 @@ internal sealed class CreateBookCommandHandler(
         var book = new Book(
             id: Guid.NewGuid(),
             title: command.Title,
-            isbn: command.Isbn,
+            isbn: new Isbn(command.Isbn),
             authors: authors);
 
         await bookCommandRepository.AddAsync(book, cancellationToken);

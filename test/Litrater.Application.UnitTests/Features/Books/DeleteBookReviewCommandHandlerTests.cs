@@ -28,7 +28,7 @@ public sealed class DeleteBookReviewCommandHandlerTests
         var userId = Guid.NewGuid();
         var bookId = Guid.NewGuid();
         var command = new DeleteBookReviewCommand(bookReviewId, userId);
-        var existingBookReview = new BookReview(bookReviewId, "Test content", 5, bookId, userId);
+        var existingBookReview = new BookReview(bookReviewId, "Test content", new Rating(5), bookId, userId);
 
         _bookReviewCommandRepositoryMock
             .Setup(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()))
@@ -54,7 +54,7 @@ public sealed class DeleteBookReviewCommandHandlerTests
         var adminUserId = Guid.NewGuid();
         var bookId = Guid.NewGuid();
         var command = new DeleteBookReviewCommand(bookReviewId, adminUserId, true);
-        var existingBookReview = new BookReview(bookReviewId, "Test content", 5, bookId, originalUserId);
+        var existingBookReview = new BookReview(bookReviewId, "Test content", new Rating(5), bookId, originalUserId);
 
         _bookReviewCommandRepositoryMock
             .Setup(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()))
@@ -103,7 +103,7 @@ public sealed class DeleteBookReviewCommandHandlerTests
         var differentUserId = Guid.NewGuid();
         var bookId = Guid.NewGuid();
         var command = new DeleteBookReviewCommand(bookReviewId, differentUserId);
-        var existingBookReview = new BookReview(bookReviewId, "Test content", 5, bookId, originalUserId);
+        var existingBookReview = new BookReview(bookReviewId, "Test content", new Rating(5), bookId, originalUserId);
 
         _bookReviewCommandRepositoryMock
             .Setup(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()))
@@ -129,7 +129,7 @@ public sealed class DeleteBookReviewCommandHandlerTests
         var adminUserId = Guid.NewGuid();
         var bookId = Guid.NewGuid();
         var command = new DeleteBookReviewCommand(bookReviewId, adminUserId, true);
-        var existingBookReview = new BookReview(bookReviewId, "Another user's review", 3, bookId, originalUserId);
+        var existingBookReview = new BookReview(bookReviewId, "Another user's review", new Rating(3), bookId, originalUserId);
 
         _bookReviewCommandRepositoryMock
             .Setup(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()))

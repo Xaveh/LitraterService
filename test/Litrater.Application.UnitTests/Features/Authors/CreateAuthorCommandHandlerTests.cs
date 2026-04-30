@@ -43,8 +43,8 @@ public sealed class CreateAuthorCommandHandlerTests
 
         _authorCommandRepositoryMock.Verify(x => x.AddAsync(
             It.Is<Author>(a =>
-                a.FirstName == command.FirstName &&
-                a.LastName == command.LastName),
+                a.Name.FirstName == command.FirstName &&
+                a.Name.LastName == command.LastName),
             It.IsAny<CancellationToken>()), Times.Once);
 
         _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);

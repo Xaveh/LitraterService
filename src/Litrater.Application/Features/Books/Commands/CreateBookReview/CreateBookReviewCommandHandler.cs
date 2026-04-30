@@ -27,7 +27,7 @@ internal sealed class CreateBookReviewCommandHandler(
         var bookReview = new BookReview(
             id: Guid.NewGuid(),
             content: command.Content,
-            rating: command.Rating,
+            rating: new Rating(command.Rating),
             bookId: command.BookId,
             userId: command.UserId);
 

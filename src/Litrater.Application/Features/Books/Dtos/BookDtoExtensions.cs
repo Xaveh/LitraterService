@@ -9,7 +9,7 @@ public static class BookDtoExtensions
         return new BookDto(
             Id: book.Id,
             Title: book.Title,
-            Isbn: book.Isbn,
+            Isbn: book.Isbn.Value,
             AuthorIds: book.Authors.Select(a => a.Id),
             ReviewIds: book.Reviews.Select(r => r.Id)
         );

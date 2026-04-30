@@ -17,7 +17,8 @@ public class BookConfiguration : EntityConfiguration<Book>
 
         builder.Property(b => b.Isbn)
             .IsRequired()
-            .HasMaxLength(13);
+            .HasMaxLength(13)
+            .HasConversion(isbn => isbn.Value, value => new Isbn(value));
 
         builder.HasMany(b => b.Reviews)
             .WithOne()

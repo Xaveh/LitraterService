@@ -26,7 +26,7 @@ public class GetBookByIdEndpointTests(DatabaseFixture fixture) : BaseIntegration
         bookDto.ShouldNotBeNull();
         bookDto.Id.ShouldBe(hobbitBook.Id);
         bookDto.Title.ShouldBe(hobbitBook.Title);
-        bookDto.Isbn.ShouldBe(hobbitBook.Isbn);
+        bookDto.Isbn.ShouldBe(hobbitBook.Isbn.Value);
         bookDto.AuthorIds.Count().ShouldBe(hobbitBook.Authors.Count);
         bookDto.AuthorIds.ShouldContain(hobbitBook.Authors.First().Id);
     }

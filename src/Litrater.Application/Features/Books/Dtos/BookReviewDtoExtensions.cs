@@ -9,7 +9,7 @@ public static class BookReviewDtoExtensions
         return new BookReviewDto(
             Id: bookReview.Id,
             Content: bookReview.Content,
-            Rating: bookReview.Rating,
+            Rating: bookReview.Rating.Value,
             BookId: bookReview.BookId,
             UserId: bookReview.UserId
         );

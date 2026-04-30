@@ -27,8 +27,8 @@ public sealed class DeleteBookCommandHandlerTests
         // Arrange
         var bookId = Guid.NewGuid();
         var command = new DeleteBookCommand(bookId);
-        var authors = new List<Author> { new(Guid.NewGuid(), "John", "Doe") };
-        var book = new Book(bookId, "Test Book", "1234567890123", authors);
+        var authors = new List<Author> { new(Guid.NewGuid(), new PersonName("John", "Doe")) };
+        var book = new Book(bookId, "Test Book", new Isbn("1234567890123"), authors);
 
         _bookCommandRepositoryMock
             .Setup(x => x.GetByIdAsync(bookId, It.IsAny<CancellationToken>()))

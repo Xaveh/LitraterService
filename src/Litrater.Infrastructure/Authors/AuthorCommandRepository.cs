@@ -24,12 +24,17 @@ internal sealed class AuthorCommandRepository(LitraterDbContext context) : Comma
 
     public Task<bool> ExistsByNameAsync(string firstName, string lastName, CancellationToken cancellationToken = default)
     {
-        return DbSet.AnyAsync(author => author.FirstName == firstName && author.LastName == lastName, cancellationToken);
+        return DbSet.AnyAsync(author => author.Name.FirstName == firstName && author.Name.LastName == lastName, cancellationToken);
     }
 
     public async Task AddAsync(Author author, CancellationToken cancellationToken = default)
     {
         await DbSet.AddAsync(author, cancellationToken);
+    }
+
+    public void Update(Author author)
+    {
+        Context.Entry(author).State = EntityState.Modified;
     }
 
     public void Delete(Author author)

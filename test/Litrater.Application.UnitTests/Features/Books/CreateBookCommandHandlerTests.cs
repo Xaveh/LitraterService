@@ -29,7 +29,7 @@ public sealed class CreateBookCommandHandlerTests
         // Arrange
         var authorIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() };
         var command = new CreateBookCommand("Test Book", "1234567890123", authorIds);
-        var authors = new List<Author> { new(authorIds[0], "John", "Doe"), new(authorIds[1], "Jane", "Smith") };
+        var authors = new List<Author> { new(authorIds[0], new PersonName("John", "Doe")), new(authorIds[1], new PersonName("Jane", "Smith")) };
 
         _bookCommandRepositoryMock
             .Setup(x => x.ExistsByIsbnAsync(command.Isbn, It.IsAny<CancellationToken>()))
@@ -55,7 +55,7 @@ public sealed class CreateBookCommandHandlerTests
         _bookCommandRepositoryMock.Verify(x => x.AddAsync(
             It.Is<Book>(b =>
                 b.Title == command.Title &&
-                b.Isbn == command.Isbn &&
+                b.Isbn.Value == command.Isbn &&
                 b.Authors.Count == authors.Count),
             It.IsAny<CancellationToken>()), Times.Once);
 
@@ -91,7 +91,7 @@ public sealed class CreateBookCommandHandlerTests
         // Arrange
         var authorIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() };
         var command = new CreateBookCommand("Test Book", "1234567890123", authorIds);
-        var authors = new List<Author> { new(authorIds[0], "John", "Doe") }; // Only one author found
+        var authors = new List<Author> { new(authorIds[0], new PersonName("John", "Doe")) }; // Only one author found
 
         _bookCommandRepositoryMock
             .Setup(x => x.ExistsByIsbnAsync(command.Isbn, It.IsAny<CancellationToken>()))

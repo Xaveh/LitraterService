@@ -11,7 +11,7 @@ public sealed class Book : AggregateRoot
 #pragma warning disable CS8618 // Required by Entity Framework
     private Book() { }
 
-    public Book(Guid id, string title, string isbn, List<Author> authors) : base(id)
+    public Book(Guid id, string title, Isbn isbn, List<Author> authors) : base(id)
     {
         Title = title;
         Isbn = isbn;
@@ -19,11 +19,11 @@ public sealed class Book : AggregateRoot
     }
 
     public string Title { get; private set; }
-    public string Isbn { get; private set; }
+    public Isbn Isbn { get; private set; }
     public IReadOnlyCollection<Author> Authors => _authors.AsReadOnly();
     public IReadOnlyCollection<BookReview> Reviews => _reviews.AsReadOnly();
 
-    public void Update(string title, string isbn, List<Author> authors)
+    public void Update(string title, Isbn isbn, List<Author> authors)
     {
         Title = title;
         Isbn = isbn;
