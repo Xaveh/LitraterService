@@ -3,8 +3,7 @@ using Litrater.Domain.Users;
 
 namespace Litrater.Application.Abstractions.Authentication;
 
-public interface IUserRepository : IRepository
+public interface IUserRepository : ICommandRepository<User>
 {
     Task<User?> GetByKeycloakUserIdAsync(Guid keycloakUserId, CancellationToken cancellationToken = default);
-    Task AddAsync(User user, CancellationToken cancellationToken = default);
 }

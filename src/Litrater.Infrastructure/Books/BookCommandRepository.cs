@@ -7,27 +7,11 @@ namespace Litrater.Infrastructure.Books;
 
 internal sealed class BookCommandRepository(LitraterDbContext context) : CommandRepository<Book>(context), IBookCommandRepository
 {
-    public async Task<Book?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
-    {
-        return await DbSet
-            .Include(b => b.Reviews)
-            .Include(b => b.Authors)
-            .AsSplitQuery()
-            .FirstOrDefaultAsync(b => b.Id == id, cancellationToken);
-    }
-
     public Task<List<Book>> GetBooksByIdsAsync(IEnumerable<Guid> bookIds, CancellationToken cancellationToken = default)
     {
-        return DbSet.Where(book => bookIds.Contains(book.Id))
-            .Include(b => b.Reviews)
-            .Include(b => b.Authors)
-            .AsSplitQuery()
+        return ApplyIncludes(DbSet)
+            .Where(book => bookIds.Contains(book.Id))
             .ToListAsync(cancellationToken);
-    }
-
-    public async Task AddAsync(Book book, CancellationToken cancellationToken = default)
-    {
-        await DbSet.AddAsync(book, cancellationToken);
     }
 
     public Task<bool> ExistsByIsbnAsync(string isbn, CancellationToken cancellationToken = default)
@@ -36,8 +20,10 @@ internal sealed class BookCommandRepository(LitraterDbContext context) : Command
         return DbSet.AnyAsync(b => b.Isbn == isbnValue, cancellationToken);
     }
 
-    public void Delete(Book book)
+    protected override IQueryable<Book> ApplyIncludes(IQueryable<Book> query)
     {
-        DbSet.Remove(book);
+        return query.Include(b => b.Reviews)
+            .Include(b => b.Authors)
+            .AsSplitQuery();
     }
 }
