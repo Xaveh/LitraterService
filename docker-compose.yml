@@ -102,6 +102,14 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+    develop:
+      watch:
+        - path: ./src
+          action: rebuild
+        - path: ./Directory.Packages.props
+          action: rebuild
+        - path: ./Directory.Build.props
+          action: rebuild
 
 volumes:
   postgres_data:
