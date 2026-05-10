@@ -19,7 +19,7 @@ internal sealed class BookReviewQueryRepository(LitraterDbContext dbContext) : Q
             .OrderByDescending(br => br.CreatedDate)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
-            .Select(review => review.ToDto())
+            .Select(BookReviewDtoExtensions.Projection)
             .ToListAsync(cancellationToken);
 
         return (reviews, totalCount);
@@ -36,7 +36,7 @@ internal sealed class BookReviewQueryRepository(LitraterDbContext dbContext) : Q
             .OrderByDescending(br => br.CreatedDate)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
-            .Select(review => review.ToDto())
+            .Select(BookReviewDtoExtensions.Projection)
             .ToListAsync(cancellationToken);
 
         return (reviews, totalCount);

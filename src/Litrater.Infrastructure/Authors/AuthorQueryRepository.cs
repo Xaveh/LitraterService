@@ -13,7 +13,7 @@ internal sealed class AuthorQueryRepository(LitraterDbContext context) : QueryRe
         return await DbSet
             .Include(a => a.Books)
             .Where(a => a.Id == id)
-            .Select(author => author.ToDto())
+            .Select(AuthorDtoExtensions.Projection)
             .FirstOrDefaultAsync(cancellationToken);
     }
 }
