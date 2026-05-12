@@ -1,13 +1,8 @@
 namespace Litrater.Domain.Common;
 
-public abstract class Entity
+public abstract class Entity(Guid? id = null)
 {
-    protected Entity(Guid? id = null)
-    {
-        Id = id ?? Guid.NewGuid();
-    }
-
-    public Guid Id { get; }
+    public Guid Id { get; } = id ?? Guid.CreateVersion7();
     public DateTimeOffset CreatedDate { get; private set; }
     public DateTimeOffset? ModifiedDate { get; private set; }
 
