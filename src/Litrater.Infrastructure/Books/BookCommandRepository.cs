@@ -20,6 +20,14 @@ internal sealed class BookCommandRepository(LitraterDbContext context) : Command
         return DbSet.AnyAsync(b => b.Isbn == isbnValue, cancellationToken);
     }
 
+    public Task<Book?> GetByReviewIdAsync(Guid reviewId, CancellationToken cancellationToken = default)
+    {
+        return DbSet
+            .Include(b => b.Reviews.Where(r => r.Id == reviewId))
+            .Where(b => b.Reviews.Any(r => r.Id == reviewId))
+            .FirstOrDefaultAsync(cancellationToken);
+    }
+
     protected override IQueryable<Book> ApplyIncludes(IQueryable<Book> query)
     {
         return query.Include(b => b.Reviews)

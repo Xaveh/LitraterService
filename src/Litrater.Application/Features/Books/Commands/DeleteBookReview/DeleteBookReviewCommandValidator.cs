@@ -2,7 +2,7 @@ using FluentValidation;
 
 namespace Litrater.Application.Features.Books.Commands.DeleteBookReview;
 
-public sealed class DeleteBookReviewCommandValidator : AbstractValidator<DeleteBookReviewCommand>
+internal sealed class DeleteBookReviewCommandValidator : AbstractValidator<DeleteBookReviewCommand>
 {
     public DeleteBookReviewCommandValidator()
     {

@@ -7,7 +7,6 @@ using Litrater.Domain.Books;
 namespace Litrater.Application.Features.Books.Commands.CreateBookReview;
 
 internal sealed class CreateBookReviewCommandHandler(
-    IBookReviewCommandRepository bookReviewCommandRepository,
     IBookCommandRepository bookCommandRepository,
     IUnitOfWork unitOfWork) : ICommandHandler<CreateBookReviewCommand, BookReviewDto>
 {
@@ -19,21 +18,19 @@ internal sealed class CreateBookReviewCommandHandler(
             return Result<BookReviewDto>.NotFound();
         }
 
-        if (await bookReviewCommandRepository.ExistsByUserAndBookAsync(command.UserId, command.BookId, cancellationToken))
+        var review = book.AddReview(
+            id: Guid.NewGuid(),
+            content: command.Content,
+            rating: new Rating(command.Rating),
+            userId: command.UserId);
+
+        if (review is null)
         {
             return Result<BookReviewDto>.Conflict();
         }
 
-        var bookReview = new BookReview(
-            id: Guid.NewGuid(),
-            content: command.Content,
-            rating: new Rating(command.Rating),
-            bookId: command.BookId,
-            userId: command.UserId);
-
-        await bookReviewCommandRepository.AddAsync(bookReview, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return bookReview.ToDto();
+        return review.ToDto();
     }
 }

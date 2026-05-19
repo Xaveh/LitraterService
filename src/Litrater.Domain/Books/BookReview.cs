@@ -7,7 +7,7 @@ public sealed class BookReview : Entity
 #pragma warning disable CS8618 // Required by Entity Framework
     private BookReview() { }
 
-    public BookReview(Guid id, string content, Rating rating, Guid bookId, Guid userId) : base(id)
+    internal BookReview(Guid id, string content, Rating rating, Guid bookId, Guid userId) : base(id)
     {
         Content = content;
         Rating = rating;

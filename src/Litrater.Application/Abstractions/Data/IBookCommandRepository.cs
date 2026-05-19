@@ -6,4 +6,5 @@ public interface IBookCommandRepository : ICommandRepository<Book>
 {
     Task<List<Book>> GetBooksByIdsAsync(IEnumerable<Guid> bookIds, CancellationToken cancellationToken = default);
     Task<bool> ExistsByIsbnAsync(string isbn, CancellationToken cancellationToken = default);
+    Task<Book?> GetByReviewIdAsync(Guid reviewId, CancellationToken cancellationToken = default);
 }

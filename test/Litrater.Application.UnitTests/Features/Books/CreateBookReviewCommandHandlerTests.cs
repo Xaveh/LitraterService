@@ -10,16 +10,14 @@ namespace Litrater.Application.UnitTests.Features.Books;
 public sealed class CreateBookReviewCommandHandlerTests
 {
     private readonly Mock<IBookCommandRepository> _bookCommandRepositoryMock;
-    private readonly Mock<IBookReviewCommandRepository> _bookReviewCommandRepositoryMock;
     private readonly CreateBookReviewCommandHandler _handler;
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
 
     public CreateBookReviewCommandHandlerTests()
     {
-        _bookReviewCommandRepositoryMock = new Mock<IBookReviewCommandRepository>();
         _bookCommandRepositoryMock = new Mock<IBookCommandRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
-        _handler = new CreateBookReviewCommandHandler(_bookReviewCommandRepositoryMock.Object, _bookCommandRepositoryMock.Object, _unitOfWorkMock.Object);
+        _handler = new CreateBookReviewCommandHandler(_bookCommandRepositoryMock.Object, _unitOfWorkMock.Object);
     }
 
     [Fact]
@@ -35,10 +33,6 @@ public sealed class CreateBookReviewCommandHandlerTests
             .Setup(x => x.GetByIdAsync(command.BookId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(book);
 
-        _bookReviewCommandRepositoryMock
-            .Setup(x => x.ExistsByUserAndBookAsync(command.UserId, command.BookId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(false);
-
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);
 
@@ -48,18 +42,9 @@ public sealed class CreateBookReviewCommandHandlerTests
         result.Value.Rating.ShouldBe(command.Rating);
         result.Value.BookId.ShouldBe(command.BookId);
         result.Value.UserId.ShouldBe(command.UserId);
+        book.Reviews.Count.ShouldBe(1);
 
         _bookCommandRepositoryMock.Verify(x => x.GetByIdAsync(command.BookId, It.IsAny<CancellationToken>()), Times.Once);
-        _bookReviewCommandRepositoryMock.Verify(x => x.ExistsByUserAndBookAsync(command.UserId, command.BookId, It.IsAny<CancellationToken>()), Times.Once);
-
-        _bookReviewCommandRepositoryMock.Verify(x => x.AddAsync(
-            It.Is<BookReview>(br =>
-                br.Content == command.Content &&
-                br.Rating.Value == command.Rating &&
-                br.BookId == command.BookId &&
-                br.UserId == command.UserId),
-            It.IsAny<CancellationToken>()), Times.Once);
-
         _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
@@ -81,8 +66,6 @@ public sealed class CreateBookReviewCommandHandlerTests
         // Assert
         result.Status.ShouldBe(ResultStatus.NotFound);
 
-        _bookReviewCommandRepositoryMock.Verify(x => x.ExistsByUserAndBookAsync(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
-        _bookReviewCommandRepositoryMock.Verify(x => x.AddAsync(It.IsAny<BookReview>(), It.IsAny<CancellationToken>()), Times.Never);
         _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 
@@ -94,14 +77,11 @@ public sealed class CreateBookReviewCommandHandlerTests
         var userId = Guid.NewGuid();
         var command = new CreateBookReviewCommand("Great book!", 5, bookId, userId);
         var book = new Book(bookId, "Test Book", new Isbn("1234567890123"), []);
+        book.AddReview(Guid.NewGuid(), "First review", new Rating(3), userId);
 
         _bookCommandRepositoryMock
             .Setup(x => x.GetByIdAsync(command.BookId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(book);
-
-        _bookReviewCommandRepositoryMock
-            .Setup(x => x.ExistsByUserAndBookAsync(command.UserId, command.BookId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(true);
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);
@@ -109,7 +89,6 @@ public sealed class CreateBookReviewCommandHandlerTests
         // Assert
         result.Status.ShouldBe(ResultStatus.Conflict);
 
-        _bookReviewCommandRepositoryMock.Verify(x => x.AddAsync(It.IsAny<BookReview>(), It.IsAny<CancellationToken>()), Times.Never);
         _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 }

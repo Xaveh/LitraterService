@@ -9,30 +9,30 @@ namespace Litrater.Application.UnitTests.Features.Books;
 
 public sealed class UpdateBookReviewCommandHandlerTests
 {
-    private readonly Mock<IBookReviewCommandRepository> _bookReviewCommandRepositoryMock;
+    private readonly Mock<IBookCommandRepository> _bookCommandRepositoryMock;
     private readonly UpdateBookReviewCommandHandler _handler;
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
 
     public UpdateBookReviewCommandHandlerTests()
     {
-        _bookReviewCommandRepositoryMock = new Mock<IBookReviewCommandRepository>();
+        _bookCommandRepositoryMock = new Mock<IBookCommandRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
-        _handler = new UpdateBookReviewCommandHandler(_bookReviewCommandRepositoryMock.Object, _unitOfWorkMock.Object);
+        _handler = new UpdateBookReviewCommandHandler(_bookCommandRepositoryMock.Object, _unitOfWorkMock.Object);
     }
 
     [Fact]
     public async Task Handle_WhenBookReviewExistsAndUserIsOwner_ShouldUpdateBookReviewSuccessfully()
     {
         // Arrange
-        var bookReviewId = Guid.NewGuid();
-        var userId = Guid.NewGuid();
         var bookId = Guid.NewGuid();
-        var command = new UpdateBookReviewCommand(bookReviewId, "Updated content", 4, userId);
-        var existingBookReview = new BookReview(bookReviewId, "Original content", new Rating(5), bookId, userId);
+        var userId = Guid.NewGuid();
+        var book = new Book(bookId, "Test Book", new Isbn("1234567890123"), []);
+        var review = book.AddReview(Guid.NewGuid(), "Original content", new Rating(5), userId)!;
+        var command = new UpdateBookReviewCommand(review.Id, "Updated content", 4, userId);
 
-        _bookReviewCommandRepositoryMock
-            .Setup(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(existingBookReview);
+        _bookCommandRepositoryMock
+            .Setup(x => x.GetByReviewIdAsync(command.Id, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(book);
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);
@@ -44,7 +44,7 @@ public sealed class UpdateBookReviewCommandHandlerTests
         result.Value.BookId.ShouldBe(bookId);
         result.Value.UserId.ShouldBe(userId);
 
-        _bookReviewCommandRepositoryMock.Verify(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()), Times.Once);
+        _bookCommandRepositoryMock.Verify(x => x.GetByReviewIdAsync(command.Id, It.IsAny<CancellationToken>()), Times.Once);
         _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
@@ -52,16 +52,16 @@ public sealed class UpdateBookReviewCommandHandlerTests
     public async Task Handle_WhenBookReviewExistsAndUserIsAdmin_ShouldUpdateBookReviewSuccessfully()
     {
         // Arrange
-        var bookReviewId = Guid.NewGuid();
+        var bookId = Guid.NewGuid();
         var originalUserId = Guid.NewGuid();
         var adminUserId = Guid.NewGuid();
-        var bookId = Guid.NewGuid();
-        var command = new UpdateBookReviewCommand(bookReviewId, "Admin updated content", 3, adminUserId, true);
-        var existingBookReview = new BookReview(bookReviewId, "Original content", new Rating(5), bookId, originalUserId);
+        var book = new Book(bookId, "Test Book", new Isbn("1234567890123"), []);
+        var review = book.AddReview(Guid.NewGuid(), "Original content", new Rating(5), originalUserId)!;
+        var command = new UpdateBookReviewCommand(review.Id, "Admin updated content", 3, adminUserId, IsAdmin: true);
 
-        _bookReviewCommandRepositoryMock
-            .Setup(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(existingBookReview);
+        _bookCommandRepositoryMock
+            .Setup(x => x.GetByReviewIdAsync(command.Id, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(book);
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);
@@ -73,7 +73,7 @@ public sealed class UpdateBookReviewCommandHandlerTests
         result.Value.BookId.ShouldBe(bookId);
         result.Value.UserId.ShouldBe(originalUserId); // Original user ID should remain
 
-        _bookReviewCommandRepositoryMock.Verify(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()), Times.Once);
+        _bookCommandRepositoryMock.Verify(x => x.GetByReviewIdAsync(command.Id, It.IsAny<CancellationToken>()), Times.Once);
         _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
@@ -81,13 +81,13 @@ public sealed class UpdateBookReviewCommandHandlerTests
     public async Task Handle_WhenBookReviewDoesNotExist_ShouldReturnNotFoundResult()
     {
         // Arrange
-        var bookReviewId = Guid.NewGuid();
+        var reviewId = Guid.NewGuid();
         var userId = Guid.NewGuid();
-        var command = new UpdateBookReviewCommand(bookReviewId, "Updated content", 4, userId);
+        var command = new UpdateBookReviewCommand(reviewId, "Updated content", 4, userId);
 
-        _bookReviewCommandRepositoryMock
-            .Setup(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()))
-            .ReturnsAsync((BookReview?)null);
+        _bookCommandRepositoryMock
+            .Setup(x => x.GetByReviewIdAsync(command.Id, It.IsAny<CancellationToken>()))
+            .ReturnsAsync((Book?)null);
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);
@@ -95,7 +95,7 @@ public sealed class UpdateBookReviewCommandHandlerTests
         // Assert
         result.Status.ShouldBe(ResultStatus.NotFound);
 
-        _bookReviewCommandRepositoryMock.Verify(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()), Times.Once);
+        _bookCommandRepositoryMock.Verify(x => x.GetByReviewIdAsync(command.Id, It.IsAny<CancellationToken>()), Times.Once);
         _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 
@@ -103,16 +103,16 @@ public sealed class UpdateBookReviewCommandHandlerTests
     public async Task Handle_WhenUserIsNotOwnerAndNotAdmin_ShouldReturnForbiddenResult()
     {
         // Arrange
-        var bookReviewId = Guid.NewGuid();
+        var bookId = Guid.NewGuid();
         var originalUserId = Guid.NewGuid();
         var differentUserId = Guid.NewGuid();
-        var bookId = Guid.NewGuid();
-        var command = new UpdateBookReviewCommand(bookReviewId, "Unauthorized update", 4, differentUserId);
-        var existingBookReview = new BookReview(bookReviewId, "Original content", new Rating(5), bookId, originalUserId);
+        var book = new Book(bookId, "Test Book", new Isbn("1234567890123"), []);
+        var review = book.AddReview(Guid.NewGuid(), "Original content", new Rating(5), originalUserId)!;
+        var command = new UpdateBookReviewCommand(review.Id, "Unauthorized update", 4, differentUserId);
 
-        _bookReviewCommandRepositoryMock
-            .Setup(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(existingBookReview);
+        _bookCommandRepositoryMock
+            .Setup(x => x.GetByReviewIdAsync(command.Id, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(book);
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);
@@ -120,7 +120,7 @@ public sealed class UpdateBookReviewCommandHandlerTests
         // Assert
         result.Status.ShouldBe(ResultStatus.Forbidden);
 
-        _bookReviewCommandRepositoryMock.Verify(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()), Times.Once);
+        _bookCommandRepositoryMock.Verify(x => x.GetByReviewIdAsync(command.Id, It.IsAny<CancellationToken>()), Times.Once);
         _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 
@@ -128,16 +128,16 @@ public sealed class UpdateBookReviewCommandHandlerTests
     public async Task Handle_WhenUserIsNotOwnerButIsAdmin_ShouldUpdateBookReviewSuccessfully()
     {
         // Arrange
-        var bookReviewId = Guid.NewGuid();
+        var bookId = Guid.NewGuid();
         var originalUserId = Guid.NewGuid();
         var adminUserId = Guid.NewGuid();
-        var bookId = Guid.NewGuid();
-        var command = new UpdateBookReviewCommand(bookReviewId, "Admin override update", 2, adminUserId, true);
-        var existingBookReview = new BookReview(bookReviewId, "Original content", new Rating(5), bookId, originalUserId);
+        var book = new Book(bookId, "Test Book", new Isbn("1234567890123"), []);
+        var review = book.AddReview(Guid.NewGuid(), "Original content", new Rating(5), originalUserId)!;
+        var command = new UpdateBookReviewCommand(review.Id, "Admin override update", 2, adminUserId, IsAdmin: true);
 
-        _bookReviewCommandRepositoryMock
-            .Setup(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(existingBookReview);
+        _bookCommandRepositoryMock
+            .Setup(x => x.GetByReviewIdAsync(command.Id, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(book);
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);
@@ -149,7 +149,7 @@ public sealed class UpdateBookReviewCommandHandlerTests
         result.Value.BookId.ShouldBe(bookId);
         result.Value.UserId.ShouldBe(originalUserId); // Original user ID should remain
 
-        _bookReviewCommandRepositoryMock.Verify(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()), Times.Once);
+        _bookCommandRepositoryMock.Verify(x => x.GetByReviewIdAsync(command.Id, It.IsAny<CancellationToken>()), Times.Once);
         _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 }
