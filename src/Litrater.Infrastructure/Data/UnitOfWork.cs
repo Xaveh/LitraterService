@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Litrater.Infrastructure.Data;
 
-public class UnitOfWork(LitraterDbContext context, IDateTimeProvider dateTimeProvider) : IUnitOfWork
+internal class UnitOfWork(LitraterDbContext context, IDateTimeProvider dateTimeProvider) : IUnitOfWork
 {
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
