@@ -1,4 +1,5 @@
 using Ardalis.Result;
+using Litrater.Application.Abstractions.Authentication;
 using Litrater.Application.Abstractions.CQRS;
 using Litrater.Application.Abstractions.Data;
 using Litrater.Application.Features.Books.Dtos;
@@ -8,6 +9,7 @@ namespace Litrater.Application.Features.Books.Commands.UpdateBookReview;
 
 internal sealed class UpdateBookReviewCommandHandler(
     IBookCommandRepository bookCommandRepository,
+    IUserRepository userRepository,
     IUnitOfWork unitOfWork)
     : ICommandHandler<UpdateBookReviewCommand, BookReviewDto>
 {
@@ -21,10 +23,18 @@ internal sealed class UpdateBookReviewCommandHandler(
 
         var review = book.FindReview(command.Id)!;
 
-        // Only the owner or admins can update their review
-        if (review.UserId != command.UserId && !command.IsAdmin)
+        if (!command.IsAdmin)
         {
-            return Result.Forbidden();
+            var user = await userRepository.GetByKeycloakUserIdAsync(command.KeycloakUserId, cancellationToken);
+            if (user is null)
+            {
+                return Result.Unauthorized();
+            }
+
+            if (review.UserId != user.Id)
+            {
+                return Result.Forbidden();
+            }
         }
 
         book.UpdateReview(command.Id, command.Content, new Rating(command.Rating));

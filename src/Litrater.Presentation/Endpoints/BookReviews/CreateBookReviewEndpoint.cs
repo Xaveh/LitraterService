@@ -26,7 +26,7 @@ internal sealed class CreateBookReviewEndpoint : IEndpoint
                         Content: request.Content,
                         Rating: request.Rating,
                         BookId: bookId,
-                        UserId: userId
+                        KeycloakUserId: userId
                     );
 
                     var result = await handler.Handle(command, cancellationToken);

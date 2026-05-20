@@ -1,4 +1,5 @@
 using Ardalis.Result;
+using Litrater.Application.Abstractions.Authentication;
 using Litrater.Application.Abstractions.CQRS;
 using Litrater.Application.Abstractions.Data;
 
@@ -6,6 +7,7 @@ namespace Litrater.Application.Features.Books.Commands.DeleteBookReview;
 
 internal sealed class DeleteBookReviewCommandHandler(
     IBookCommandRepository bookCommandRepository,
+    IUserRepository userRepository,
     IUnitOfWork unitOfWork)
     : ICommandHandler<DeleteBookReviewCommand>
 {
@@ -19,10 +21,18 @@ internal sealed class DeleteBookReviewCommandHandler(
 
         var review = book.FindReview(command.Id)!;
 
-        // Only the owner or admins can delete their review
-        if (review.UserId != command.UserId && !command.IsAdmin)
+        if (!command.IsAdmin)
         {
-            return Result.Forbidden();
+            var user = await userRepository.GetByKeycloakUserIdAsync(command.KeycloakUserId, cancellationToken);
+            if (user is null)
+            {
+                return Result.Unauthorized();
+            }
+
+            if (review.UserId != user.Id)
+            {
+                return Result.Forbidden();
+            }
         }
 
         book.RemoveReview(command.Id);

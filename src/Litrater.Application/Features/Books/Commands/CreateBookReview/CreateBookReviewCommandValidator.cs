@@ -20,8 +20,8 @@ internal sealed class CreateBookReviewCommandValidator : AbstractValidator<Creat
             .NotEmpty()
             .WithMessage("Book ID must not be empty.");
 
-        RuleFor(x => x.UserId)
+        RuleFor(x => x.KeycloakUserId)
             .NotEmpty()
-            .WithMessage("User ID must not be empty.");
+            .WithMessage("Keycloak user ID must not be empty.");
     }
 }

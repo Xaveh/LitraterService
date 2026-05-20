@@ -26,7 +26,7 @@ internal sealed class UpdateBookReviewEndpoint : IEndpoint
                         Id: id,
                         Content: request.Content,
                         Rating: request.Rating,
-                        UserId: userId,
+                        KeycloakUserId: userId,
                         IsAdmin: user.HasResourceRole("admin")
                     );
 

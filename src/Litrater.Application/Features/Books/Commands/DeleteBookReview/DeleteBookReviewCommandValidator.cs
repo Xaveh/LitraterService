@@ -10,8 +10,8 @@ internal sealed class DeleteBookReviewCommandValidator : AbstractValidator<Delet
             .NotEmpty()
             .WithMessage("Book review ID must not be empty.");
 
-        RuleFor(x => x.UserId)
+        RuleFor(x => x.KeycloakUserId)
             .NotEmpty()
-            .WithMessage("User ID must not be empty.");
+            .WithMessage("Keycloak user ID must not be empty.");
     }
 }
