@@ -23,7 +23,7 @@ internal sealed class UserSyncMiddleware(RequestDelegate next, ILogger<UserSyncM
             var existingUser = await userRepository.GetByKeycloakUserIdAsync(keycloakUserId);
             if (existingUser is not null)
             {
-                logger.LogInformation("Found existing user {UserId} for Keycloak user {KeycloakUserId}", existingUser.Id, keycloakUserId);
+                logger.LogDebug("Found existing user {UserId} for Keycloak user {KeycloakUserId}", existingUser.Id, keycloakUserId);
                 await next(context);
                 return;
             }
