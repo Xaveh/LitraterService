@@ -6,7 +6,7 @@ using Litrater.Domain.Authors;
 
 namespace Litrater.Application.Features.Authors.Commands.UpdateAuthor;
 
-public sealed class UpdateAuthorCommandHandler(
+internal sealed class UpdateAuthorCommandHandler(
     IAuthorCommandRepository authorCommandRepository,
     IBookCommandRepository bookCommandRepository,
     IUnitOfWork unitOfWork)
