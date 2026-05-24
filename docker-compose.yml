@@ -97,7 +97,7 @@ services:
     networks:
       - litrater-network
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:5001/health" ]
+      test: [ "CMD-SHELL", "timeout 10s bash -c '</dev/tcp/localhost/5001' || exit 1" ]
       interval: 30s
       timeout: 10s
       retries: 3
