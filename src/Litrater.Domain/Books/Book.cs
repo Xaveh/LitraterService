@@ -1,4 +1,5 @@
 using Litrater.Domain.Authors;
+using Litrater.Domain.Books.Events;
 using Litrater.Domain.Common;
 
 namespace Litrater.Domain.Books;
@@ -20,6 +21,7 @@ public sealed class Book : AggregateRoot
 
     public string Title { get; private set; }
     public Isbn Isbn { get; private set; }
+    public double? AverageRating { get; private set; }
     public IReadOnlyCollection<Author> Authors => _authors.AsReadOnly();
     public IReadOnlyCollection<BookReview> Reviews => _reviews.AsReadOnly();
 
@@ -31,6 +33,11 @@ public sealed class Book : AggregateRoot
         _authors.AddRange(authors);
     }
 
+    public void UpdateAverageRating(double? averageRating)
+    {
+        AverageRating = averageRating;
+    }
+
     public BookReview? AddReview(Guid id, string content, Rating rating, Guid userId)
     {
         if (_reviews.Any(r => r.UserId == userId))
@@ -40,6 +47,7 @@ public sealed class Book : AggregateRoot
 
         var review = new BookReview(id, content, rating, Id, userId);
         _reviews.Add(review);
+        RaiseDomainEvent(new BookReviewRatingChangedDomainEvent(Id, null, rating.Value));
         return review;
     }
 
@@ -51,12 +59,18 @@ public sealed class Book : AggregateRoot
     public void UpdateReview(Guid reviewId, string content, Rating rating)
     {
         var review = _reviews.First(r => r.Id == reviewId);
+        var oldRating = review.Rating.Value;
         review.Update(content, rating);
+        if (oldRating != rating.Value)
+        {
+            RaiseDomainEvent(new BookReviewRatingChangedDomainEvent(Id, oldRating, rating.Value));
+        }
     }
 
     public void RemoveReview(Guid reviewId)
     {
         var review = _reviews.First(r => r.Id == reviewId);
         _reviews.Remove(review);
+        RaiseDomainEvent(new BookReviewRatingChangedDomainEvent(Id, review.Rating.Value, null));
     }
 }

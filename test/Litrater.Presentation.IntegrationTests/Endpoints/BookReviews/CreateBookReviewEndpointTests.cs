@@ -65,4 +65,61 @@ public class CreateBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
+
+    [Fact]
+    public async Task CreateBookReview_ShouldUpdateAverageRating()
+    {
+        // Arrange
+        LoginAsRegularUserAsync();
+
+        var bookId = TestDataGenerator.Books.Foundation.Id;
+
+        var createBookReviewRequest = new
+        {
+            Content = "A masterpiece of science fiction.",
+            Rating = 4
+        };
+
+        // Act
+        var response = await WebApplication.HttpClient.PostAsJsonAsync($"api/v1/books/{bookId}/reviews", createBookReviewRequest);
+
+        // Assert
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+
+        var book = await WebApplication.DbContext.Books.AsNoTracking()
+            .FirstAsync(b => b.Id == bookId);
+
+        book.AverageRating.ShouldBe(4.0);
+
+        var getResponse = await WebApplication.HttpClient.GetAsync($"api/v1/books/{bookId}");
+        var bookDto = await DeserializeResponse<BookDto>(getResponse);
+        bookDto.AverageRating.ShouldBe(4.0);
+    }
+
+    [Fact]
+    public async Task CreateBookReview_MultipleReviews_ShouldCalculateCorrectAverage()
+    {
+        // Arrange
+        LoginAsAdminAsync();
+
+        var bookId = TestDataGenerator.Books.HarryPotter.Id;
+
+        var createBookReviewRequest = new
+        {
+            Content = "A magical masterpiece that set the standard for fantasy.",
+            Rating = 4
+        };
+
+        // Act
+        var response = await WebApplication.HttpClient.PostAsJsonAsync($"api/v1/books/{bookId}/reviews", createBookReviewRequest);
+
+        // Assert
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+
+        var book = await WebApplication.DbContext.Books.AsNoTracking()
+            .FirstAsync(b => b.Id == bookId);
+
+        book.AverageRating.ShouldNotBeNull();
+        book.AverageRating.Value.ShouldBe(4.5);
+    }
 }

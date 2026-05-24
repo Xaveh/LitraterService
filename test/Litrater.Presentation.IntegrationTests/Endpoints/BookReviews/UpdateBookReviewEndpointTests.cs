@@ -152,4 +152,35 @@ public class UpdateBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
         bookReviewDto.Rating.ShouldBe(updateBookReviewRequest.Rating);
         bookReviewDto.UserId.ShouldBe(TestDataGenerator.Users.Admin.Id);
     }
+
+    [Fact]
+    public async Task UpdateBookReview_WithRatingChange_ShouldRecalculateAverageRating()
+    {
+        // Arrange
+        LoginAsRegularUserAsync();
+
+        var bookReviewId = TestDataGenerator.BookReviews.HobbitReview1.Id;
+        var bookId = TestDataGenerator.Books.TheHobbit.Id;
+
+        var updateBookReviewRequest = new
+        {
+            Content = "Changed my mind after re-reading.",
+            Rating = 2
+        };
+
+        // Act
+        var response = await WebApplication.HttpClient.PutAsJsonAsync($"api/v1/book-reviews/{bookReviewId}", updateBookReviewRequest);
+
+        // Assert
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+
+        var book = await WebApplication.DbContext.Books.AsNoTracking()
+            .FirstAsync(b => b.Id == bookId);
+
+        book.AverageRating.ShouldBe(3.0);
+
+        var getResponse = await WebApplication.HttpClient.GetAsync($"api/v1/books/{bookId}");
+        var bookDto = await DeserializeResponse<BookDto>(getResponse);
+        bookDto.AverageRating.ShouldBe(3.0);
+    }
 }

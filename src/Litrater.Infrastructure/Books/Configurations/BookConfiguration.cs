@@ -20,6 +20,9 @@ public class BookConfiguration : EntityConfiguration<Book>
             .HasMaxLength(13)
             .HasConversion(isbn => isbn.Value, value => new Isbn(value));
 
+        builder.Property(b => b.AverageRating)
+            .IsRequired(false);
+
         builder.HasMany(b => b.Reviews)
             .WithOne()
             .HasForeignKey(r => r.BookId)

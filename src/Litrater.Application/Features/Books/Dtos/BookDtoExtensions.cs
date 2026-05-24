@@ -11,7 +11,8 @@ public static class BookDtoExtensions
             Title: book.Title,
             Isbn: book.Isbn.Value,
             AuthorIds: book.Authors.Select(a => a.Id),
-            ReviewIds: book.Reviews.Select(r => r.Id)
+            ReviewIds: book.Reviews.Select(r => r.Id),
+            AverageRating: book.AverageRating
         );
 
     private static readonly Func<Book, BookDto> CompiledProjection = Projection.Compile();

@@ -1,6 +1,7 @@
 using Litrater.Application.Abstractions.Authentication;
 using Litrater.Application.Abstractions.Common;
 using Litrater.Application.Abstractions.Data;
+using Litrater.Application.Abstractions.DomainEvents;
 using Litrater.Infrastructure.Authors;
 using Litrater.Infrastructure.Books;
 using Litrater.Infrastructure.Common;
@@ -28,6 +29,7 @@ public static class DependencyInjection
         services.AddScoped<IAuthorCommandRepository, AuthorCommandRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
 
         services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>();
 
