@@ -1,6 +1,6 @@
 namespace Litrater.Domain.Common;
 
-public class AggregateRoot : Entity
+public abstract class AggregateRoot : Entity
 {
     private readonly List<IDomainEvent> _domainEvents = [];
 
