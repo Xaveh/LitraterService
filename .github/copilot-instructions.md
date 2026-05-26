@@ -35,7 +35,7 @@ Clean Architecture with 4 layers:
 - **Result pattern**: `Ardalis.Result` — handlers return `Result` or `Result<T>`. Use `.ToHttpResult()` extension (defined in `src/Litrater.Presentation/Extensions/ResultsExtensions.cs`) in endpoint lambdas.
 - **Repository split**: Each aggregate has separate `IXxxQueryRepository` and `IXxxCommandRepository` interfaces (`src/Litrater.Application/Abstractions/Data/`). Implementations live in `src/Litrater.Infrastructure/{Domain}/`.
 - **Repository base generics**: `ICommandRepository<T>` (Application) provides `AddAsync`, `GetByIdAsync`, `Update`, and `Delete`. The Infrastructure class `CommandRepository<T>` provides `virtual` implementations of all four — concrete repos only override when they need different `Include` chains or other custom logic. `QueryRepository<T>` is a separate base (uses `AsNoTracking`; no universal return type). `IUserRepository` extends `ICommandRepository<User>` directly (inheriting all base methods).
-- **Domain entities**: Extend `AggregateRoot` or `Entity` (`src/Litrater.Domain/Common/`). Value objects extend `ValueObject`.
+- **Domain entities**: Extend `AggregateRoot` or `Entity` (`src/Litrater.Domain/Common/`). Value objects implement `IValueObject`.
 - **Authorization policies**: `AuthorizationPolicies.AdminOnly` and `AuthorizationPolicies.UserOrAdmin` (defined in `src/Litrater.Presentation/Authorization/`).
 - **API versioning**: URL segment (`api/v{version}/`) + header `X-Api-Version`. Endpoints declare `.MapToApiVersion(1)` etc.
 - **Central package management**: All NuGet versions in `Directory.Packages.props` (repo root). Do **not** add `Version="…"` attributes to `<PackageReference>` in `.csproj` files.
