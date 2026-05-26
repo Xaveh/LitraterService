@@ -10,20 +10,17 @@ public sealed class Author : AggregateRoot
 #pragma warning disable CS8618 // Required by Entity Framework
     private Author() { }
 
-    public Author(Guid id, string firstName, string lastName) : base(id)
+    public Author(Guid id, PersonName name) : base(id)
     {
-        FirstName = firstName;
-        LastName = lastName;
+        Name = name;
     }
 
-    public string FirstName { get; private set; }
-    public string LastName { get; private set; }
+    public PersonName Name { get; private set; }
     public IReadOnlyCollection<Book> Books => _books.AsReadOnly();
 
-    public void Update(string firstName, string lastName, List<Book> books)
+    public void Update(PersonName name, List<Book> books)
     {
-        FirstName = firstName;
-        LastName = lastName;
+        Name = name;
         _books.Clear();
         _books.AddRange(books);
     }

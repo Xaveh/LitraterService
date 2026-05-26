@@ -53,8 +53,8 @@ public class UpdateAuthorCommandHandlerTests
         var authorId = Guid.NewGuid();
         var bookId1 = Guid.NewGuid();
         var bookId2 = Guid.NewGuid();
-        var author = new Author(authorId, "John", "Doe");
-        var book1 = new Book(bookId1, "Book 1", "1234567890123", []);
+        var author = new Author(authorId, new PersonName("John", "Doe"));
+        var book1 = new Book(bookId1, "Book 1", new Isbn("1234567890123"), []);
 
         var command = new UpdateAuthorCommand(
             Id: authorId,
@@ -86,9 +86,9 @@ public class UpdateAuthorCommandHandlerTests
         var authorId = Guid.NewGuid();
         var bookId1 = Guid.NewGuid();
         var bookId2 = Guid.NewGuid();
-        var author = new Author(authorId, "John", "Doe");
-        var book1 = new Book(bookId1, "Book 1", "1234567890123", []);
-        var book2 = new Book(bookId2, "Book 2", "1234567890124", []);
+        var author = new Author(authorId, new PersonName("John", "Doe"));
+        var book1 = new Book(bookId1, "Book 1", new Isbn("1234567890123"), []);
+        var book2 = new Book(bookId2, "Book 2", new Isbn("1234567890124"), []);
 
         var command = new UpdateAuthorCommand(
             Id: authorId,

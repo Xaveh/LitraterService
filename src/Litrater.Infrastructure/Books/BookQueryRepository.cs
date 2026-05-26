@@ -15,7 +15,7 @@ internal sealed class BookQueryRepository(LitraterDbContext context) : QueryRepo
             .Include(b => b.Authors)
             .AsSplitQuery()
             .Where(b => b.Id == id)
-            .Select(book => book.ToDto())
+            .Select(BookDtoExtensions.Projection)
             .FirstOrDefaultAsync(cancellationToken);
     }
 
@@ -30,7 +30,7 @@ internal sealed class BookQueryRepository(LitraterDbContext context) : QueryRepo
             .OrderBy(b => b.Title)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
-            .Select(book => book.ToDto())
+            .Select(BookDtoExtensions.Projection)
             .ToListAsync(cancellationToken);
 
         return (books, totalCount);

@@ -39,7 +39,7 @@ internal static class TestJwtTokenGenerator
     public static string GenerateAdminToken()
     {
         return GenerateToken(
-            TestDataGenerator.Users.Admin.Id.ToString(),
+            TestDataGenerator.Users.Admin.KeycloakUserId.ToString(),
             "admin@litrater.com",
             "Admin",
             "User",
@@ -49,7 +49,7 @@ internal static class TestJwtTokenGenerator
     public static string GenerateUserToken()
     {
         return GenerateToken(
-            TestDataGenerator.Users.Regular.Id.ToString(),
+            TestDataGenerator.Users.Regular.KeycloakUserId.ToString(),
             "user@litrater.com",
             "Regular",
             "User",

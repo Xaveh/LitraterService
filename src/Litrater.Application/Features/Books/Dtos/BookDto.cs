@@ -5,5 +5,6 @@ public record BookDto(
     string Title,
     string Isbn,
     IEnumerable<Guid> AuthorIds,
-    IEnumerable<Guid> ReviewIds
+    IEnumerable<Guid> ReviewIds,
+    double? AverageRating
 );

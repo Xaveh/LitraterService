@@ -44,7 +44,7 @@ public class CreateBookEndpointTests(DatabaseFixture fixture) : BaseIntegrationT
 
         persistedBook.ShouldNotBeNull();
         persistedBook.Title.ShouldBe(createBookRequest.Title);
-        persistedBook.Isbn.ShouldBe(createBookRequest.Isbn);
+        persistedBook.Isbn.Value.ShouldBe(createBookRequest.Isbn);
         persistedBook.Authors.ShouldHaveSingleItem();
         persistedBook.Authors.First().Id.ShouldBe(tolkienAuthorId);
     }

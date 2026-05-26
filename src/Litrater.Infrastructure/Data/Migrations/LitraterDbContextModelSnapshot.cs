@@ -18,7 +18,7 @@ namespace Litrater.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("litrater_web_api")
-                .HasAnnotation("ProductVersion", "9.0.7")
+                .HasAnnotation("ProductVersion", "10.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -46,22 +46,10 @@ namespace Litrater.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
                     b.Property<DateTimeOffset?>("ModifiedDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("FirstName", "LastName");
 
                     b.ToTable("Authors", "litrater_web_api");
                 });
@@ -70,6 +58,9 @@ namespace Litrater.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
+
+                    b.Property<double?>("AverageRating")
+                        .HasColumnType("double precision");
 
                     b.Property<DateTimeOffset>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
@@ -170,6 +161,39 @@ namespace Litrater.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("BooksId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Litrater.Domain.Authors.Author", b =>
+                {
+                    b.OwnsOne("Litrater.Domain.Authors.PersonName", "Name", b1 =>
+                        {
+                            b1.Property<Guid>("AuthorId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("FirstName")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
+                                .HasColumnName("FirstName");
+
+                            b1.Property<string>("LastName")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
+                                .HasColumnName("LastName");
+
+                            b1.HasKey("AuthorId");
+
+                            b1.HasIndex("FirstName", "LastName");
+
+                            b1.ToTable("Authors", "litrater_web_api");
+
+                            b1.WithOwner()
+                                .HasForeignKey("AuthorId");
+                        });
+
+                    b.Navigation("Name")
                         .IsRequired();
                 });
 

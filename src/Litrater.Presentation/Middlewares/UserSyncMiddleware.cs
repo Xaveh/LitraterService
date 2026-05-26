@@ -5,12 +5,9 @@ using Litrater.Domain.Users;
 
 namespace Litrater.Presentation.Middlewares;
 
-internal sealed class UserSyncMiddleware(
-    RequestDelegate next,
-    IServiceProvider serviceProvider,
-    ILogger<UserSyncMiddleware> logger)
+internal sealed class UserSyncMiddleware(RequestDelegate next, ILogger<UserSyncMiddleware> logger)
 {
-    public async Task InvokeAsync(HttpContext context)
+    public async Task InvokeAsync(HttpContext context, IUserRepository userRepository, IUnitOfWork unitOfWork)
     {
         if (context.User.Identity?.IsAuthenticated == true)
         {
@@ -23,14 +20,10 @@ internal sealed class UserSyncMiddleware(
                 return;
             }
 
-            using var scope = serviceProvider.CreateScope();
-            var userRepository = scope.ServiceProvider.GetRequiredService<IUserRepository>();
-            var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-
             var existingUser = await userRepository.GetByKeycloakUserIdAsync(keycloakUserId);
             if (existingUser is not null)
             {
-                logger.LogInformation("Found existing user {UserId} for Keycloak user {KeycloakUserId}", existingUser.Id, keycloakUserId);
+                logger.LogDebug("Found existing user {UserId} for Keycloak user {KeycloakUserId}", existingUser.Id, keycloakUserId);
                 await next(context);
                 return;
             }

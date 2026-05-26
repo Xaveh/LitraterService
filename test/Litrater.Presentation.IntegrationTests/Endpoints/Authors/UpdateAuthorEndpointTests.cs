@@ -45,8 +45,8 @@ public class UpdateAuthorEndpointTests(DatabaseFixture fixture) : BaseIntegratio
             .FirstOrDefaultAsync(a => a.Id == authorId);
 
         updatedAuthor.ShouldNotBeNull();
-        updatedAuthor.FirstName.ShouldBe(updateAuthorRequest.FirstName);
-        updatedAuthor.LastName.ShouldBe(updateAuthorRequest.LastName);
+        updatedAuthor.Name.FirstName.ShouldBe(updateAuthorRequest.FirstName);
+        updatedAuthor.Name.LastName.ShouldBe(updateAuthorRequest.LastName);
         updatedAuthor.Books.ShouldHaveSingleItem();
         updatedAuthor.Books.First().Id.ShouldBe(hobbitBookId);
         updatedAuthor.ModifiedDate.ShouldNotBeNull();

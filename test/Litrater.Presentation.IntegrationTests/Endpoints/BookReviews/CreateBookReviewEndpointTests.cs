@@ -42,7 +42,7 @@ public class CreateBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
 
         persistedBookReview.ShouldNotBeNull();
         persistedBookReview.Content.ShouldBe(createBookReviewRequest.Content);
-        persistedBookReview.Rating.ShouldBe(createBookReviewRequest.Rating);
+        persistedBookReview.Rating.Value.ShouldBe(createBookReviewRequest.Rating);
         persistedBookReview.BookId.ShouldBe(bookId);
         persistedBookReview.UserId.ShouldBe(TestDataGenerator.Users.Regular.Id);
     }
@@ -64,5 +64,32 @@ public class CreateBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
+    }
+
+    [Fact]
+    public async Task CreateBookReview_MultipleReviews_ShouldCalculateCorrectAverage()
+    {
+        // Arrange
+        LoginAsAdminAsync();
+
+        var bookId = TestDataGenerator.Books.HarryPotter.Id;
+
+        var createBookReviewRequest = new
+        {
+            Content = "A magical masterpiece that set the standard for fantasy.",
+            Rating = 4
+        };
+
+        // Act
+        var response = await WebApplication.HttpClient.PostAsJsonAsync($"api/v1/books/{bookId}/reviews", createBookReviewRequest);
+
+        // Assert
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+
+        var book = await WebApplication.DbContext.Books.AsNoTracking()
+            .FirstAsync(b => b.Id == bookId);
+
+        book.AverageRating.ShouldNotBeNull();
+        book.AverageRating.Value.ShouldBe(4.5);
     }
 }

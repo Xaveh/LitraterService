@@ -44,8 +44,8 @@ public sealed class DeleteBookReviewCommandValidatorTests
         var result = _validator.TestValidate(command);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(x => x.UserId)
-            .WithErrorMessage("User ID must not be empty.");
+        result.ShouldHaveValidationErrorFor(x => x.KeycloakUserId)
+            .WithErrorMessage("Keycloak user ID must not be empty.");
     }
 
     [Fact]
@@ -73,7 +73,7 @@ public sealed class DeleteBookReviewCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Id)
             .WithErrorMessage("Book review ID must not be empty.");
-        result.ShouldHaveValidationErrorFor(x => x.UserId)
-            .WithErrorMessage("User ID must not be empty.");
+        result.ShouldHaveValidationErrorFor(x => x.KeycloakUserId)
+            .WithErrorMessage("Keycloak user ID must not be empty.");
     }
 }

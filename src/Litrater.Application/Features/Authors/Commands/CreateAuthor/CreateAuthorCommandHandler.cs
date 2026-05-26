@@ -19,8 +19,7 @@ internal sealed class CreateAuthorCommandHandler(
 
         var author = new Author(
             id: Guid.NewGuid(),
-            firstName: command.FirstName,
-            lastName: command.LastName);
+            name: new PersonName(command.FirstName, command.LastName));
 
         await authorCommandRepository.AddAsync(author, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);

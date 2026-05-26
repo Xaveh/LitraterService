@@ -2,7 +2,7 @@ using FluentValidation;
 
 namespace Litrater.Application.Features.Authors.Commands.UpdateAuthor;
 
-public sealed class UpdateAuthorCommandValidator : AbstractValidator<UpdateAuthorCommand>
+internal sealed class UpdateAuthorCommandValidator : AbstractValidator<UpdateAuthorCommand>
 {
     public UpdateAuthorCommandValidator()
     {

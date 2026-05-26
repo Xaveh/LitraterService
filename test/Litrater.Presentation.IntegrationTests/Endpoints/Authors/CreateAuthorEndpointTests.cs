@@ -40,8 +40,8 @@ public class CreateAuthorEndpointTests(DatabaseFixture fixture) : BaseIntegratio
             .FirstOrDefaultAsync(a => a.Id == authorDto.Id);
 
         persistedAuthor.ShouldNotBeNull();
-        persistedAuthor.FirstName.ShouldBe(createAuthorRequest.FirstName);
-        persistedAuthor.LastName.ShouldBe(createAuthorRequest.LastName);
+        persistedAuthor.Name.FirstName.ShouldBe(createAuthorRequest.FirstName);
+        persistedAuthor.Name.LastName.ShouldBe(createAuthorRequest.LastName);
         persistedAuthor.Books.ShouldBeEmpty();
     }
 

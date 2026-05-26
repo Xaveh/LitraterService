@@ -20,8 +20,8 @@ internal sealed class UpdateBookReviewCommandValidator : AbstractValidator<Updat
             .InclusiveBetween(1, 5)
             .WithMessage("Rating must be between 1 and 5.");
 
-        RuleFor(x => x.UserId)
+        RuleFor(x => x.KeycloakUserId)
             .NotEmpty()
-            .WithMessage("User ID must not be empty.");
+            .WithMessage("Keycloak user ID must not be empty.");
     }
 }

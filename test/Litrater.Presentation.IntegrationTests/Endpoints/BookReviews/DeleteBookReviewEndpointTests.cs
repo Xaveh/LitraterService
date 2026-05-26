@@ -94,4 +94,25 @@ public class DeleteBookReviewEndpointTests(DatabaseFixture fixture) : BaseIntegr
 
         deletedBookReview.ShouldBeNull();
     }
+
+    [Fact]
+    public async Task DeleteBookReview_ShouldRecalculateAverageRating()
+    {
+        // Arrange
+        LoginAsRegularUserAsync();
+
+        var bookReviewId = TestDataGenerator.BookReviews.HobbitReview1.Id;
+        var bookId = TestDataGenerator.Books.TheHobbit.Id;
+
+        // Act
+        var response = await WebApplication.HttpClient.DeleteAsync($"api/v1/book-reviews/{bookReviewId}");
+
+        // Assert
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+
+        var book = await WebApplication.DbContext.Books.AsNoTracking()
+            .FirstAsync(b => b.Id == bookId);
+
+        book.AverageRating.ShouldBe(4.0);
+    }
 }

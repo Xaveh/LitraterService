@@ -24,7 +24,7 @@ public sealed class GetBookByIdQueryHandlerTests
         // Arrange
         var bookId = Guid.NewGuid();
         var query = new GetBookByIdQuery(bookId);
-        var bookDto = new BookDto(bookId, "Test Book", "1234567890123", [Guid.NewGuid()], []);
+        var bookDto = new BookDto(bookId, "Test Book", "1234567890123", [Guid.NewGuid()], [], null);
 
         _bookQueryRepositoryMock
             .Setup(x => x.GetByIdAsync(bookId, It.IsAny<CancellationToken>()))

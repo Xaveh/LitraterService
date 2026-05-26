@@ -390,6 +390,10 @@ dotnet_naming_style.s_camelcase.capitalization = camel_case
 # CA1002: Do not expose generic lists
 dotnet_diagnostic.CA1002.severity = suggestion
 
+# CA1030: Consider making 'RaiseDomainEvent' an event
+# Suppressed: RaiseDomainEvent is a standard DDD pattern for collecting domain events (not a C# event).
+dotnet_diagnostic.CA1030.severity = none
+
 # CA1040: Avoid empty interfaces
 dotnet_diagnostic.CA1040.severity = none
 
@@ -402,14 +406,28 @@ dotnet_diagnostic.CA1307.severity = none
 # CA1515: Consider making public types internal
 dotnet_diagnostic.CA1515.severity = none
 
+# CA1711: Identifiers should not have incorrect suffix 'EventHandler'
+# Suppressed: IDomainEventHandler<T> is a well-established DDD interface naming convention.
+dotnet_diagnostic.CA1711.severity = none
+
 # CA1724: Type names should not match namespaces
 dotnet_diagnostic.CA1724.severity = none
 
 # CA1848: Use the LoggerMessage delegates
 dotnet_diagnostic.CA1848.severity = none
 
+# CA1873: Evaluation of this argument may be expensive and unnecessary if logging is disabled
+dotnet_diagnostic.CA1873.severity = none
+
 # CA2007: Consider calling ConfigureAwait on the awaited task
 dotnet_diagnostic.CA2007.severity = none
+
+# S1144: Remove the unused private setter
+# Suppressed: EF Core sets properties with private setters via reflection; the setter is used by the ORM.
+dotnet_diagnostic.S1144.severity = none
+
+# S1186: Methods should not be empty
+dotnet_diagnostic.S1186.severity = none
 
 # S3267: Loops should be simplified with "LINQ" expressions
 dotnet_diagnostic.S3267.severity = none

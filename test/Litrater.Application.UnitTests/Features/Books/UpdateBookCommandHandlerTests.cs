@@ -30,9 +30,9 @@ public sealed class UpdateBookCommandHandlerTests
         var bookId = Guid.NewGuid();
         var authorIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() };
         var command = new UpdateBookCommand(bookId, "Updated Book", "9876543210123", authorIds);
-        var existingAuthors = new List<Author> { new(Guid.NewGuid(), "Old", "Author") };
-        var newAuthors = new List<Author> { new(authorIds[0], "John", "Doe"), new(authorIds[1], "Jane", "Smith") };
-        var book = new Book(bookId, "Old Book", "1234567890123", existingAuthors);
+        var existingAuthors = new List<Author> { new(Guid.NewGuid(), new PersonName("Old", "Author")) };
+        var newAuthors = new List<Author> { new(authorIds[0], new PersonName("John", "Doe")), new(authorIds[1], new PersonName("Jane", "Smith")) };
+        var book = new Book(bookId, "Old Book", new Isbn("1234567890123"), existingAuthors);
 
         _bookCommandRepositoryMock
             .Setup(x => x.GetByIdAsync(bookId, It.IsAny<CancellationToken>()))
@@ -87,9 +87,9 @@ public sealed class UpdateBookCommandHandlerTests
         var bookId = Guid.NewGuid();
         var authorIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() };
         var command = new UpdateBookCommand(bookId, "Updated Book", "9876543210123", authorIds);
-        var existingAuthors = new List<Author> { new(Guid.NewGuid(), "Old", "Author") };
-        var book = new Book(bookId, "Old Book", "1234567890123", existingAuthors);
-        var foundAuthors = new List<Author> { new(authorIds[0], "John", "Doe") }; // Only one author found
+        var existingAuthors = new List<Author> { new(Guid.NewGuid(), new PersonName("Old", "Author")) };
+        var book = new Book(bookId, "Old Book", new Isbn("1234567890123"), existingAuthors);
+        var foundAuthors = new List<Author> { new(authorIds[0], new PersonName("John", "Doe")) }; // Only one author found
 
         _bookCommandRepositoryMock
             .Setup(x => x.GetByIdAsync(bookId, It.IsAny<CancellationToken>()))

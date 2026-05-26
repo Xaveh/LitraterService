@@ -23,7 +23,7 @@ internal sealed class DeleteBookReviewEndpoint : IEndpoint
 
                     var command = new DeleteBookReviewCommand(
                         Id: id,
-                        UserId: userId,
+                        KeycloakUserId: userId,
                         IsAdmin: user.HasResourceRole("admin")
                     );
 

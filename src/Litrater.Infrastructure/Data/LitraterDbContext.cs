@@ -8,13 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Litrater.Infrastructure.Data;
 
-public class LitraterDbContext : DbContext
+public class LitraterDbContext(DbContextOptions<LitraterDbContext> options) : DbContext(options)
 {
     public const string DefaultSchema = "litrater_web_api";
-
-    public LitraterDbContext(DbContextOptions<LitraterDbContext> options) : base(options)
-    {
-    }
 
     public DbSet<Author> Authors { get; set; }
     public DbSet<Book> Books { get; set; }

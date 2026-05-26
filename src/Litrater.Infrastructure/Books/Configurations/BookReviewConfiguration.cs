@@ -15,7 +15,8 @@ public class BookReviewConfiguration : EntityConfiguration<BookReview>
             .HasMaxLength(1000);
 
         builder.Property(r => r.Rating)
-            .IsRequired();
+            .IsRequired()
+            .HasConversion(rating => rating.Value, value => new Rating(value));
 
         builder.Property(r => r.BookId)
             .IsRequired();

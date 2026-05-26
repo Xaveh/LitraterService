@@ -113,9 +113,9 @@ This will start:
 
 #### Access the API & Swagger UI
 
-- **Swagger UI**: https://localhost:5001/swagger
-- **API**: https://localhost:5001
-- **Health Check**: https://localhost:5001/health
+- **Swagger UI**: http://localhost:5001/swagger
+- **API**: http://localhost:5001
+- **Health Check**: http://localhost:5001/health
 
 **Authentication for Swagger UI:**
 

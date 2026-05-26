@@ -26,7 +26,7 @@ public sealed class DeleteAuthorCommandHandlerTests
         // Arrange
         var authorId = Guid.NewGuid();
         var command = new DeleteAuthorCommand(authorId);
-        var author = new Author(authorId, "John", "Doe");
+        var author = new Author(authorId, new PersonName("John", "Doe"));
 
         _authorCommandRepositoryMock
             .Setup(x => x.GetByIdAsync(authorId, It.IsAny<CancellationToken>()))

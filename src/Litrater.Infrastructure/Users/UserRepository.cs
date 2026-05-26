@@ -5,16 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Litrater.Infrastructure.Users;
 
-internal sealed class UserRepository(LitraterDbContext context) : Repository<User>(context), IUserRepository
+internal sealed class UserRepository(LitraterDbContext context) : CommandRepository<User>(context), IUserRepository
 {
     public async Task<User?> GetByKeycloakUserIdAsync(Guid keycloakUserId, CancellationToken cancellationToken = default)
     {
         return await DbSet
             .FirstOrDefaultAsync(u => u.KeycloakUserId == keycloakUserId, cancellationToken);
-    }
-
-    public async Task AddAsync(User user, CancellationToken cancellationToken = default)
-    {
-        await DbSet.AddAsync(user, cancellationToken);
     }
 }

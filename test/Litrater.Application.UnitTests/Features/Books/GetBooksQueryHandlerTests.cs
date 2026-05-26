@@ -25,8 +25,8 @@ public class GetBooksQueryHandlerTests
         var authorId = Guid.NewGuid();
         var bookDtos = new List<BookDto>
         {
-            new(Guid.NewGuid(), "Book 1", "123", [authorId], []),
-            new(Guid.NewGuid(), "Book 2", "456", [authorId], [])
+            new(Guid.NewGuid(), "Book 1", "123", [authorId], [], null),
+            new(Guid.NewGuid(), "Book 2", "456", [authorId], [], null)
         };
 
         _bookQueryRepositoryMock
@@ -78,8 +78,8 @@ public class GetBooksQueryHandlerTests
         var authorId = Guid.NewGuid();
         var books = new List<BookDto>
         {
-            new(Guid.NewGuid(), "Book 1", "123", [authorId], []),
-            new(Guid.NewGuid(), "Book 2", "456", [authorId], [])
+            new(Guid.NewGuid(), "Book 1", "123", [authorId], [], null),
+            new(Guid.NewGuid(), "Book 2", "456", [authorId], [], null)
         };
 
         _bookQueryRepositoryMock

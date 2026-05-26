@@ -14,7 +14,7 @@ public class GetAuthorByIdEndpointTests(DatabaseFixture fixture) : BaseIntegrati
         // Arrange
         var tolkienAuthor = await WebApplication.DbContext.Authors
             .Include(author => author.Books)
-            .FirstAsync(a => a.FirstName == "J.R.R." && a.LastName == "Tolkien");
+            .FirstAsync(a => a.Name.FirstName == "J.R.R." && a.Name.LastName == "Tolkien");
 
         // Act
         var response = await WebApplication.HttpClient.GetAsync($"api/v1/authors/{tolkienAuthor.Id}");
@@ -27,8 +27,8 @@ public class GetAuthorByIdEndpointTests(DatabaseFixture fixture) : BaseIntegrati
 
         authorDto.ShouldNotBeNull();
         authorDto.Id.ShouldBe(tolkienAuthor.Id);
-        authorDto.FirstName.ShouldBe(tolkienAuthor.FirstName);
-        authorDto.LastName.ShouldBe(tolkienAuthor.LastName);
+        authorDto.FirstName.ShouldBe(tolkienAuthor.Name.FirstName);
+        authorDto.LastName.ShouldBe(tolkienAuthor.Name.LastName);
         authorDto.BookIds.Count().ShouldBe(tolkienAuthor.Books.Count);
         if (tolkienAuthor.Books.Count > 0)
         {

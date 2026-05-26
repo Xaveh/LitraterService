@@ -1,11 +1,11 @@
 ###
 # Authentication Endpoints
 # Real Keycloak authentication - requires docker-compose to be running
-# Keycloak runs on http://localhost:8080, API on https://localhost:5001
+# Keycloak runs on http://localhost:8080, API on http://localhost:5001
 ###
 
 @keycloakHost = http://localhost:8080
-@apiHost = https://localhost:5001
+@apiHost = http://localhost:5001
 
 ### Generate Admin Token
 # @name adminLogin

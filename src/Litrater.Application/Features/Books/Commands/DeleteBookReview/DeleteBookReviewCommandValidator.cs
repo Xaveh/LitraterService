@@ -2,7 +2,7 @@ using FluentValidation;
 
 namespace Litrater.Application.Features.Books.Commands.DeleteBookReview;
 
-public sealed class DeleteBookReviewCommandValidator : AbstractValidator<DeleteBookReviewCommand>
+internal sealed class DeleteBookReviewCommandValidator : AbstractValidator<DeleteBookReviewCommand>
 {
     public DeleteBookReviewCommandValidator()
     {
@@ -10,8 +10,8 @@ public sealed class DeleteBookReviewCommandValidator : AbstractValidator<DeleteB
             .NotEmpty()
             .WithMessage("Book review ID must not be empty.");
 
-        RuleFor(x => x.UserId)
+        RuleFor(x => x.KeycloakUserId)
             .NotEmpty()
-            .WithMessage("User ID must not be empty.");
+            .WithMessage("Keycloak user ID must not be empty.");
     }
 }
