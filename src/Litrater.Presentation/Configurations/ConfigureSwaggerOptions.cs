@@ -38,11 +38,11 @@ internal sealed class ConfigureSwaggerOptions(IApiVersionDescriptionProvider pro
             Description = "Keycloak OAuth2/OpenID Connect"
         });
 
-        options.AddSecurityRequirement(_ => new OpenApiSecurityRequirement
+        options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
         {
             {
-                new OpenApiSecuritySchemeReference("oauth2"),
-                ["openid", "profile", "email"]
+                new OpenApiSecuritySchemeReference("oauth2", document),
+                []
             }
         });
     }
